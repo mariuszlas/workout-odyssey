@@ -1,0 +1,3 @@
+. "$(dirname -- "$0")/_/husky.sh"
+
+(pnpm ts:check && pnpm test) || (tput bel && 0)

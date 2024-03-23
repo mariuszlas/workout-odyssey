@@ -1,0 +1,57 @@
+cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+        - node_modules/
+        - .next/cache/
+        - .pnpm-store/
+
+default:
+    image: node:20
+    before_script:
+        - corepack enable
+        - corepack prepare pnpm@latest-8 --activate
+        - pnpm config set store-dir .pnpm-store
+
+stages:
+    - Setup
+    - Test
+    - Deploy
+
+Install:
+    stage: Setup
+    script:
+        - pnpm install
+
+Tests:
+    stage: Test
+    only:
+        - merge_requests
+        - main
+    script:
+        - pnpm format:check
+        - pnpm lint:check
+        - pnpm ts:check
+        - pnpm test
+
+Deploy Preview:
+    stage: Deploy
+    only:
+        - merge_requests
+    script:
+        - npm install -g vercel
+        - vercel pull --yes --environment=preview --token=$VERCEL_TOKEN
+        - vercel build --token=$VERCEL_TOKEN
+        - vercel deploy --prebuilt --token=$VERCEL_TOKEN > deployment-url.txt
+        - apt-get update
+        - apt-get install -y curl
+        - 'curl --location --request POST "https://gitlab.com/api/v4/projects/$CI_MERGE_REQUEST_PROJECT_ID/merge_requests/$CI_MERGE_REQUEST_IID/notes" --header "PRIVATE-TOKEN: $GITLAB_TOKEN" --header "Content-Type: application/json" --data-raw "{ \"body\": \"Deployment preview is available [here]($(<deployment-url.txt))\"}"'
+
+Deploy Production:
+    stage: Deploy
+    only:
+        - main
+    script:
+        - npm install -g vercel
+        - vercel pull --yes --environment=production --token=$VERCEL_TOKEN
+        - vercel build --prod --token=$VERCEL_TOKEN
+        - vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN

@@ -1,0 +1,25 @@
+'use client';
+
+import { forwardRef } from 'react';
+
+import { cn } from '@/utils/helpers';
+
+import { CloseIcon } from '../icon';
+
+import { Button } from './button';
+import { HTMLBtnProps } from './interfaces';
+
+export const CloseButton = forwardRef<HTMLButtonElement, HTMLBtnProps>(
+    ({ className, ...props }, ref) => (
+        <Button
+            ref={ref}
+            className={cn(
+                'btn-square btn-ghost w-10 focus:outline-offset-0 focus:outline-primary',
+                className
+            )}
+            {...props}
+        >
+            <CloseIcon className="h-4 w-4" />
+        </Button>
+    )
+);

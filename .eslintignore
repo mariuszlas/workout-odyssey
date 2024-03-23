@@ -1,0 +1,8 @@
+build
+coverage
+.next
+.vercel
+node_modules
+.eslintrc.js
+postcss.config.js
+.pnpm-store

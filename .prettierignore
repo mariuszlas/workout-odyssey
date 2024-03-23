@@ -1,0 +1,6 @@
+build
+coverage
+.next
+.vercel
+node_modules
+.pnpm-store

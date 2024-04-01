@@ -21,6 +21,9 @@ Install:
     stage: Setup
     script:
         - pnpm install
+    only:
+        - merge_requests
+        - main
 
 Tests:
     stage: Test

@@ -44,7 +44,7 @@ export const BestResultsModal: FC<ModalProps> = ({ isOpen, onClose }) => {
     const workoutType = getWorkoutTypeFromPathname(pathname);
 
     const { data, isLoading } = useSWR<TBestResults>(
-        `/api/best-results?type=${workoutType}`
+        `/api/best-results?workoutType=${workoutType}`
     );
 
     const keys = workoutType ? allKeys[workoutType] : null;

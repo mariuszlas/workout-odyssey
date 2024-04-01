@@ -60,7 +60,7 @@ export const LabelSelector: FC<NewWorkoutProps> = ({ setWorkout, workout }) => {
                     className="h-4 w-6 rounded-full"
                     style={{ background: `${label.color}` }}
                 />
-                <Text>{label.value}</Text>
+                <Text value={label.value} />
             </MenuButton>
         ));
 
@@ -111,7 +111,7 @@ export const LabelSelector: FC<NewWorkoutProps> = ({ setWorkout, workout }) => {
 
                                     {isNoLabels && (
                                         <div className="flex justify-center p-3">
-                                            <Text>{_t.noLabels}</Text>
+                                            <Text value={_t.noLabels} />
                                         </div>
                                     )}
 

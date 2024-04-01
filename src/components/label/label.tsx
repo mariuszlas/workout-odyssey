@@ -20,7 +20,7 @@ export const Label: FC<Props> = ({ onClose, label, small }) => (
         )}
         style={{ background: `${label.color}` }}
     >
-        <Text>{label.value}</Text>
+        <Text value={label.value} />
         {onClose && (
             <button className="ml-2 p-0.5" onClick={onClose} aria-label="close">
                 <CloseIcon className="h-3 w-3 rounded-full" />

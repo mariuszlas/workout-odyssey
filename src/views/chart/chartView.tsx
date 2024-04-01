@@ -15,7 +15,7 @@ interface Props {
     dashboard: WorkoutsDashboard;
 }
 
-const Chart: FC<{ dashboard: WorkoutsDashboard }> = ({ dashboard }) => {
+const Chart: FC<Props> = ({ dashboard }) => {
     const { year } = useUI();
 
     const chartData = useMemo(
@@ -29,7 +29,7 @@ const Chart: FC<{ dashboard: WorkoutsDashboard }> = ({ dashboard }) => {
                 <BarChart chartData={chartData} />
             ) : (
                 <div className="my-6 flex w-full justify-center">
-                    <Text>{_t.noWorkoutsMsg}</Text>
+                    <Text value={_t.noWorkoutsMsg} />
                 </div>
             )}
         </>
@@ -42,9 +42,12 @@ export const ChartView: FC<Props> = ({ dashboard }) => (
         data-testid="chart-section"
     >
         <header className="flex items-center gap-6">
-            <Heading as="h2" title="chart-section-title">
-                {_t.chartSectionH}
-            </Heading>
+            <Heading
+                as="h2"
+                title="chart-section-title"
+                className="text-2xl"
+                value={_t.chartSectionH}
+            />
 
             <YearSelector dashboard={dashboard} />
         </header>

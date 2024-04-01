@@ -3,7 +3,7 @@ import { clsx } from 'clsx';
 import { notFound } from 'next/navigation';
 import { twMerge } from 'tailwind-merge';
 
-import { Cookie, Theme, WorkoutTypes } from '@/interfaces';
+import { Cookie, Theme, UserData, WorkoutTypes } from '@/interfaces';
 
 export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
 
@@ -44,3 +44,8 @@ export const getClientCookie = (key: Cookie) =>
               ?.split('=')
               .at(0)
         : null;
+
+export const getCognitoAttribute = (
+    data: UserData | undefined,
+    type: 'email' | 'sub' | 'email_verified'
+) => data?.cognitoAttributes?.find(({ Name }) => Name === type)?.Value;

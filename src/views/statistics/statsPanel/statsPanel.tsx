@@ -31,6 +31,7 @@ export const StatsPanel: FC<Props> = ({
                 title={`${
                     isPrimary ? 'primary' : 'secondary'
                 }-stats-section-title`}
+                className="text-2xl"
             >
                 {getStatsPanelHeading(isPrimary, headerData, isMobile)}
             </Heading>

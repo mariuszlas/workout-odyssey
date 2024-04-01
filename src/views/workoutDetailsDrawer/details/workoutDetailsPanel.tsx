@@ -7,11 +7,7 @@ import { getDateTimeTZ, getDuration, getPace } from '@/views/helpers';
 
 import { LineItem } from './workoutDetailsLineItem';
 
-interface Props {
-    data: Workout;
-}
-
-export const WorkoutDetailsPanel: FC<Props> = ({ data }) => (
+export const WorkoutDetailsPanel: FC<{ data: Workout }> = ({ data }) => (
     <ul className="flex flex-col items-stretch gap-2 p-0 sm:px-4">
         <LineItem type={_t.activity} value={data.type} label={data.label} />
         <LineItem

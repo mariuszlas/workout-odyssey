@@ -13,9 +13,7 @@ interface Props {
 export const LineItem: FC<Props> = ({ data, header }) => (
     <li className="flex w-full flex-col items-stretch gap-1">
         <div className="flex flex-col sm:px-4">
-            <Text as="p" className="font-medium">
-                {header}
-            </Text>
+            <Text as="p" className="font-medium" value={header} />
             <div className="flex flex-wrap justify-between">
                 {data ? (
                     <>

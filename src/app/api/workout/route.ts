@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server';
 
-import { getGeolocationById } from '@/server/services';
+import { getWorkoutById } from '@/server/services';
 
 export async function GET(request: NextRequest) {
     const id = request.nextUrl.searchParams.get('id');
@@ -9,5 +9,5 @@ export async function GET(request: NextRequest) {
         return Response.json(null);
     }
 
-    return Response.json(await getGeolocationById(id));
+    return Response.json(await getWorkoutById(Number(id)));
 }

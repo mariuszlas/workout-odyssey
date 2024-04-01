@@ -4,6 +4,7 @@ import {
     _t,
     CloseButton,
     Drawer,
+    logoutUser,
     MenuButton,
     MenuLink,
     PlusIcon,
@@ -18,6 +19,7 @@ interface Props extends DrawerProps {
     isProtected: boolean;
     openWorkoutUploadModal: () => void;
     isSignupPage: boolean;
+    isUser: boolean;
 }
 
 export const DrawerMenu: FC<Props> = ({
@@ -26,10 +28,11 @@ export const DrawerMenu: FC<Props> = ({
     openWorkoutUploadModal,
     onClose,
     isSignupPage,
+    isUser,
 }) => (
     <Drawer isOpen={isOpen} onClose={onClose}>
         <div className="flex w-full items-center justify-between p-4">
-            <Text className="text-xl font-semibold">{_t.mainMenu}</Text>
+            <Text className="text-xl font-semibold" value={_t.mainMenu} />
             <CloseButton onClick={onClose} />
         </div>
 
@@ -40,6 +43,18 @@ export const DrawerMenu: FC<Props> = ({
 
             {isProtected && (
                 <>
+                    {isUser && (
+                        <li>
+                            <MenuLink
+                                href="/dashboard/running"
+                                onClick={() => onClose()}
+                                popover
+                            >
+                                Dashboard
+                            </MenuLink>
+                        </li>
+                    )}
+
                     <li>
                         <MenuButton
                             aria-label="add workout"
@@ -48,14 +63,25 @@ export const DrawerMenu: FC<Props> = ({
                                 openWorkoutUploadModal();
                             }}
                         >
-                            <Text>{_t.btnAddWorkout}</Text>
+                            <Text value={_t.btnAddWorkout} />
                             <PlusIcon />
                         </MenuButton>
                     </li>
 
-                    <hr className="my-4 border-t border-t-base-content border-opacity-20 " />
+                    {isUser && (
+                        <form action={logoutUser}>
+                            <MenuButton type="submit" hoverRed>
+                                {_t.signOut}
+                            </MenuButton>
+                        </form>
+                    )}
 
-                    <WorkoutSelector isMobile onClose={onClose} />
+                    {!isUser && (
+                        <>
+                            <hr className="my-4 border-t border-t-base-content border-opacity-20 " />
+                            <WorkoutSelector isMobile onClose={onClose} />
+                        </>
+                    )}
                 </>
             )}
 

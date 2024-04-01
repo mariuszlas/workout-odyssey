@@ -70,7 +70,7 @@ export const DurationPicker: FC<NewWorkoutProps> = ({
                         {({ close }) => (
                             <>
                                 <div className="flex items-center justify-between">
-                                    <Heading className="text-lg font-medium">
+                                    <Heading as="h3" className="text-xl">
                                         {_t.durationFormHeader}
                                     </Heading>
 

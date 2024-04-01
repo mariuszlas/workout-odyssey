@@ -22,11 +22,9 @@ import { WorkoutUploadModal } from '../workoutUploadModal';
 import { DrawerMenu } from './drawerMenu';
 import { FloatingNewWorkoutBtn } from './floatingButton';
 
-interface Props {
-    isProtected?: boolean;
-}
-
-export const NavBar: FC<Props> = ({ isProtected = false }) => {
+export const NavBar: FC<{ isProtected?: boolean }> = ({
+    isProtected = false,
+}) => {
     const [isDrawerMenuOpen, setIsDrawerMenuOpen] = useState(false);
     const [isWorkoutUploadModalOpen, setIsWorkoutUploadModalOpen] =
         useState(false);
@@ -36,6 +34,7 @@ export const NavBar: FC<Props> = ({ isProtected = false }) => {
     const isSignupPage = pathname === '/signup';
     const isEmailVerificationPage = pathname === '/verify';
     const isDashboard = pathname.startsWith('/dashboard');
+    const isUser = pathname.startsWith('/user');
 
     const showLoginBtn = !(isLoginPage || isEmailVerificationPage);
     const showSignupBtn = !isSignupPage;
@@ -69,6 +68,15 @@ export const NavBar: FC<Props> = ({ isProtected = false }) => {
                             <div className="hidden gap-4 md:flex">
                                 {isDashboard && <WorkoutSelector />}
 
+                                {isUser && (
+                                    <Link
+                                        href="/dashboard/running"
+                                        className="btn btn-outline btn-primary h-10 min-h-min text-base"
+                                    >
+                                        Dashboard
+                                    </Link>
+                                )}
+
                                 <Button
                                     aria-label="add workout"
                                     className="btn btn-outline btn-primary h-10 min-h-min text-base"
@@ -76,7 +84,7 @@ export const NavBar: FC<Props> = ({ isProtected = false }) => {
                                         setIsWorkoutUploadModalOpen(true)
                                     }
                                 >
-                                    <Text>{_t.btnAddWorkout}</Text>
+                                    <Text value={_t.btnAddWorkout} />
                                     <PlusIcon />
                                 </Button>
                             </div>
@@ -121,6 +129,7 @@ export const NavBar: FC<Props> = ({ isProtected = false }) => {
                 isProtected={isProtected}
                 isSignupPage={isSignupPage}
                 openWorkoutUploadModal={() => setIsWorkoutUploadModalOpen(true)}
+                isUser={isUser}
             />
 
             <WorkoutUploadModal

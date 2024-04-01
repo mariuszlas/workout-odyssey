@@ -3,9 +3,9 @@ import type { NextRequest } from 'next/server';
 import { Cookie } from './interfaces';
 
 export function middleware(request: NextRequest) {
-    const currentUser = request.cookies.get(Cookie.SESSION)?.value;
+    const accessToken = request.cookies.get(Cookie.ACCESS_TOKEN)?.value;
 
-    if (!currentUser && request.nextUrl.pathname.startsWith('/dashboard')) {
+    if (!accessToken && request.nextUrl.pathname.startsWith('/dashboard')) {
         return Response.redirect(new URL('/login', request.url));
     }
 }

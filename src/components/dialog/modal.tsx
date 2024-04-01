@@ -17,12 +17,20 @@ export const ModalHeader: FC<ModalHeaderProps> = ({
     className,
 }) => (
     <header className={clsx(className, 'flex items-center justify-between')}>
-        <Dialog.Title className="text-xl font-bold">{children}</Dialog.Title>
+        <Dialog.Title as="h2" className="text-2xl font-bold">
+            {children}
+        </Dialog.Title>
         <CloseButton onClick={onClose} aria-label="close" />
     </header>
 );
 
-export const Modal: FC<ModalProps> = ({ isOpen, onClose, full, children }) => (
+export const Modal: FC<ModalProps> = ({
+    isOpen,
+    onClose,
+    full,
+    children,
+    large,
+}) => (
     <Transition appear show={isOpen} as={Fragment}>
         <Dialog onClose={onClose} className="relative z-50">
             <Transition.Child
@@ -59,8 +67,9 @@ export const Modal: FC<ModalProps> = ({ isOpen, onClose, full, children }) => (
                         role="dialog"
                         as="section"
                         className={cn(
-                            'm-auto max-w-md rounded-xl border border-base-content border-opacity-20 bg-base-100 p-4 sm:p-6',
-                            full && 'w-full'
+                            'm-auto rounded-xl border border-base-content border-opacity-20 bg-base-100 p-4 sm:p-6',
+                            full && 'w-full',
+                            large ? 'max-w-screen-md' : 'max-w-md'
                         )}
                     >
                         {children}

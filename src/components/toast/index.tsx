@@ -7,6 +7,7 @@ import { Transition } from '@headlessui/react';
 import { cn } from '@/utils/helpers';
 
 import { CheckIcon, ExclamationCircleIcon } from '../icon';
+import { Text } from '../text';
 
 type TNotification = 'error' | 'success';
 
@@ -32,7 +33,7 @@ const notification = (msg: string, type: TNotification) =>
             >
                 {type === 'error' && <ExclamationCircleIcon />}
                 {type === 'success' && <CheckIcon />}
-                <p>{msg}</p>
+                <Text as="p" value={msg} />
             </div>
         </Transition>
     ));

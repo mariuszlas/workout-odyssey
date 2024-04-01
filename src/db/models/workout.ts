@@ -1,3 +1,4 @@
+import { LineString } from 'geojson';
 import {
     CreationOptional,
     DataTypes,
@@ -23,22 +24,27 @@ class Workout extends Model<
     public declare pace: number;
     public declare speed: number;
     public declare notes: string | null;
+    public declare geometry: CreationOptional<LineString | null>;
     public declare userId: number;
     public declare labelId: CreationOptional<number | null>;
-    public declare geolocationId: CreationOptional<number>;
 }
 
 Workout.init(
     {
         id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
-        type: { type: DataTypes.STRING },
-        timestamp: { type: DataTypes.DATE },
-        utcOffset: { type: DataTypes.NUMBER },
-        distance: { type: DataTypes.NUMBER },
-        duration: { type: DataTypes.NUMBER },
-        pace: { type: DataTypes.NUMBER },
-        speed: { type: DataTypes.NUMBER },
+        type: { type: DataTypes.STRING, allowNull: false },
+        timestamp: { type: DataTypes.DATE, allowNull: false },
+        utcOffset: {
+            type: DataTypes.INTEGER,
+            defaultValue: 0,
+            allowNull: false,
+        },
+        distance: { type: DataTypes.FLOAT, allowNull: false },
+        duration: { type: DataTypes.FLOAT, allowNull: false },
+        pace: { type: DataTypes.FLOAT, allowNull: false },
+        speed: { type: DataTypes.FLOAT, allowNull: false },
         notes: { type: DataTypes.STRING },
+        geometry: { type: DataTypes.GEOMETRY('LINESTRING'), allowNull: true },
         userId: {
             type: DataTypes.BIGINT,
             references: { model: 'User', key: 'id' },
@@ -47,10 +53,6 @@ Workout.init(
             type: DataTypes.BIGINT,
             references: { model: 'Label', key: 'id' },
             allowNull: true,
-        },
-        geolocationId: {
-            type: DataTypes.BIGINT,
-            references: { model: 'Geolocation', key: 'id' },
         },
     },
     {

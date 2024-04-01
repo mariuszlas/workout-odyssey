@@ -50,18 +50,29 @@ const refinePassword = (
 };
 
 const email = z.string().email().min(5).max(250);
+const name = z.string().trim().min(1).max(32);
+const resetCode = z.string().trim();
+
+export const nameSchema = z.object({ name });
+export const emailSchema = z.object({ email });
+
+export const changePasswordSchema = passwords
+    .extend({ currentPassword: z.string() })
+    .superRefine(refinePassword);
 
 export const userSignupSchema = passwords
-    .extend({ email, name: z.string().trim().min(1).max(250) })
+    .extend({ email, name })
     .superRefine(refinePassword);
 
 export const userLoginSchema = z.object({ email, password: z.string() });
 
-export const requestPasswordResetSchema = z.object({ email });
-
 export const resetPasswordSchema = passwords
-    .extend({ passwordResetCode: z.string().trim() })
+    .extend({ passwordResetCode: resetCode })
     .superRefine(refinePassword);
+
+export const emailVerificationSchema = z.object({
+    emailVerificationCode: resetCode,
+});
 
 interface FormState {
     other: string | null;
@@ -88,20 +99,14 @@ export const formatResponse = (
     ...errors,
 });
 
-export const getErrors = (formState: FormState | undefined) => {
-    const emailError = formState?.fieldErrors['email']?.[0];
-    const nameError = formState?.fieldErrors['name']?.[0];
-    const passwordError = formState?.fieldErrors['password']?.[0];
-    const passwordRepeatError = formState?.fieldErrors['passwordRepeat']?.[0];
-    const resetCodeError = formState?.fieldErrors['passwordResetCode']?.[0];
-    const otherError = formState?.other;
-
-    return {
-        emailError,
-        nameError,
-        passwordError,
-        passwordRepeatError,
-        otherError,
-        resetCodeError,
-    };
-};
+export const getErrors = (formState: FormState | undefined) => ({
+    emailError: formState?.fieldErrors['email']?.[0],
+    nameError: formState?.fieldErrors['name']?.[0],
+    passwordError: formState?.fieldErrors['password']?.[0],
+    passwordRepeatError: formState?.fieldErrors['passwordRepeat']?.[0],
+    currentPasswordError: formState?.fieldErrors['currentPassword']?.[0],
+    passwordResetCodeError: formState?.fieldErrors['passwordResetCode']?.[0],
+    emailVerificationCodeError:
+        formState?.fieldErrors['emailVerificationCode']?.[0],
+    otherError: formState?.other,
+});

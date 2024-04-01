@@ -34,7 +34,7 @@ export const RequestResetPasswordForm: FC<Props> = ({
                 </Alert>
             )}
 
-            <Text as="p">{_t.passwordResetBody1}</Text>
+            <Text as="p" value={_t.passwordResetBody1} />
 
             <div>
                 <Input

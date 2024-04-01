@@ -49,11 +49,11 @@ export const StatsPanelEntry: FC<Props> = ({ data, field, units, icon }) => {
             {getStatIcon(icon)}
 
             <div className="flex flex-col">
-                <Text>{field}</Text>
+                <Text value={field} />
 
                 <div>
-                    <Text className="font-medium">{data}</Text>
-                    <Text>{` ${units}`}</Text>
+                    <Text value={data} className="font-medium" />
+                    <Text value={` ${units}`} />
                 </div>
             </div>
         </div>

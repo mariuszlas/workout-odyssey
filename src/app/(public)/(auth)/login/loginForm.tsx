@@ -3,7 +3,7 @@
 import { useFormState } from 'react-dom';
 import Link from 'next/link';
 
-import { _t, Alert, Button, Input, PasswordInput } from '@/components';
+import { _t, Alert, Button, Input, PasswordInput, Text } from '@/components';
 import { getErrors } from '@/server/validation';
 
 import { loginUser } from './action';
@@ -64,7 +64,7 @@ export const LoginForm = () => {
             </Button>
 
             <div>
-                <span>{_t.signupOffer}</span>
+                <Text value={_t.signupOffer} />
                 <Link href="/signup" className="link link-primary font-medium">
                     {_t.signupHeader}
                 </Link>

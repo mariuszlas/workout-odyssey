@@ -11,7 +11,6 @@ import sequelize from '../connection';
 class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
     public declare readonly id: CreationOptional<number>;
     public declare username: string;
-    public declare email: string;
     public declare name: string;
     public declare isDemo: boolean;
     public declare lastLogin: CreationOptional<Date>;
@@ -26,7 +25,6 @@ User.init(
     {
         id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
         username: { type: DataTypes.STRING, allowNull: false, unique: true },
-        email: { type: DataTypes.STRING, allowNull: false, unique: true },
         name: { type: DataTypes.STRING, allowNull: false },
         isDemo: {
             type: DataTypes.BOOLEAN,
@@ -35,7 +33,7 @@ User.init(
         },
         lastLogin: { type: DataTypes.DATE, allowNull: true },
         loginCount: {
-            type: DataTypes.NUMBER,
+            type: DataTypes.INTEGER,
             allowNull: false,
             defaultValue: 0,
         },

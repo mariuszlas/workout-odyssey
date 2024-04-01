@@ -11,7 +11,7 @@ import { ZodError } from 'zod';
 import { Cookie } from '@/interfaces';
 import { CognitoApi } from '@/server/cognitoAuth';
 import { decodeJwt, setCookie } from '@/server/helpers';
-import { reportUserLogin } from '@/server/services';
+import { getUserId, reportUserLogin } from '@/server/services';
 import {
     formatOtherError,
     formatZodError,
@@ -40,12 +40,16 @@ export const loginUser = async (_: unknown, formData: FormData) => {
         }
 
         const jwt = await decodeJwt(accessToken);
+        const username = jwt?.username;
 
-        await reportUserLogin(email);
-        await setCookie(Cookie.SESSION, email, exp);
+        const userId = await getUserId(username);
+        if (!userId) throw new Error();
+
+        await reportUserLogin(username as string);
+        await setCookie(Cookie.ACCESS_TOKEN, accessToken, exp);
         await setCookie(
             Cookie.REFRESH_SESSION,
-            JSON.stringify({ refreshToken, username: jwt.sub }),
+            JSON.stringify({ refreshToken, username }),
             60 * 60 * 24 * 90
         );
     } catch (e) {

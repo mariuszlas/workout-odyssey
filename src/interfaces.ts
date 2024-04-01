@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { AttributeType } from '@aws-sdk/client-cognito-identity-provider';
 import type { Feature, LineString, Position } from 'geojson';
 
 export enum WorkoutTypes {
@@ -21,8 +22,7 @@ export interface Workout extends BaseWorkout {
     id: number;
     pace: number;
     speed: number;
-    hasTrajectory: boolean;
-    trajectory: Trajectory | null;
+    geometry: LineString | null;
 }
 
 export interface UploadWorkout extends BaseWorkout {
@@ -87,18 +87,18 @@ export interface WorkoutPreview {
 
 export interface User {
     username: string;
-    email: string;
-    lastLogin: string;
+    lastLogin: Date;
     loginCount: number;
     totalNoOfWorkouts: number;
 }
 
 export interface UserData extends User {
+    id: number;
     name: string | undefined;
-    createdAt: string | undefined;
-    updatedAt: string | undefined;
-    emailVerified: boolean;
+    createdAt?: Date | undefined;
+    updatedAt?: Date | undefined;
     isDemo: boolean;
+    cognitoAttributes: AttributeType[] | undefined;
 }
 
 export interface HeaderData {
@@ -118,7 +118,7 @@ export enum Theme {
 }
 
 export enum Cookie {
-    SESSION = 'session',
+    ACCESS_TOKEN = 'accessToken',
     REFRESH_SESSION = 'refreshSession',
     THEME = 'theme',
 }

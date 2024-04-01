@@ -27,7 +27,7 @@ export const Pagination: FC<OwnProps & PageProps> = ({
         return null;
     }
 
-    const Empty = () => <Text className="p-1">...</Text>;
+    const Empty = () => <Text className="p-1" value="..." />;
 
     const renderButtons = (totalPages: number) =>
         [...Array(totalPages).keys()].map(num => (

@@ -1,10 +1,13 @@
 import type { Metadata } from 'next';
-import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 import { _t } from '@/constants';
-import { Cookie } from '@/interfaces';
-import { getSessionUserId } from '@/server/services';
+import {
+    getAccessTokenFromCookie,
+    getRefreshTokenFromCookie,
+    getUsernameFromCookie,
+} from '@/server/helpers';
+import { getUserId } from '@/server/services';
 
 import { LoginForm } from './loginForm';
 
@@ -14,10 +17,13 @@ export const metadata: Metadata = {
 };
 
 export default async function Login() {
-    const userId = await getSessionUserId();
-    const refreshSession = cookies().get(Cookie.REFRESH_SESSION)?.value;
+    const username = getUsernameFromCookie();
+    const refreshSession = getRefreshTokenFromCookie();
+    const accessToken = getAccessTokenFromCookie();
 
-    if (!userId && refreshSession) {
+    const userId = username ? await getUserId(username) : null;
+
+    if ((!userId || !accessToken) && refreshSession) {
         redirect('/api/refresh-session');
     }
 

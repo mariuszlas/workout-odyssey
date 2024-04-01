@@ -41,7 +41,7 @@ export default function HomePage() {
 
     return (
         <main className="flex flex-col items-center gap-10 p-4 sm:p-10 lg:gap-20">
-            <Heading className="md:text-4xl">{_t.landingHeader}</Heading>
+            <Heading value={_t.landingHeader} />
 
             <Link
                 role="button"
@@ -60,10 +60,8 @@ export default function HomePage() {
                     )}
                 >
                     <header className="flex flex-col gap-1 lg:max-w-xs lg:gap-3">
-                        <Heading className="md:text-3xl" as="h2">
-                            {title}
-                        </Heading>
-                        <Text className="text-2xl">{desc}</Text>
+                        <Heading as="h2" value={title} />
+                        <Text className="text-2xl" value={desc} />
                     </header>
 
                     <Image

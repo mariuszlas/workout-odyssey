@@ -6,7 +6,7 @@ import { ZodError } from 'zod';
 
 import { _t } from '@/constants';
 import { CognitoApi } from '@/server/cognitoAuth';
-import { createUser, getUserId } from '@/server/services';
+import { createUser } from '@/server/services';
 import {
     formatOtherError,
     formatZodError,
@@ -26,11 +26,6 @@ export const signupUser = async (
 
     try {
         const { email, name, password } = userSignupSchema.parse(formObj);
-        const userId = await getUserId(email);
-
-        if (userId) {
-            throw new UsernameExistsException({ message: '', $metadata: {} });
-        }
 
         const response = await new CognitoApi().signup(email, password);
         const username = response.UserSub;
@@ -39,7 +34,7 @@ export const signupUser = async (
             throw new Error('Unexpected error occured');
         }
 
-        await createUser(username, email, name);
+        await createUser(username, name);
     } catch (e) {
         if (e instanceof ZodError) {
             return formatZodError(e);

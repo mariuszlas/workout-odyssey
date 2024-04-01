@@ -53,9 +53,7 @@ export const DeleteWorkoutModal: FC<Props> = ({ id, onClose, isOpen }) => (
     <Modal isOpen={isOpen} onClose={onClose}>
         <div className="flex flex-col gap-4">
             <ModalHeader onClose={onClose}>{_t.dataDeletionHeader}</ModalHeader>
-
-            <Text as="p">{_t.deleteConfirmation}</Text>
-
+            <Text as="p" value={_t.deleteConfirmation} />
             <ModalCta id={id} onClose={onClose} isOpen={isOpen} />
         </div>
     </Modal>

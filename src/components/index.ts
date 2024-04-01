@@ -49,6 +49,7 @@ export { Badge } from './label/badge';
 export { Label } from './label/label';
 export { MenuLink } from './link';
 export { Logo } from './logo';
+export { logoutUser } from './logout/action';
 export { MenuTransition } from './menuTransition';
 export { GA4Script } from './scripts/ga4Script';
 export { Select } from './select';

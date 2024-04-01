@@ -34,7 +34,7 @@ export const WorkoutList: FC<WorkoutListProps> = ({
     if (isError) {
         return (
             <div className="my-6 flex w-full justify-center rounded-lg">
-                <Text>{_t.errorFetch}</Text>
+                <Text value={_t.errorFetch} />
             </div>
         );
     }
@@ -42,9 +42,10 @@ export const WorkoutList: FC<WorkoutListProps> = ({
     if (!workouts?.length) {
         return (
             <div className="flex w-full justify-center p-4">
-                <Text data-testid="no-workouts-message">
-                    {_t.noWorkoutsMsg}
-                </Text>
+                <Text
+                    data-testid="no-workouts-message"
+                    value={_t.noWorkoutsMsg}
+                />
             </div>
         );
     }

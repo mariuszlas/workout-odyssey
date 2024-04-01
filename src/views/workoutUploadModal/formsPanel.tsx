@@ -52,7 +52,7 @@ const CustomTab: FC<CustomTabProps> = ({ isDisabled, children }) => (
 const defaultNewWorkout = {
     type: WorkoutTypes.RUNNING,
     timestamp: '',
-    utcOffset: new Date().getTimezoneOffset() / 60,
+    utcOffset: new Date().getTimezoneOffset() / -60,
     distance: 0,
     duration: 0,
     coordinates: [],

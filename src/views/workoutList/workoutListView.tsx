@@ -12,11 +12,9 @@ import { WorkoutListHeader } from './header';
 import { filterWorkouts, selectMonthWorkouts } from './helpers';
 import { WorkoutList } from './workoutList';
 
-interface Props {
-    data: Workout[] | undefined;
-}
-
-export const WorkoutListView: FC<Props> = ({ data }) => {
+export const WorkoutListView: FC<{ data: Workout[] | undefined }> = ({
+    data,
+}) => {
     const { year, secondaryStat } = useUI();
     const headerData = { year, secStats: secondaryStat };
 

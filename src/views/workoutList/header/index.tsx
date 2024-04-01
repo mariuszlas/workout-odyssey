@@ -42,7 +42,11 @@ export const WorkoutListHeader: FC<Props> = ({
     return (
         <header className="w-full">
             <div className="flex justify-between">
-                <Heading as="h2" title="workout-list-section-title">
+                <Heading
+                    as="h2"
+                    className="text-2xl"
+                    title="workout-list-section-title"
+                >
                     {getWorkoutListHeading(headerData, isAll, isMobileOrTabled)}
                 </Heading>
 
@@ -50,7 +54,7 @@ export const WorkoutListHeader: FC<Props> = ({
                     onClick={() => setIsOpen(prev => !prev)}
                     className="btn-primary sm:hidden"
                 >
-                    <Text>{_t.filter}</Text>
+                    <Text value={_t.filter} />
                     <ChevronDownIcon
                         className={cn(
                             'transform duration-300 ease-in-out',

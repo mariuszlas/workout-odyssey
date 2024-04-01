@@ -1,15 +1,15 @@
 import { NextRequest } from 'next/server';
 
-import { getBestResult, getSessionUserId } from '@/server/services';
+import { getBestResult, getCurrentUserId } from '@/server/services';
 import { isValidWorkoutType } from '@/utils/helpers';
 
 export async function GET(request: NextRequest) {
-    const userId = await getSessionUserId();
-    const type = request.nextUrl.searchParams.get('type');
+    const userId = await getCurrentUserId();
+    const workoutType = request.nextUrl.searchParams.get('workoutType');
 
-    if (!userId || !isValidWorkoutType(type)) {
+    if (!isValidWorkoutType(workoutType)) {
         return Response.json(null);
     }
 
-    return Response.json(await getBestResult(type, userId));
+    return Response.json(await getBestResult(workoutType, userId));
 }

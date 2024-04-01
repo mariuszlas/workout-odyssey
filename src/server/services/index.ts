@@ -1,11 +1,12 @@
-export { getGeolocationById } from './geolocation';
 export { getAllLabels } from './label';
 export {
     createUser,
-    getSessionUserId,
-    getUserData,
+    destroyUser,
+    getAllUserData,
+    getCurrentUserId,
     getUserId,
     reportUserLogin,
+    updateUserName,
 } from './user';
 export {
     createWorkout,
@@ -14,6 +15,7 @@ export {
     getBestResult,
     getCurrentMonthWorkouts,
     getDashboard,
+    getWorkoutById,
     getWorkoutPreviewDb,
     updateWorkout,
 } from './workout';

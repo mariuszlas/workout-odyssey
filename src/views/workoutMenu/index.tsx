@@ -22,10 +22,7 @@ import { DeleteWorkoutModal } from '../deleteWorkoutModal';
 import { WorkoutDetailsDrawer } from '../workoutDetailsDrawer';
 import { WorkoutUploadModal } from '../workoutUploadModal';
 
-export interface Props {
-    data: Workout;
-}
-export const WorkoutMenu: FC<Props> = ({ data }) => {
+export const WorkoutMenu: FC<{ data: Workout }> = ({ data }) => {
     const [top, setTop] = useState(false);
     const ref = useRef<HTMLButtonElement>(null);
     const MIN_MENU_HEIGHT = 140;
@@ -97,7 +94,7 @@ export const WorkoutMenu: FC<Props> = ({ data }) => {
                                         onClick={onClick}
                                     >
                                         {icon}
-                                        <Text>{text}</Text>
+                                        <Text value={text} />
                                     </MenuButton>
                                 )}
                             </Menu.Item>

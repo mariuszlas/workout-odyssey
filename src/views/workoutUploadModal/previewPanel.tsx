@@ -59,7 +59,7 @@ export const PreviewPanel: FC<Props> = ({
 
                 {isExistingData && (
                     <div data-testid="found-data-section">
-                        <Heading as="h3">{_t.foundData}</Heading>
+                        <Heading as="h3" value={_t.foundData} />
                         <ul>
                             {existingData.map(workout => (
                                 <li key={workout.id}>
@@ -71,8 +71,8 @@ export const PreviewPanel: FC<Props> = ({
                 )}
 
                 <div data-testid="data-to-upload-section">
-                    <Heading as="h3">{_t.dataToUpload}</Heading>
-                    <Text>{formatPreviewItem(dataToUpload)}</Text>
+                    <Heading as="h3" value={_t.dataToUpload} />
+                    <Text value={formatPreviewItem(dataToUpload)} />
                 </div>
             </div>
 

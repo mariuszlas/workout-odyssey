@@ -10,17 +10,16 @@ import { ZodError } from 'zod';
 
 import { CognitoApi } from '@/server/cognitoAuth';
 import {
+    emailSchema,
     formatOtherError,
     formatResponse,
     formatZodError,
-    requestPasswordResetSchema,
     resetPasswordSchema,
 } from '@/server/validation';
 
 export const requestPasswordReset = async (_: unknown, formData: FormData) => {
     try {
-        const formObj = Object.fromEntries(formData);
-        const { email } = requestPasswordResetSchema.parse(formObj);
+        const { email } = emailSchema.parse(Object.fromEntries(formData));
 
         const response = await new CognitoApi().requestPasswordReset(email);
 

@@ -5,17 +5,13 @@ import { revalidatePath } from 'next/cache';
 import { UploadWorkout, Workout as WorkoutT } from '@/interfaces';
 import {
     createWorkout,
-    getSessionUserId,
+    getCurrentUserId,
     getWorkoutPreviewDb,
     updateWorkout,
 } from '@/server/services';
 
 export const getWorkoutPreview = async (workout: UploadWorkout) => {
-    const userId = await getSessionUserId();
-
-    if (!userId) {
-        throw new Error('User does not exist');
-    }
+    const userId = await getCurrentUserId();
 
     const existingWorkouts = (await getWorkoutPreviewDb(
         workout.type,
@@ -34,11 +30,7 @@ export const addNewWorkout = async (
     isEdit: boolean
 ) => {
     try {
-        const userId = await getSessionUserId();
-
-        if (!userId) {
-            throw new Error('User does not exist');
-        }
+        const userId = await getCurrentUserId();
 
         if (isEdit) {
             await updateWorkout(workout, userId);

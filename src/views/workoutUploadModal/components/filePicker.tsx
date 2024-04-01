@@ -87,7 +87,7 @@ export const FilePicker: FC<Props> = ({ setWorkout }) => {
                 {file ? (
                     <Badge value={file.name} onClose={removeFile} />
                 ) : (
-                    <Text className="italic">{_t.noFile}</Text>
+                    <Text className="italic" value={_t.noFile} />
                 )}
 
                 <input

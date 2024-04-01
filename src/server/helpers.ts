@@ -1,7 +1,16 @@
+import {
+    AliasExistsException,
+    CodeMismatchException,
+    ExpiredCodeException,
+    NotAuthorizedException,
+} from '@aws-sdk/client-cognito-identity-provider';
 import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
+import { ZodError } from 'zod';
 
 import { Cookie, ToggleState } from '@/interfaces';
+import { getGenericErrorMessage } from '@/utils/helpers';
+
+import { formatOtherError, formatZodError } from './validation';
 
 export const getAppConfig = async () => {
     const s3Url = process.env.S3_URL;
@@ -15,17 +24,6 @@ export const getAppConfig = async () => {
         console.error(`Failed to fetch feature toggles from '${s3Url}'`);
         return {};
     }
-};
-
-export const getEmailFromSession = () => {
-    const cookieStore = cookies();
-    const email = cookieStore.get(Cookie.SESSION)?.value;
-
-    if (!email) {
-        redirect('/login');
-    }
-
-    return email;
 };
 
 export const decodeJwt = (jwt: string | undefined) =>
@@ -45,4 +43,43 @@ export const setCookie = async (
         maxAge: exp,
         sameSite: 'strict',
     });
+};
+
+export const getRefreshTokenFromCookie = () =>
+    cookies().get(Cookie.REFRESH_SESSION)?.value;
+
+export const getAccessTokenFromCookie = () =>
+    cookies().get(Cookie.ACCESS_TOKEN)?.value;
+
+export const getUsernameFromCookie = () => {
+    const jwt = getAccessTokenFromCookie();
+    if (!jwt) return null;
+
+    const payload = JSON.parse(
+        Buffer.from(jwt?.split('.')[1], 'base64').toString()
+    );
+
+    return payload?.username;
+};
+
+export const handleError = (e: unknown) => {
+    if (e instanceof ZodError) {
+        return formatZodError(e);
+    }
+
+    if (e instanceof NotAuthorizedException) {
+        return formatOtherError('Incorrect credentials');
+    }
+
+    if (
+        e instanceof AliasExistsException ||
+        e instanceof CodeMismatchException ||
+        e instanceof ExpiredCodeException
+    ) {
+        return formatOtherError(e.message);
+    }
+
+    const msg = 'Unexpected error occured';
+    console.error(`Error: ${getGenericErrorMessage(e, msg)}`);
+    return formatOtherError(msg);
 };

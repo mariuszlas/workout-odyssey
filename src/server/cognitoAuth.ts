@@ -1,13 +1,18 @@
 import {
+    AdminDeleteUserCommand,
     AdminGetUserCommand,
     AdminInitiateAuthCommand,
+    AdminUpdateUserAttributesCommand,
+    AdminUserGlobalSignOutCommand,
     AuthFlowType,
+    ChangePasswordCommand,
     CognitoIdentityProviderClient,
     CognitoIdentityProviderClientConfig,
     ConfirmForgotPasswordCommand,
     ForgotPasswordCommand,
     ResendConfirmationCodeCommand,
     SignUpCommand,
+    VerifyUserAttributeCommand,
 } from '@aws-sdk/client-cognito-identity-provider';
 import { createHmac } from 'crypto';
 
@@ -85,7 +90,7 @@ export class CognitoApi {
             })
         );
 
-    refeshToken = (refreshToken: string, email: string) =>
+    refeshToken = (refreshToken: string, username: string) =>
         this.#provider.send(
             new AdminInitiateAuthCommand({
                 ClientId: this.#clientId,
@@ -93,16 +98,16 @@ export class CognitoApi {
                 AuthFlow: AuthFlowType.REFRESH_TOKEN_AUTH,
                 AuthParameters: {
                     REFRESH_TOKEN: refreshToken,
-                    SECRET_HASH: this.#getHashSecret(email),
+                    SECRET_HASH: this.#getHashSecret(username),
                 },
             })
         );
 
-    getUser = (email: string) =>
+    getUser = (username: string | undefined) =>
         this.#provider.send(
             new AdminGetUserCommand({
                 UserPoolId: this.#userPoolId,
-                Username: email,
+                Username: username,
             })
         );
 
@@ -127,6 +132,58 @@ export class CognitoApi {
                 Username: email,
                 Password: password,
                 ConfirmationCode: confirmationCode,
+            })
+        );
+
+    updatePassword = (
+        previousPassword: string,
+        proposedPassword: string,
+        accessToken: string | undefined
+    ) =>
+        this.#provider.send(
+            new ChangePasswordCommand({
+                AccessToken: accessToken,
+                PreviousPassword: previousPassword,
+                ProposedPassword: proposedPassword,
+            })
+        );
+
+    logout = (username: string | undefined) =>
+        this.#provider.send(
+            new AdminUserGlobalSignOutCommand({
+                Username: username,
+                UserPoolId: this.#userPoolId,
+            })
+        );
+
+    updateEmail = (username: string | undefined, newEmail: string) =>
+        this.#provider.send(
+            new AdminUpdateUserAttributesCommand({
+                Username: username,
+                UserPoolId: this.#userPoolId,
+                UserAttributes: [
+                    {
+                        Name: 'email',
+                        Value: newEmail,
+                    },
+                ],
+            })
+        );
+
+    verifyEmail = (accessToken: string | undefined, verificationCode: string) =>
+        this.#provider.send(
+            new VerifyUserAttributeCommand({
+                AccessToken: accessToken,
+                Code: verificationCode,
+                AttributeName: 'email',
+            })
+        );
+
+    deleteUser = (username: string | undefined) =>
+        this.#provider.send(
+            new AdminDeleteUserCommand({
+                Username: username,
+                UserPoolId: this.#userPoolId,
             })
         );
 }

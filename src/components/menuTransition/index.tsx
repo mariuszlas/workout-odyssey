@@ -3,11 +3,7 @@
 import { type FC, Fragment, type ReactNode } from 'react';
 import { Transition } from '@headlessui/react';
 
-interface Props {
-    children: ReactNode;
-}
-
-export const MenuTransition: FC<Props> = ({ children }) => (
+export const MenuTransition: FC<{ children: ReactNode }> = ({ children }) => (
     <Transition
         as={Fragment}
         enter="transition ease-out duration-200"

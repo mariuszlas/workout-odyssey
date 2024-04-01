@@ -1,11 +1,6 @@
-import { getAllLabels, getSessionUserId } from '@/server/services';
+import { getAllLabels, getCurrentUserId } from '@/server/services';
 
 export async function GET() {
-    const userId = await getSessionUserId();
-
-    if (!userId) {
-        return Response.json([]);
-    }
-
+    const userId = await getCurrentUserId();
     return Response.json(await getAllLabels(userId));
 }

@@ -21,8 +21,12 @@ export const PasswordResetForm: FC<Props> = ({
         undefined
     );
 
-    const { passwordError, passwordRepeatError, resetCodeError, otherError } =
-        getErrors(formState);
+    const {
+        passwordError,
+        passwordRepeatError,
+        passwordResetCodeError,
+        otherError,
+    } = getErrors(formState);
 
     return (
         <form className="form-control w-full gap-6" action={action}>
@@ -33,7 +37,7 @@ export const PasswordResetForm: FC<Props> = ({
                     </Alert>
                 )}
 
-                <Text as="p">{_t.passwordResetBody2}</Text>
+                <Text as="p" value={_t.passwordResetBody2} />
 
                 <div>
                     <Input
@@ -43,9 +47,9 @@ export const PasswordResetForm: FC<Props> = ({
                         name="passwordResetCode"
                         type="text"
                         label={_t.labelPasswordResetCode}
-                        error={resetCodeError}
-                        aria-invalid={Boolean(resetCodeError)}
-                        aria-errormessage={resetCodeError}
+                        error={passwordResetCodeError}
+                        aria-invalid={Boolean(passwordResetCodeError)}
+                        aria-errormessage={passwordResetCodeError}
                     />
                 </div>
 

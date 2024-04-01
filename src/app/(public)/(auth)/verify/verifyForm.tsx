@@ -8,11 +8,7 @@ import { _t, Alert, Button, CheckIcon, Text } from '@/components';
 
 import { resendVerificationLink } from './action';
 
-interface Props {
-    email: string;
-}
-
-export const VerifyForm: FC<Props> = ({ email }) => {
+export const VerifyForm: FC<{ email: string }> = ({ email }) => {
     const [formState, action] = useFormState(
         () => resendVerificationLink(email),
         undefined
@@ -32,7 +28,7 @@ export const VerifyForm: FC<Props> = ({ email }) => {
 
             <Text as="p">
                 {_t.emailConfirmationBody1}
-                <Text className="font-bold">{email}</Text>
+                <Text className="font-bold" value={email} />
                 {_t.emailConfirmationBody2}
             </Text>
 

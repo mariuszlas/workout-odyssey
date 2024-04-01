@@ -23,7 +23,7 @@ export default function PublicAuthLayout({ children }: Children) {
                 data-testid={`${pathname.slice(1)}-form`}
             >
                 <header className="pb-4">
-                    <Heading>{headers[pathname]}</Heading>
+                    <Heading value={headers[pathname]} />
                 </header>
 
                 {children}

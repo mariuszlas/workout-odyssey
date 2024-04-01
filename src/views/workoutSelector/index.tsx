@@ -54,7 +54,7 @@ export const WorkoutSelector: FC<Props> = ({ onClose, isMobile }) => {
                             className="btn-outline btn-primary"
                             aria-label={capitalize(currentWorkoutType)}
                         >
-                            <Text>{capitalize(currentWorkoutType)}</Text>
+                            <Text value={capitalize(currentWorkoutType)} />
                             <ChevronDownIcon
                                 className={cn(
                                     'transform duration-300 ease-in-out',

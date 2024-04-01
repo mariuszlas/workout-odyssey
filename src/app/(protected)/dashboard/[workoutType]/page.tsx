@@ -4,8 +4,11 @@ import { notFound } from 'next/navigation';
 
 import { Skeleton, SkeletonList } from '@/components';
 import { WorkoutTypes } from '@/interfaces';
-import { getEmailFromSession } from '@/server/helpers';
-import { getAllWorkouts, getDashboard, getUserId } from '@/server/services';
+import {
+    getAllWorkouts,
+    getCurrentUserId,
+    getDashboard,
+} from '@/server/services';
 import { isValidWorkoutType } from '@/utils/helpers';
 import { ChartView, StatisticsView, WorkoutListView } from '@/views';
 
@@ -63,10 +66,7 @@ export default async function Dashboard({
         notFound();
     }
 
-    const email = getEmailFromSession();
-    const userId = await getUserId(email);
-
-    if (!userId) return;
+    const userId = await getCurrentUserId();
 
     return (
         <main className="flex justify-center align-middle">

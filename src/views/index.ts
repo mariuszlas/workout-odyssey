@@ -1,3 +1,5 @@
+export { AccountSettings } from './accountSettings';
+export { ID } from './accountSettings/interfaces';
 export { ChartView } from './chart/chartView';
 export { Footer } from './footer/footer';
 export { NavBar } from './navbar/navbar';

@@ -18,9 +18,9 @@ export const LineItem: FC<Props> = ({
     notes,
     children,
 }) => {
-    const header = <Text className="font-medium">{type}</Text>;
+    const header = <Text className="font-medium" value={type} />;
 
-    let body = <Text>{value}</Text>;
+    let body = <Text value={value} />;
     if (label) {
         body = (
             <div className="flex gap-2">

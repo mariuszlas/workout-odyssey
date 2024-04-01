@@ -31,7 +31,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
                 )}
 
                 {children ? (
-                    <div className="relative">
+                    <div className="relative inline h-full">
                         {input}
                         {children}
                     </div>

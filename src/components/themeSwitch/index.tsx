@@ -6,11 +6,7 @@ import { useTheme } from '@/providers';
 import { MoonIcon, SunIcon } from '../icon';
 import { _t, IconButton, MenuButton, Text } from '..';
 
-interface ThemeSwitchProps {
-    isMobile?: boolean;
-}
-
-export const ThemeSwitch: FC<ThemeSwitchProps> = ({ isMobile }) => {
+export const ThemeSwitch: FC<{ isMobile?: boolean }> = ({ isMobile }) => {
     const [theme, setTheme] = useTheme();
 
     const isDark = (theme: Theme | null) => theme === Theme.DARK;

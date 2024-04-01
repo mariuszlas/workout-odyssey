@@ -9,16 +9,12 @@ import type { Trajectory } from '@/interfaces';
 
 import { Marker, MarkerType } from './mapMarker';
 
-interface Props {
-    trajectory: Trajectory;
-}
-
 interface Point {
     lat: number;
     lng: number;
 }
 
-export const Map: FC<Props> = ({ trajectory }) => {
+export const Map: FC<{ trajectory: Trajectory }> = ({ trajectory }) => {
     const [map, setMap] = useState<any>();
     const [maps, setMaps] = useState();
     const [isMapLoaded, setIsMapLoaded] = useState(false);

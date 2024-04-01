@@ -105,7 +105,7 @@ export const DatetimePicker: FC<NewWorkoutProps> = ({
         daysOfWeek.map((day, idx) => (
             <div key={idx} className="flex justify-center">
                 <div className="flex justify-center">
-                    <Text>{day}</Text>
+                    <Text value={day} />
                 </div>
             </div>
         ));
@@ -152,7 +152,7 @@ export const DatetimePicker: FC<NewWorkoutProps> = ({
             <Popover>
                 <Popover.Button as={Fragment}>
                     <InputButton className="w-50">
-                        <Text>{formatDate(date)}</Text>
+                        <Text value={formatDate(date)} />
                         <CalendarIcon className="hidden sm:block" />
                     </InputButton>
                 </Popover.Button>
@@ -176,10 +176,9 @@ export const DatetimePicker: FC<NewWorkoutProps> = ({
                                             <ArrowLeft />
                                         </IconButton>
 
-                                        <Text>
-                                            {getMonth(date.getMonth())}{' '}
-                                            {date.getFullYear()}
-                                        </Text>
+                                        <Text
+                                            value={`${getMonth(date.getMonth())} ${date.getFullYear()}`}
+                                        />
 
                                         <IconButton
                                             aria-label="Next month"
@@ -209,7 +208,7 @@ export const DatetimePicker: FC<NewWorkoutProps> = ({
                                 </div>
 
                                 <div className="flex items-center justify-center gap-2">
-                                    <Text>{_t.time}</Text>
+                                    <Text value={_t.time} />
 
                                     <div className="flex items-center gap-2">
                                         <Select
@@ -228,7 +227,7 @@ export const DatetimePicker: FC<NewWorkoutProps> = ({
                                             {renderNumberOptions(24)}
                                         </Select>
 
-                                        <Text>:</Text>
+                                        <Text value=":" />
 
                                         <Select
                                             value={getMinutesFromDate()}

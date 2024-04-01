@@ -1,29 +1,39 @@
 'use server';
 
-import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 import { User } from '@/db/models';
-import { Cookie } from '@/interfaces';
+
+import { CognitoApi } from '../cognitoAuth';
+import { getUsernameFromCookie } from '../helpers';
 
 import { getUserWorkoutCount } from './workout';
 
-const getUser = (email: string | undefined) =>
-    User.findOne({ where: { email } });
+const getUserByUsername = (username: string | undefined) =>
+    User.findOne({ where: { username } });
 
-export const getUserId = async (email: string | undefined) => {
-    return (await getUser(email))?.id;
+export const getUserId = async (username: string | undefined) => {
+    return (await getUserByUsername(username))?.id;
 };
 
-export const getSessionUserId = async () => {
-    const email = cookies().get(Cookie.SESSION)?.value;
+export const getCurrentUserId = async () => {
+    const username = getUsernameFromCookie();
 
-    if (!email) return;
+    if (!username) {
+        redirect('/login');
+    }
 
-    return await getUserId(email);
+    const userId = await getUserId(username);
+
+    if (!userId) {
+        redirect('/login');
+    }
+
+    return userId;
 };
 
-export const reportUserLogin = async (email: string | undefined) => {
-    const user = await getUser(email);
+export const reportUserLogin = async (username: string) => {
+    const user = await getUserByUsername(username);
 
     if (user) {
         user.reportLoginDate();
@@ -32,27 +42,61 @@ export const reportUserLogin = async (email: string | undefined) => {
     }
 };
 
-export const getUserData = async (email: string | undefined) => {
-    const user = await getUser(email);
+const getUserData = async (username: string | undefined) => {
+    const user = await getUserByUsername(username);
 
-    if (!user) return null;
+    if (!user) throw new Error();
 
     const count = await getUserWorkoutCount(user.id);
 
     return { ...user.toJSON(), totalNoOfWorkouts: count };
 };
 
+export const getAllUserData = async () => {
+    const username = getUsernameFromCookie();
+
+    const [user, cognitoUser] = await Promise.all([
+        getUserData(username),
+        new CognitoApi().getUser(username),
+    ]);
+
+    return {
+        ...user,
+        cognitoAttributes: cognitoUser.UserAttributes,
+    };
+};
+
 export const createUser = async (
     username: string,
-    email: string,
     name: string,
     isDemo = true
 ) => {
     const user = await User.create({
         username: username,
-        email: email,
         name: name,
         isDemo: isDemo,
     });
+
+    if (!user) return;
+
     return user.toJSON();
+};
+
+export const updateUserName = async (
+    username: string | undefined,
+    name: string
+) => {
+    const user = await getUserByUsername(username);
+
+    if (!user) return;
+
+    return await user.update({ name });
+};
+
+export const destroyUser = async (username: string | undefined) => {
+    const user = await getUserByUsername(username);
+
+    if (!user) return;
+
+    return await user.destroy();
 };

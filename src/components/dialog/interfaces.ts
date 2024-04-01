@@ -20,4 +20,5 @@ export interface DrawerProps extends DialogProps {
 
 export interface ModalProps extends DialogProps {
     full?: boolean;
+    large?: boolean;
 }

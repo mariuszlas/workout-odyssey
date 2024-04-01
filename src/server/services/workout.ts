@@ -1,5 +1,6 @@
 'use server';
 
+import { LineString } from 'geojson';
 import { Op, QueryTypes } from 'sequelize';
 
 import sequlize from '@/db/connection';
@@ -12,7 +13,6 @@ import {
     WorkoutTypes,
 } from '@/interfaces';
 
-import { createGeolocation } from './geolocation';
 import { ranges } from './helpers';
 import { findOrCreateLabel } from './label';
 import { sqlMonths, sqlTotalBest, sqlYears } from './sql';
@@ -23,6 +23,24 @@ const labelOpts = {
     attributes: ['value', 'color'],
     required: false,
 };
+
+const workoutExclusionParams = [
+    'userId',
+    'labelId',
+    'UserId',
+    'LabelId',
+    'createdAt',
+    'updatedAt',
+    'geometry',
+];
+
+export const getWorkoutById = async (id: number) =>
+    await Workout.findByPk(id, {
+        attributes: { exclude: ['userId', 'labelId', 'UserId', 'LabelId'] },
+        include: labelOpts,
+        nest: true,
+        raw: true,
+    });
 
 export const updateWorkout = async (
     workoutDto: UploadWorkout,
@@ -57,7 +75,13 @@ export const updateWorkout = async (
 
 export const createWorkout = async (workout: UploadWorkout, userId: number) => {
     const labelId = await findOrCreateLabel(userId, workout.label);
-    const geolocationId = await createGeolocation(workout.geolocation);
+
+    const geometry = workout?.geolocation?.length
+        ? ({
+              type: 'LineString',
+              coordinates: workout.geolocation,
+          } as LineString)
+        : null;
 
     return await Workout.create({
         type: workout.type,
@@ -68,9 +92,9 @@ export const createWorkout = async (workout: UploadWorkout, userId: number) => {
         pace: workout.duration / workout.distance,
         speed: workout.distance / (workout.duration / 3600),
         notes: workout.notes,
+        geometry,
         userId,
         labelId,
-        geolocationId,
     });
 };
 
@@ -96,15 +120,7 @@ export const getWorkoutPreviewDb = async (
                 [Op.lt]: endDate,
             },
         },
-        attributes: {
-            exclude: [
-                'userId',
-                'labelId',
-                'geolocationId',
-                'createdAt',
-                'updatedAt',
-            ],
-        },
+        attributes: { exclude: workoutExclusionParams },
         include: labelOpts,
         nest: true,
         raw: true,
@@ -116,9 +132,7 @@ export const getAllWorkouts = async (type: WorkoutTypes, user: number) => {
         JSON.stringify(
             await Workout.findAll({
                 where: { type: type, userId: user },
-                attributes: {
-                    exclude: ['userId', 'labelId', 'createdAt', 'updatedAt'],
-                },
+                attributes: { exclude: workoutExclusionParams },
                 include: labelOpts,
                 nest: true,
             })
@@ -139,15 +153,7 @@ export const getCurrentMonthWorkouts = async (
             type: type,
             userId: user,
         },
-        attributes: {
-            exclude: [
-                'userId',
-                'labelId',
-                'geolocationId',
-                'createdAt',
-                'updatedAt',
-            ],
-        },
+        attributes: { exclude: workoutExclusionParams },
         include: labelOpts,
 
         nest: true,
@@ -167,15 +173,7 @@ export const getBestResult = async (type: WorkoutTypes, user: number) => {
                         [Op.lte]: range.max,
                     },
                 },
-                attributes: {
-                    exclude: [
-                        'userId',
-                        'labelId',
-                        'geolocationId',
-                        'createdAt',
-                        'updatedAt',
-                    ],
-                },
+                attributes: { exclude: workoutExclusionParams },
                 include: labelOpts,
                 nest: true,
             })

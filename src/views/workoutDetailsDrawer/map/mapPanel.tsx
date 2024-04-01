@@ -1,32 +1,27 @@
 import { FC } from 'react';
 import useSWR from 'swr';
 
-import { Alert, Skeleton } from '@/components';
-import { Geolocation } from '@/db/models';
+import { Alert, Skeleton, Text } from '@/components';
 import { Trajectory, Workout } from '@/interfaces';
 
 import { Map } from './map';
 
-interface Props {
-    workout: Workout;
-}
-
-export const MapPanel: FC<Props> = ({ workout }) => {
-    const id = (workout as any)?.geolocationId;
-
-    const { data, error, isLoading } = useSWR<Geolocation>(
-        `/api/geolocation?id=${id}`
-    );
-
-    if (!id) {
-        return <p>This workout does not have geolocation data</p>;
-    }
+export const MapPanel: FC<{ id: number }> = ({ id }) => {
+    const { data, error, isLoading } = useSWR<Workout>(`/api/workout?id=${id}`);
 
     if (isLoading) {
         return <Skeleton h="full" />;
     }
 
-    if (!data || error) {
+    if (!data?.geometry) {
+        return (
+            <div className="flex h-full items-center justify-center">
+                <Text value="This workout does not have geolocation data" />
+            </div>
+        );
+    }
+
+    if (error) {
         return (
             <Alert status="error" classes="mb-0">
                 Something went wrong and we could not get the geolocation data
@@ -34,10 +29,11 @@ export const MapPanel: FC<Props> = ({ workout }) => {
         );
     }
 
-    const trajectory = {
+    const trajectory: Trajectory = {
         type: 'Feature',
         geometry: data.geometry,
-    } as Trajectory;
+        properties: null,
+    };
 
     return <Map trajectory={trajectory} />;
 };

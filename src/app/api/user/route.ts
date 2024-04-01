@@ -1,9 +1,12 @@
-import { cookies } from 'next/headers';
+import { getAllUserData } from '@/server/services';
 
-import { Cookie } from '@/interfaces';
-import { getUserData } from '@/server/services';
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export async function GET() {
-    const email = cookies().get(Cookie.SESSION)?.value;
-    return Response.json(await getUserData(email));
+    try {
+        return Response.json(await getAllUserData());
+    } catch (_) {
+        return Response.json({});
+    }
 }

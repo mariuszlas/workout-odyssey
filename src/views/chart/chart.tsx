@@ -4,6 +4,7 @@ import type { FC, MouseEvent } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import Chart from 'chart.js/auto';
 
+import { Text } from '@/components';
 import { useTheme, useUI } from '@/providers';
 
 import {
@@ -19,17 +20,13 @@ export type ChartType = 'bar';
 export type BarChartData = { x: string; y: number }[] | null;
 export type BarChartT = Chart<ChartType, BarChartData, string[]>;
 
-interface ChartProps {
-    chartData: BarChartData;
-}
-
 export interface ChartTheme {
     barColor: string;
     textColor: string;
     gridDashColor: string;
 }
 
-export const BarChart: FC<ChartProps> = ({ chartData }) => {
+export const BarChart: FC<{ chartData: BarChartData }> = ({ chartData }) => {
     const { setSecondaryStat } = useUI();
     const ref = useRef<HTMLCanvasElement>(null);
     const [theme] = useTheme();
@@ -61,7 +58,7 @@ export const BarChart: FC<ChartProps> = ({ chartData }) => {
         updateChartTheme(chart, getChartThemeTokens(theme));
     }, [theme]);
 
-    const fallbackContent = <p>Workouts chart</p>;
+    const fallbackContent = <Text as="p" value="Workouts chart" />;
 
     return (
         <canvas

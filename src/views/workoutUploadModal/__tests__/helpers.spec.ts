@@ -9,7 +9,7 @@ describe('formatPreviewMessage', () => {
     const workout = {
         type: 'running',
         timestamp: '2023-03-08T12:00:00Z',
-        utcOffset: 1,
+        timezone: 'Europe/London',
     } as unknown as UploadWorkout;
 
     beforeAll(() => {
@@ -28,7 +28,7 @@ describe('formatPreviewMessage', () => {
         const actual = formatPreviewMessage(existingData, workout);
 
         expect(actual).toEqual(
-            'There are no records for running on 08/03/2023, 13:00'
+            'There are no records for running on 08/03/2023, 12:00'
         );
     });
 
@@ -37,7 +37,7 @@ describe('formatPreviewMessage', () => {
         const actual = formatPreviewMessage(existingData, workout);
 
         expect(actual).toEqual(
-            'There is 1 record for running on 08/03/2023, 13:00'
+            'There is 1 record for running on 08/03/2023, 12:00'
         );
     });
 
@@ -49,7 +49,7 @@ describe('formatPreviewMessage', () => {
         const actual = formatPreviewMessage(existingData, workout);
 
         expect(actual).toEqual(
-            'There are 2 records for running on 08/03/2023, 13:00'
+            'There are 2 records for running on 08/03/2023, 12:00'
         );
     });
 });

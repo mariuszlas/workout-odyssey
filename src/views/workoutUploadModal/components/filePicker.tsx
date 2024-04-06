@@ -3,19 +3,22 @@ import { useRef, useState } from 'react';
 import useSWR from 'swr';
 
 import { _t, Alert, Badge, Button, Text } from '@/components';
-import { NewWorkout, UserData, WorkoutTypes } from '@/interfaces';
+import { NewWorkout, UserData } from '@/interfaces';
 import { getGenericErrorMessage } from '@/utils/helpers';
 
+import { defaultNewWorkout } from '../helpers';
 import { parseXML, readFileAsync } from '../xmlParser';
 
 interface Props {
+    file: File | null;
+    setFile: Dispatch<SetStateAction<File | null>>;
     setWorkout: Dispatch<SetStateAction<NewWorkout>>;
 }
 
-export const FilePicker: FC<Props> = ({ setWorkout }) => {
+export const FilePicker: FC<Props> = ({ file, setFile, setWorkout }) => {
     const { data: user } = useSWR<UserData>('/api/user');
+
     const [error, setError] = useState<string | null>(null);
-    const [file, setFile] = useState<File | null>(null);
     const ref = useRef<HTMLInputElement>(null);
 
     const readFile = async (file: File) => {
@@ -35,7 +38,6 @@ export const FilePicker: FC<Props> = ({ setWorkout }) => {
                 ...prev,
                 distance: data.distance,
                 timestamp: data.timestamp.split('Z')[0],
-                utcOffset: new Date().getTimezoneOffset() / -60,
                 duration: data.duration,
                 type: data.type,
                 coordinates: data.coordinates,
@@ -62,16 +64,7 @@ export const FilePicker: FC<Props> = ({ setWorkout }) => {
     };
 
     const removeFile = () => {
-        setWorkout(prev => ({
-            ...prev,
-            distance: 0,
-            timestamp: '',
-            utcOffset: 0,
-            duration: 0,
-            type: WorkoutTypes.RUNNING,
-            coordinates: [],
-        }));
-
+        setWorkout(prev => ({ ...prev, ...defaultNewWorkout }));
         setFile(null);
     };
 

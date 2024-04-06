@@ -3,7 +3,7 @@ import type { FC } from 'react';
 import { _t } from '@/components';
 import type { Workout } from '@/interfaces';
 import { WorkoutTypes } from '@/interfaces';
-import { getDateTimeTZ, getDuration, getPace } from '@/views/helpers';
+import { formatDuration, formatPace, getDateTimeTZ } from '@/views/helpers';
 
 import { LineItem } from './workoutDetailsLineItem';
 
@@ -16,9 +16,9 @@ export const WorkoutDetailsPanel: FC<{ data: Workout }> = ({ data }) => (
         />
         <LineItem
             type={_t.date}
-            value={getDateTimeTZ(data.timestamp, data.utcOffset)}
+            value={getDateTimeTZ(data.timestamp, data.timezone, data.dateOnly)}
         />
-        <LineItem type={_t.duration} value={getDuration(data.duration)} />
+        <LineItem type={_t.duration} value={formatDuration(data.duration)} />
 
         {data.type === WorkoutTypes.CYCLING ? (
             <LineItem
@@ -28,7 +28,7 @@ export const WorkoutDetailsPanel: FC<{ data: Workout }> = ({ data }) => (
         ) : (
             <LineItem
                 type={_t.pace}
-                value={`${getPace(data.pace)} ${_t.perKm}`}
+                value={`${formatPace(data.pace)} ${_t.perKm}`}
             />
         )}
 

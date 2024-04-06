@@ -15,7 +15,7 @@ import {
 } from '@/components';
 import { _t, daysOfWeek } from '@/constants';
 import { cn } from '@/utils/helpers';
-import { getMonth } from '@/views/helpers';
+import { getDateTimeTZ, getMonth } from '@/views/helpers';
 
 import { NewWorkoutProps } from '../intrefaces';
 
@@ -26,11 +26,6 @@ const getTotalDaysInMonth = (year: number, month: number) =>
 
 const getDayOfTheWeekOfTheFirstDayOfTheMonth = (year: number, month: number) =>
     new Date(year, month, 0).getDay();
-
-const formatDate = (date: Date) => {
-    const dateString = date.toLocaleString();
-    return dateString.slice(0, dateString.length - 3);
-};
 
 const getMonthDays = (year: number, month: number) => [
     ...Array(getTotalDaysInMonth(year, month)).keys(),
@@ -152,7 +147,9 @@ export const DatetimePicker: FC<NewWorkoutProps> = ({
             <Popover>
                 <Popover.Button as={Fragment}>
                     <InputButton className="w-50">
-                        <Text value={formatDate(date)} />
+                        <Text
+                            value={getDateTimeTZ(date, workout.timezone, false)}
+                        />
                         <CalendarIcon className="hidden sm:block" />
                     </InputButton>
                 </Popover.Button>

@@ -1,9 +1,9 @@
 import type { FC } from 'react';
 
 import { _t, Heading } from '@/components';
-import type { MonthStats, TotalStats, YearStats } from '@/interfaces';
+import { MonthStats, TotalStats, WorkoutTypes, YearStats } from '@/interfaces';
 
-import { getPace } from '../../helpers';
+import { formatPace } from '../../helpers';
 
 import { getDecimal, getStatsPanelHeading } from './helpers';
 import { Field, StatsPanelEntry } from './statsPanelEntry';
@@ -11,14 +11,16 @@ import { Field, StatsPanelEntry } from './statsPanelEntry';
 interface Props {
     data: TotalStats | YearStats | MonthStats | undefined;
     headerData: { year: number; secStats: number };
-    isPrimary: boolean;
+    workoutType: WorkoutTypes;
+    isPrimary?: boolean;
     isMobile?: boolean;
 }
 
 export const StatsPanel: FC<Props> = ({
     data,
     headerData,
-    isPrimary,
+    workoutType,
+    isPrimary = false,
     isMobile,
 }) => (
     <section
@@ -52,12 +54,21 @@ export const StatsPanel: FC<Props> = ({
                 icon="clockCircle"
             />
 
-            <StatsPanelEntry
-                data={getPace(data?.duration, data?.distance) ?? 0}
-                field={Field.PACE}
-                units={_t.perKm}
-                icon="speedometer"
-            />
+            {workoutType === WorkoutTypes.CYCLING ? (
+                <StatsPanelEntry
+                    data={data?.speed?.toFixed(1) ?? 0}
+                    field={Field.SPEED}
+                    units={_t.kmPerHour}
+                    icon="speedometer"
+                />
+            ) : (
+                <StatsPanelEntry
+                    data={formatPace(data?.pace ?? 0)}
+                    field={Field.PACE}
+                    units={_t.perKm}
+                    icon="speedometer"
+                />
+            )}
 
             <StatsPanelEntry
                 data={data?.counts ?? 0}

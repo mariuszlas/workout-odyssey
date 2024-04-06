@@ -1,10 +1,12 @@
 'use client';
 
 import type { FC } from 'react';
+import { usePathname } from 'next/navigation';
 
 import { useIsBreakpoint } from '@/hooks';
 import type { WorkoutsDashboard } from '@/interfaces';
 import { useUI } from '@/providers';
+import { getWorkoutTypeFromPathname } from '@/utils/helpers';
 
 import { StatsPanel } from './statsPanel/statsPanel';
 import { selectPmStatsData, selectSecStatsData } from './helpers';
@@ -15,11 +17,14 @@ interface Props {
 }
 
 export const StatisticsView: FC<Props> = ({ dashboard }) => {
+    const pathname = usePathname();
     const isMobileOrTabled = useIsBreakpoint('md');
     const { year, secondaryStat } = useUI();
-    const headerData = { year, secStats: secondaryStat };
 
-    const pmStatsData = selectPmStatsData(dashboard, headerData.year);
+    const headerData = { year, secStats: secondaryStat };
+    const workoutType = getWorkoutTypeFromPathname(pathname);
+
+    const pmStatsData = selectPmStatsData(dashboard, year);
     const secStatsData = selectSecStatsData(dashboard, headerData);
 
     return (
@@ -28,13 +33,14 @@ export const StatisticsView: FC<Props> = ({ dashboard }) => {
                 data={pmStatsData}
                 headerData={headerData}
                 isPrimary={true}
+                workoutType={workoutType}
             />
 
             <StatsPanel
                 data={secStatsData}
                 headerData={headerData}
-                isPrimary={false}
                 isMobile={isMobileOrTabled}
+                workoutType={workoutType}
             />
         </div>
     );

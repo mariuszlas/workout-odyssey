@@ -1,4 +1,4 @@
-import type { FC, KeyboardEvent, MutableRefObject } from 'react';
+import type { FC, MutableRefObject } from 'react';
 import { Fragment, useEffect, useState } from 'react';
 import { Popover } from '@headlessui/react';
 
@@ -11,25 +11,26 @@ import {
     InputButton,
     MenuTransition,
 } from '@/components';
+import dayjs from '@/utils/extended-dayjs';
+import { formatDuration } from '@/views/helpers';
 
 import { NewWorkoutProps } from '../intrefaces';
 
-import {
-    getHours,
-    getMinues,
-    getSeconds,
-    zeroPad,
-    zeroPadDuration,
-} from './helpers';
+type PopoverOnClose = (
+    focusableElement?:
+        | HTMLElement
+        | MutableRefObject<HTMLElement | null>
+        | undefined
+) => void;
 
 export const DurationPicker: FC<NewWorkoutProps> = ({
     workout,
     setWorkout,
 }) => {
     const { duration } = workout;
-    const [s, setS] = useState(getSeconds(duration) ?? 0);
-    const [m, setM] = useState(getMinues(duration) ?? 0);
-    const [h, setH] = useState(getHours(duration) ?? 0);
+    const [s, setS] = useState(dayjs.duration(duration, 's').seconds());
+    const [m, setM] = useState(dayjs.duration(duration, 's').minutes());
+    const [h, setH] = useState(dayjs.duration(duration, 's').hours());
 
     useEffect(() => {
         if (isNaN(h)) setH(0);
@@ -39,20 +40,45 @@ export const DurationPicker: FC<NewWorkoutProps> = ({
         setWorkout(prev => ({ ...prev, duration: s + m * 60 + h * 3600 }));
     }, [s, m, h, setWorkout]);
 
-    const handleKeyDown = (
-        e: KeyboardEvent<HTMLInputElement>,
-        close: (
-            focusableElement?:
-                | HTMLElement
-                | MutableRefObject<HTMLElement | null>
-                | undefined
-        ) => void
-    ) => {
-        if (e.key === 'Enter') {
-            close();
-            e.preventDefault();
-        }
-    };
+    const durationFields = [
+        {
+            label: _t.labelHours,
+            plcd: _t.plcdHours,
+            formatter: 'HH',
+            setD: setH,
+        },
+        {
+            label: _t.labelMinutes,
+            plcd: _t.plcdMinutes,
+            formatter: 'mm',
+            setD: setM,
+        },
+        {
+            label: _t.labelSeconds,
+            plcd: _t.plcdSeconds,
+            formatter: 'ss',
+            setD: setS,
+        },
+    ];
+
+    const renderDurationFields = (onClose: PopoverOnClose) =>
+        durationFields.map(({ label, plcd, formatter, setD }, idx) => (
+            <div className="w-fit" key={idx}>
+                <FormLabel text={label} />
+                <Input
+                    placeholder={plcd}
+                    value={formatDuration(duration, formatter)}
+                    onChange={e => setD(Number(e.target.value))}
+                    className="w-20"
+                    onKeyDown={e => {
+                        if (e.key === 'Enter') {
+                            onClose();
+                            e.preventDefault();
+                        }
+                    }}
+                />
+            </div>
+        ));
 
     return (
         <div className="relative w-fit">
@@ -61,7 +87,7 @@ export const DurationPicker: FC<NewWorkoutProps> = ({
             <Popover>
                 <Popover.Button as={Fragment}>
                     <InputButton className="w-24">
-                        {zeroPadDuration(duration)}
+                        {formatDuration(duration)}
                     </InputButton>
                 </Popover.Button>
 
@@ -80,52 +106,7 @@ export const DurationPicker: FC<NewWorkoutProps> = ({
                                 <hr className="my-2 border-t border-t-base-content border-opacity-20 " />
 
                                 <div className="flex gap-4">
-                                    <div className="w-fit">
-                                        <FormLabel text={_t.labelHours} />
-                                        <Input
-                                            placeholder={_t.plcdHours}
-                                            value={zeroPad(getHours(duration))}
-                                            onChange={e =>
-                                                setH(Number(e.target.value))
-                                            }
-                                            className="w-20"
-                                            onKeyDown={e =>
-                                                handleKeyDown(e, close)
-                                            }
-                                        />
-                                    </div>
-
-                                    <div className="w-fit">
-                                        <FormLabel text={_t.labelMinutes} />
-                                        <Input
-                                            placeholder={_t.plcdMinutes}
-                                            value={zeroPad(getMinues(duration))}
-                                            onChange={e =>
-                                                setM(Number(e.target.value))
-                                            }
-                                            className="w-20"
-                                            onKeyDown={e =>
-                                                handleKeyDown(e, close)
-                                            }
-                                        />
-                                    </div>
-
-                                    <div className="w-fit">
-                                        <FormLabel text={_t.labelSeconds} />
-                                        <Input
-                                            placeholder={_t.plcdSeconds}
-                                            value={zeroPad(
-                                                getSeconds(duration)
-                                            )}
-                                            onChange={e =>
-                                                setS(Number(e.target.value))
-                                            }
-                                            className="w-20"
-                                            onKeyDown={e =>
-                                                handleKeyDown(e, close)
-                                            }
-                                        />
-                                    </div>
+                                    {renderDurationFields(close)}
                                 </div>
                             </>
                         )}

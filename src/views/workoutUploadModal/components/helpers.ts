@@ -1,15 +1,8 @@
 import { _t, labelColors } from '@/constants';
 import type { TLabel } from '@/interfaces';
 
-import { getHMS } from '../../helpers';
-
 export const zeroPad = (n: number | string) =>
     Number(n) < 10 ? `0${n}` : n.toString();
-
-export const zeroPadDuration = (duration: number) =>
-    `${zeroPad(getHMS(duration).h)}:${zeroPad(getHMS(duration).m)}:${zeroPad(
-        getHMS(duration).s
-    )}`;
 
 export const formatNewLabelValue = (newLabelValue: string) =>
     newLabelValue.replace(/^\s+|\s+$/g, '');
@@ -48,9 +41,3 @@ export const getNewLabel = (
 
     return { value: formatedNewLabelValue, color: colors[randomNum] };
 };
-
-export const getHours = (seconds: number) => getHMS(seconds).h;
-
-export const getMinues = (seconds: number) => getHMS(seconds).m;
-
-export const getSeconds = (seconds: number) => getHMS(seconds).s;

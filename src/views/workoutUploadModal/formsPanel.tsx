@@ -7,7 +7,6 @@ import { Tab } from '@headlessui/react';
 
 import { _t, Button } from '@/components';
 import type { NewWorkout, Workout, WorkoutPreview } from '@/interfaces';
-import { WorkoutTypes } from '@/interfaces';
 import { cn } from '@/utils/helpers';
 
 import { getWorkoutPreview } from './action';
@@ -22,7 +21,7 @@ import {
     NotesInput,
     TimezoneSelector,
 } from './components';
-import { formatAndValidateData } from './helpers';
+import { defaultNewWorkout, formatAndValidateData } from './helpers';
 
 interface Props {
     editWorkout?: Workout;
@@ -49,22 +48,13 @@ const CustomTab: FC<CustomTabProps> = ({ isDisabled, children }) => (
     </Tab>
 );
 
-const defaultNewWorkout = {
-    type: WorkoutTypes.RUNNING,
-    timestamp: '',
-    utcOffset: new Date().getTimezoneOffset() / -60,
-    distance: 0,
-    duration: 0,
-    coordinates: [],
-    label: null,
-    notes: null,
-};
-
 export const FormsPanel: FC<Props> = ({ editWorkout, setPreviewData }) => {
+    const [file, setFile] = useState<File | null>(null);
     const [workout, setWorkout] = useState<NewWorkout>(
         editWorkout ? { ...editWorkout, coordinates: [] } : defaultNewWorkout
     );
     const props = { setWorkout, workout };
+    const filePickerProps = { setWorkout, file, setFile };
 
     const [formState, action] = useFormState(
         () =>
@@ -94,7 +84,7 @@ export const FormsPanel: FC<Props> = ({ editWorkout, setPreviewData }) => {
                 <Tab.Panels>
                     <Tab.Panel>
                         <div className="flex flex-col items-stretch gap-4 py-4">
-                            <FilePicker setWorkout={setWorkout} />
+                            <FilePicker {...filePickerProps} />
                             <FileInfo />
                         </div>
                     </Tab.Panel>

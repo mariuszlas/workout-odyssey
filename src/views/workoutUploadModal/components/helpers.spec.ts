@@ -5,13 +5,9 @@ import { TLabel } from '@/interfaces';
 
 import {
     formatNewLabelValue,
-    getHours,
-    getMinues,
     getNewLabel,
-    getSeconds,
     validateNewLabel,
     zeroPad,
-    zeroPadDuration,
 } from './helpers';
 
 describe('zeroPad', () => {
@@ -41,15 +37,6 @@ describe('zeroPad', () => {
         expect(actualNum2).toEqual('12');
         expect(actualStr1).toEqual('10');
         expect(actualStr2).toEqual('12');
-    });
-});
-
-describe('zeroPadDuration', () => {
-    it('should return the correct duration with zero padding', () => {
-        const duration = 4201;
-        const actual = zeroPadDuration(duration);
-
-        expect(actual).toEqual('01:10:01');
     });
 });
 
@@ -143,23 +130,5 @@ describe('getNewLabel', () => {
         const newLabel = getNewLabel(allLabels, newLabels, newLabelValue);
 
         expect(labelColors).toContain(newLabel.color);
-    });
-});
-
-describe('getHours', () => {
-    it('should return a correct number of hours from duration in seconds', () => {
-        expect(getHours(7482)).toBe(2);
-    });
-});
-
-describe('getMinues', () => {
-    it('should return a correct number of hours from duration in seconds', () => {
-        expect(getMinues(7482)).toBe(4);
-    });
-});
-
-describe('getSeconds', () => {
-    it('should return a correct number of hours from duration in seconds', () => {
-        expect(getSeconds(7482)).toBe(42);
     });
 });

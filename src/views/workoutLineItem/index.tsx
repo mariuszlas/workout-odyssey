@@ -4,7 +4,7 @@ import { _t, Text } from '@/components';
 import type { StatIconType } from '@/interfaces';
 import { Workout, WorkoutTypes } from '@/interfaces';
 
-import { getDuration, getPace } from '../helpers';
+import { formatDuration, formatPace, getDateTimeTZ } from '../helpers';
 import { getStatIcon } from '../statistics/statsPanel/statsPanelEntry';
 
 export interface Props {
@@ -41,7 +41,7 @@ const DataEntry: FC<DataEntryProps> = ({ value, unit, iconType }) => {
 };
 
 export const DateEntry: FC<Props> = ({ data }) => (
-    <DataEntry value={new Date(data.timestamp).toLocaleDateString()} />
+    <DataEntry value={getDateTimeTZ(data.timestamp, data.timezone)} />
 );
 
 export const Distance: FC<Props> = ({ data }) => (
@@ -49,7 +49,7 @@ export const Distance: FC<Props> = ({ data }) => (
 );
 
 export const Duration: FC<Props> = ({ data }) => (
-    <DataEntry value={getDuration(data.duration)} iconType="clockCircle" />
+    <DataEntry value={formatDuration(data.duration)} iconType="clockCircle" />
 );
 
 export const PaceOrSpeed: FC<TypeProps> = ({ data, type }) =>
@@ -61,7 +61,7 @@ export const PaceOrSpeed: FC<TypeProps> = ({ data, type }) =>
         />
     ) : (
         <DataEntry
-            value={getPace(data.pace)}
+            value={formatPace(data.pace)}
             unit={_t.perKm}
             iconType="speedometer"
         />

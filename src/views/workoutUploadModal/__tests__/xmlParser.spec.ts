@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+    formatDurationXML,
     getDistance,
-    getDuration,
     getRoot,
     readFileAsync,
     ROOT_TAG,
@@ -39,7 +39,7 @@ describe('getRoot', () => {
     });
 });
 
-describe('getDuration', () => {
+describe('formatDurationXML', () => {
     it('should return the total duration of all elements in the array', () => {
         const arr = [
             document.createElement('div'),
@@ -50,14 +50,14 @@ describe('getDuration', () => {
         arr[1].innerHTML = '20';
         arr[2].innerHTML = '30';
 
-        const actual = getDuration(arr, 0, 0);
+        const actual = formatDurationXML(arr, 0, 0);
 
         expect(actual).toEqual(60);
     });
 
     it('should return 0 if the array is empty', () => {
         const arr = [] as unknown as NodeListOf<Element>;
-        const actual = getDuration(arr, 0, 0);
+        const actual = formatDurationXML(arr, 0, 0);
 
         expect(actual).toEqual(0);
     });

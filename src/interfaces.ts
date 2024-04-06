@@ -10,12 +10,13 @@ export enum WorkoutTypes {
 
 interface BaseWorkout {
     timestamp: string;
+    timezone: string;
+    dateOnly?: boolean;
     distance: number;
     duration: number;
     type: WorkoutTypes;
     label: TLabel | null;
     notes: string | null;
-    utcOffset: number;
 }
 
 export interface Workout extends BaseWorkout {

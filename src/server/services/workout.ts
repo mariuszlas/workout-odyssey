@@ -63,7 +63,7 @@ export const updateWorkout = async (
     return await workout.update({
         type: workoutDto.type,
         timestamp: new Date(workoutDto.timestamp),
-        utcOffset: workoutDto.utcOffset,
+        timezone: workoutDto.timezone,
         distance: workoutDto.distance,
         duration: workoutDto.duration,
         pace: workoutDto.duration / workoutDto.distance,
@@ -86,7 +86,7 @@ export const createWorkout = async (workout: UploadWorkout, userId: number) => {
     return await Workout.create({
         type: workout.type,
         timestamp: new Date(workout.timestamp),
-        utcOffset: workout.utcOffset,
+        timezone: workout.timezone,
         distance: workout.distance,
         duration: workout.duration,
         pace: workout.duration / workout.distance,

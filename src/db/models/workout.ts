@@ -18,7 +18,8 @@ class Workout extends Model<
     public declare readonly id: CreationOptional<number>;
     public declare type: WorkoutTypes;
     public declare timestamp: Date;
-    public declare utcOffset: number;
+    public declare timezone: string;
+    public declare dateOnly: CreationOptional<boolean>;
     public declare distance: number;
     public declare duration: number;
     public declare pace: number;
@@ -34,9 +35,10 @@ Workout.init(
         id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
         type: { type: DataTypes.STRING, allowNull: false },
         timestamp: { type: DataTypes.DATE, allowNull: false },
-        utcOffset: {
-            type: DataTypes.INTEGER,
-            defaultValue: 0,
+        timezone: { type: DataTypes.STRING, allowNull: false },
+        dateOnly: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
             allowNull: false,
         },
         distance: { type: DataTypes.FLOAT, allowNull: false },

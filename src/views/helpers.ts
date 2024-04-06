@@ -1,3 +1,5 @@
+import dayjs from '@/utils/extended-dayjs';
+
 import { _t, months } from '../constants';
 
 export const getMonth = (num: number, isShort = false) =>
@@ -6,52 +8,26 @@ export const getMonth = (num: number, isShort = false) =>
 export const capitalize = (s: string | undefined) =>
     s && s[0].toUpperCase() + s.slice(1);
 
-export const getHMS = (seconds: number) => {
-    const h = Math.floor(seconds / 3600);
-    const m = Math.floor((seconds % 3600) / 60);
-    const s = Math.round(seconds - (h * 3600 + m * 60));
-    return { s, m, h };
-};
+export const formatDuration = (seconds: number, formatter = 'HH:mm:ss') =>
+    dayjs.duration(seconds, 's').format(formatter);
 
-export const getDuration = (duration: number) => {
-    const date = new Date(0);
-    date.setSeconds(duration);
-    return date.toISOString().substring(11, 19);
-};
+export const formatPace = (seconds: number) =>
+    dayjs.duration(seconds, 's').format('mm\'ss"');
 
-export const getPace = (
-    seconds: number | undefined,
-    distance?: number
-): string | undefined => {
-    if (!seconds || seconds < 0) return;
+export const getDateTimeTZ = (
+    timestamp: Date | string | undefined,
+    timezone: string | undefined,
+    dateOnly = true
+) => {
+    if (!timestamp) return '';
 
-    const pace = distance ? seconds / distance : seconds;
-    const duration = getDuration(pace);
-    const split = duration.split(':');
+    const dayjsDate = dayjs.utc(timestamp).tz(timezone);
 
-    return `${split[1]}'${split[2]}"`;
-};
-
-export const getDateTimeTZ = (timestamp: string | undefined, utcOffset = 0) => {
-    if (!timestamp) return;
-
-    const date = new Date(timestamp);
-    const h = date.getUTCHours();
-    const m = date.getUTCMinutes();
-    const s = date.getUTCSeconds();
-    const ms = date.getUTCMilliseconds();
-
-    if (h === 0 && m === 0 && s === 0 && ms === 0) {
-        return date.toLocaleDateString();
+    if (dateOnly) {
+        return dayjsDate.format('DD/MM/YYYY');
     }
 
-    // return date with time adujsted by utcOffset from database, not local time
-    const offsetMs = 1000 * 60 * 60 * utcOffset;
-    const offsetDate = new Date(date.getTime() + offsetMs);
-
-    return `${offsetDate.toLocaleDateString()}, ${offsetDate
-        .toUTCString()
-        .slice(17, 22)}`;
+    return dayjsDate.format('DD/MM/YYYY, HH:mm');
 };
 
 export const getFormattedMonthAndYear = (

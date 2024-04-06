@@ -1,8 +1,8 @@
 import { Position } from 'geojson';
 
 import { _t } from '@/constants';
-
-import { validateType } from './helpers';
+import { WorkoutTypes } from '@/interfaces';
+import { isValidWorkoutType } from '@/utils/helpers';
 
 export const ROOT_TAG = 'Activity';
 const ACTIVITY = 'Sport';
@@ -51,7 +51,7 @@ const getCoordinates = (positionTags: NodeListOf<Element>): Position[] => {
     return coordinates;
 };
 
-export const getDuration = (
+export const formatDurationXML = (
     arr: NodeListOf<Element>,
     idx: number,
     total: number
@@ -60,11 +60,18 @@ export const getDuration = (
 
     total += parseInt(arr[idx].innerHTML);
     idx += 1;
-    return getDuration(arr, idx, total);
+    return formatDurationXML(arr, idx, total);
 };
 
 export const getDistance = (distanceTags: NodeListOf<Element>): number =>
     parseFloat(distanceTags[distanceTags.length - 1]?.innerHTML) / 1000 || 0;
+
+const getTypeFromFilename = (fileName: string | undefined) => {
+    if (!fileName) throw new Error(_t.errorParsingFile);
+
+    if (/Walk/.test(fileName)) return WorkoutTypes.WALKING;
+    throw new Error(_t.errorInvActivType);
+};
 
 export const parseXML = (xmlString: string, fileName: string) => {
     const root = getRoot(xmlString);
@@ -79,12 +86,14 @@ export const parseXML = (xmlString: string, fileName: string) => {
         throw new Error(_t.errorParsingFile);
 
     const distance = getDistance(distanceTags);
-    const duration = getDuration(timesTags, 0, 0);
+    const duration = formatDurationXML(timesTags, 0, 0);
     const coordinates = getCoordinates(positionTags);
 
-    const type = validateType(activityType, fileName);
+    const type = isValidWorkoutType(activityType)
+        ? activityType
+        : getTypeFromFilename(fileName);
 
-    if (!type || !timestamp || !distance || !duration)
+    if (!isValidWorkoutType(type) || !timestamp || !distance || !duration)
         throw new Error(_t.errorParsingFile);
 
     return { type, timestamp, distance, duration, coordinates };

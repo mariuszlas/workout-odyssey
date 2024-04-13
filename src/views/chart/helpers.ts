@@ -1,18 +1,25 @@
 import { MouseEvent } from 'react';
 import type { ChartConfiguration, TooltipItem } from 'chart.js/auto';
 
-import { _t } from '@/constants';
 import {
     type BestMonths,
     type MonthStats,
     Theme,
+    Units,
     type WorkoutsDashboard,
 } from '@/interfaces';
 
-import { getMonth } from '../helpers';
+import { getMonthForLocale } from '../helpers';
 
-import type { BarChartData, BarChartT, ChartTheme, ChartType } from './chart';
+import type { BarChartData, BarChartT, ChartType } from './chart';
 import * as c from './constants';
+
+interface ChartTheme {
+    barColor: string;
+    hoverBarColor: string;
+    textColor: string;
+    gridDashColor: string;
+}
 
 export const getDataset = (data: BarChartData) => ({
     datasets: [{ maxBarThickness: c.MAX_BAR_THICKNESS, data: data }],
@@ -32,100 +39,91 @@ export const destroyChart = (chart: BarChartT) => {
     chart.destroy();
 };
 
-export const getMonthFromString = (monthName: string) =>
-    'JanFebMarAprMayJunJulAugSepOctNovDec'.indexOf(monthName) / 3 + 1;
-
-export const getSecondaryStat = (
+export const getInteractionIndex = (
     event: MouseEvent<HTMLCanvasElement>,
     chart: BarChartT | undefined,
     chartData: BarChartData | undefined
 ) => {
     if (!chart || !chartData) return;
 
-    const interactions = chart.getElementsAtEventForMode(
-        event.nativeEvent,
-        'index',
-        { intersect: true },
-        false
-    );
-
-    if (interactions.length === 0) return;
-
-    const dataPoints = chartData[interactions[0].index];
-    const xDataKey = dataPoints.x;
-    const value = parseInt(xDataKey);
-
-    return Number.isNaN(value) ? getMonthFromString(xDataKey) : value;
+    return chart
+        .getElementsAtEventForMode(
+            event.nativeEvent,
+            'index',
+            { intersect: true },
+            false
+        )
+        .at(0)?.index;
 };
 
-export const formatChartTooltip = (context: TooltipItem<'bar'>) => {
+export const formatChartTooltip = (
+    context: TooltipItem<'bar'>,
+    units: Units
+) => {
     const parsed = context.parsed.y;
-    return `${parsed.toFixed(1)} ${_t.km}`;
+    return `${parsed.toFixed(1)} ${units.km}`;
 };
 
 const getChartOptions = (
-    chartTheme: ChartTheme
+    chartTheme: ChartTheme,
+    locale: string,
+    units: Units
 ): ChartConfiguration<ChartType, BarChartData, string[]>['options'] => ({
+    locale,
     plugins: {
         legend: { display: false },
         tooltip: {
-            callbacks: { label: context => formatChartTooltip(context) },
+            callbacks: { label: context => formatChartTooltip(context, units) },
         },
     },
     elements: {
-        bar: { backgroundColor: chartTheme.barColor },
+        bar: {
+            backgroundColor: chartTheme.barColor,
+            hoverBackgroundColor: chartTheme.hoverBarColor,
+        },
     },
     scales: {
         x: {
             ticks: {
-                font: {
-                    size: c.TICK_FONT_SIZE,
-                    family: c.TICK_FONT,
-                },
+                font: { size: c.TICK_FONT_SIZE, family: c.TICK_FONT },
                 color: chartTheme.textColor,
             },
-            grid: {
-                display: false,
-            },
-            border: {
-                color: chartTheme.textColor,
-            },
+            grid: { display: false },
+            border: { color: chartTheme.textColor },
         },
         y: {
             ticks: {
                 maxTicksLimit: c.MAX_TICK_LIMIT,
-                font: {
-                    size: c.TICK_FONT_SIZE,
-                    family: c.TICK_FONT,
-                },
+                font: { size: c.TICK_FONT_SIZE, family: c.TICK_FONT },
                 color: chartTheme.textColor,
             },
             grid: {
                 tickColor: chartTheme.textColor,
                 color: chartTheme.gridDashColor,
             },
-            border: {
-                color: chartTheme.textColor,
-                dash: c.Y_BORDER_DASH,
-            },
+            border: { color: chartTheme.textColor, dash: c.Y_BORDER_DASH },
         },
     },
 });
 
 export const getChartConfig = (
     chartData: BarChartData,
-    chartTheme: ChartTheme
+    chartTheme: ChartTheme,
+    locale: string,
+    units: Units
 ): ChartConfiguration<ChartType, BarChartData, string[]> => ({
     type: c.BAR_TYPE,
     data: getDataset(chartData),
-    options: getChartOptions(chartTheme),
+    options: getChartOptions(chartTheme, locale, units),
 });
 
 export const updateChartTheme = (
     chart: BarChartT | undefined,
-    chartTheme: ChartTheme
+    chartTheme: ChartTheme,
+    locale: string,
+    units: Units
 ) => {
-    const options = getChartOptions(chartTheme);
+    const options = getChartOptions(chartTheme, locale, units);
     if (chart && options) {
         chart.options = options;
         chart.update();
@@ -163,6 +161,7 @@ export const findBestMonths = (dashboard: WorkoutsDashboard) => {
 
     dashboard?.months?.forEach(monthObj => {
         const year = monthObj.year.toString();
+
         if (year in bestMonths) {
             const currMonth = bestMonths[year];
             const currDistance = currMonth.distance;
@@ -183,7 +182,8 @@ export const getAvailableYears = (dashboard: WorkoutsDashboard) =>
 
 export const selectChartData = (
     dashboard: WorkoutsDashboard | undefined,
-    yearSelected: number
+    yearSelected: number,
+    locale: string
 ) => {
     if (!dashboard?.years || !dashboard.months) return [];
 
@@ -191,18 +191,22 @@ export const selectChartData = (
         return dashboard.years.map(yearObj => ({
             x: yearObj.year.toString(),
             y: yearObj.distance,
+            value: yearObj.year,
         }));
 
     return dashboard.months
         .filter(monthObj => monthObj.year === yearSelected)
         .map(monthObj => ({
-            x: getMonth(monthObj.month - 1, true),
+            x: getMonthForLocale(monthObj.month - 1, locale, 'short'),
             y: monthObj.distance,
+            value: monthObj.month,
         }));
 };
 
-export const getChartThemeTokens = (theme: Theme | null) => ({
-    barColor: theme === Theme.LIGHT ? c.BAR_COLOR_LIGHT : c.BAR_COLOR_DARK,
-    textColor: theme === Theme.LIGHT ? c.TEXT_COLOR_LIGHT : c.TEXT_COLOR_DARK,
+export const getChartThemeTokens = (theme: Theme | null): ChartTheme => ({
+    barColor: theme === Theme.DARK ? c.BAR_COLOR_DARK : c.BAR_COLOR_LIGHT,
+    hoverBarColor:
+        theme === Theme.DARK ? c.BAR_HOVER_COLOR_DARK : c.BAR_HOVER_COLOR_LIGHT,
+    textColor: theme === Theme.DARK ? c.TEXT_COLOR_DARK : c.TEXT_COLOR_LIGHT,
     gridDashColor: c.GRID_DASH_COLOR,
 });

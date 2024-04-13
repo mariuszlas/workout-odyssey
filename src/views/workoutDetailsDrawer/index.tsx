@@ -1,6 +1,7 @@
 import { FC } from 'react';
+import { useTranslations } from 'next-intl';
 
-import { _t, Drawer, DrawerProps, ModalHeader } from '@/components';
+import { Drawer, DrawerProps, ModalHeader } from '@/components';
 import { Workout } from '@/interfaces';
 
 import { WorkoutDetailsPanel } from './details/workoutDetailsPanel';
@@ -14,21 +15,25 @@ export const WorkoutDetailsDrawer: FC<Props> = ({
     onClose,
     isOpen,
     workout,
-}) => (
-    <Drawer isOpen={isOpen} onClose={onClose} size="lg" unmount={true}>
-        <div className="flex h-full flex-col" id="workout-details">
-            <ModalHeader className="p-4" onClose={onClose}>
-                {_t.workoutDetails}
-            </ModalHeader>
+}) => {
+    const t = useTranslations('Dashboard.WorkoutDetails');
 
-            <hr className="border-t border-t-base-content border-opacity-20 " />
+    return (
+        <Drawer isOpen={isOpen} onClose={onClose} size="lg" unmount={true}>
+            <div className="flex h-full flex-col" id="workout-details">
+                <ModalHeader className="p-4" onClose={onClose}>
+                    {t('header')}
+                </ModalHeader>
 
-            <div className="flex-grow p-4 sm:p-6">
-                <div className="flex h-full flex-col gap-4">
-                    <WorkoutDetailsPanel data={workout} />
-                    <MapPanel id={workout.id} />
+                <hr className="border-t border-t-base-content border-opacity-20 " />
+
+                <div className="flex-grow p-4 sm:p-6">
+                    <div className="flex h-full flex-col gap-4">
+                        <WorkoutDetailsPanel data={workout} />
+                        <MapPanel id={workout.id} />
+                    </div>
                 </div>
             </div>
-        </div>
-    </Drawer>
-);
+        </Drawer>
+    );
+};

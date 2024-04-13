@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 
 import { Label } from '@/components';
-import { Workout, WorkoutTypes } from '@/interfaces';
+import { Units, Workout, WorkoutTypes } from '@/interfaces';
 
 import {
     DateEntry,
@@ -14,6 +14,7 @@ import { WorkoutMenu } from '../../workoutMenu';
 export interface Props {
     data: Workout;
     type: WorkoutTypes;
+    units: Units;
 }
 
 export const WorkoutLineItem: FC<Props> = ({ ...props }) => (

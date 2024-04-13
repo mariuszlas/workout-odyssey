@@ -1,13 +1,15 @@
 import type { FC } from 'react';
+import { useTranslations } from 'next-intl';
 
 import { Theme } from '@/interfaces';
 import { useTheme } from '@/providers';
 
 import { MoonIcon, SunIcon } from '../icon';
-import { _t, IconButton, MenuButton, Text } from '..';
+import { IconButton, MenuButton, Text } from '..';
 
 export const ThemeSwitch: FC<{ isMobile?: boolean }> = ({ isMobile }) => {
     const [theme, setTheme] = useTheme();
+    const t = useTranslations('Navbar');
 
     const isDark = (theme: Theme | null) => theme === Theme.DARK;
 
@@ -22,7 +24,9 @@ export const ThemeSwitch: FC<{ isMobile?: boolean }> = ({ isMobile }) => {
             <li>
                 <MenuButton onClick={toggleTheme} aria-label="theme-switch">
                     <Text>
-                        {isDark(theme) ? _t.toggleLightMode : _t.toggleDarkMode}
+                        {isDark(theme)
+                            ? t('toggleLightMode')
+                            : t('toggleDarkMode')}
                     </Text>
                     {isDark(theme) ? <SunIcon /> : <MoonIcon />}
                 </MenuButton>

@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { _t, Modal, ModalProps } from '@/components';
+import { Modal, ModalProps } from '@/components';
 import type { Workout } from '@/interfaces';
 
 import { WorkoutUpload } from './workoutUpload';

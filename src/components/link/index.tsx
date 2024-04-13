@@ -1,9 +1,9 @@
-import { forwardRef } from 'react';
-import Link, { LinkProps } from 'next/link';
+import { ComponentProps, forwardRef } from 'react';
 
+import { Link } from '@/navigation';
 import { cn } from '@/utils/helpers';
 
-interface Props extends LinkProps {
+interface Props extends ComponentProps<typeof Link> {
     active?: boolean;
     danger?: boolean;
     popover?: boolean;

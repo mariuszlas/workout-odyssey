@@ -1,6 +1,5 @@
 import { Position } from 'geojson';
 
-import { _t } from '@/constants';
 import { WorkoutTypes } from '@/interfaces';
 import { isValidWorkoutType } from '@/utils/helpers';
 
@@ -13,6 +12,24 @@ const TIME_TAG = 'TotalTimeSeconds';
 const POSITION_TAG = 'Position';
 const LATITUDE_ATG = 'LatitudeDegrees';
 const LONGITUDE_ATG = 'LongitudeDegrees';
+
+export class FileSizeError extends Error {
+    constructor() {
+        super('File size limit exceeded');
+    }
+}
+
+class InvalidActivityError extends Error {
+    constructor() {
+        super('Invalid activity type');
+    }
+}
+
+class GenericError extends Error {
+    constructor() {
+        super('Could not parse the file');
+    }
+}
 
 export const readFileAsync = (file: File) => {
     return new Promise<FileReader['result']>((resolve, reject) => {
@@ -67,10 +84,10 @@ export const getDistance = (distanceTags: NodeListOf<Element>): number =>
     parseFloat(distanceTags[distanceTags.length - 1]?.innerHTML) / 1000 || 0;
 
 const getTypeFromFilename = (fileName: string | undefined) => {
-    if (!fileName) throw new Error(_t.errorParsingFile);
+    if (!fileName) throw new GenericError();
 
     if (/Walk/.test(fileName)) return WorkoutTypes.WALKING;
-    throw new Error(_t.errorInvActivType);
+    throw new InvalidActivityError();
 };
 
 export const parseXML = (xmlString: string, fileName: string) => {
@@ -82,8 +99,7 @@ export const parseXML = (xmlString: string, fileName: string) => {
     const timesTags = root?.querySelectorAll(TIME_TAG);
     const positionTags = root?.querySelectorAll(POSITION_TAG);
 
-    if (!distanceTags || !timesTags || !positionTags)
-        throw new Error(_t.errorParsingFile);
+    if (!distanceTags || !timesTags || !positionTags) throw new GenericError();
 
     const distance = getDistance(distanceTags);
     const duration = formatDurationXML(timesTags, 0, 0);
@@ -94,7 +110,7 @@ export const parseXML = (xmlString: string, fileName: string) => {
         : getTypeFromFilename(fileName);
 
     if (!isValidWorkoutType(type) || !timestamp || !distance || !duration)
-        throw new Error(_t.errorParsingFile);
+        throw new GenericError();
 
     return { type, timestamp, distance, duration, coordinates };
 };

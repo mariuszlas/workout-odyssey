@@ -28,34 +28,24 @@ export const getStatIcon = (iconType: StatIconType, isLineItem?: boolean) => {
     }
 };
 
-export enum Field {
-    DISTANCE = 'Distance',
-    DURATION = 'Duration',
-    PACE = 'Average pace',
-    SPEED = 'Average speed',
-    EX_TIMES = 'Exercise times',
-}
-
 interface Props {
     data: number | string | undefined;
-    field: Field;
+    field: string;
     units: string;
     icon: StatIconType;
 }
 
-export const StatsPanelEntry: FC<Props> = ({ data, field, units, icon }) => {
-    return (
-        <div className="flex items-center gap-3">
-            {getStatIcon(icon)}
+export const StatsPanelEntry: FC<Props> = ({ data, field, units, icon }) => (
+    <div className="flex items-center gap-3">
+        {getStatIcon(icon)}
 
-            <div className="flex flex-col">
-                <Text value={field} />
+        <div className="flex flex-col">
+            <Text value={field} />
 
-                <div>
-                    <Text value={data} className="font-medium" />
-                    <Text value={` ${units}`} />
-                </div>
+            <div>
+                <Text value={data} className="font-medium" />
+                <Text value={` ${units}`} />
             </div>
         </div>
-    );
-};
+    </div>
+);

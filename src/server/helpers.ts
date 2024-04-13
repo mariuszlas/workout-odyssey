@@ -5,10 +5,13 @@ import {
     NotAuthorizedException,
 } from '@aws-sdk/client-cognito-identity-provider';
 import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
+import { NextResponse } from 'next/server';
+import { getTranslations } from 'next-intl/server';
 import { ZodError } from 'zod';
 
 import { Cookie, ToggleState } from '@/interfaces';
-import { getGenericErrorMessage } from '@/utils/helpers';
+import { getMsgFromError } from '@/utils/helpers';
 
 import { formatOtherError, formatZodError } from './validation';
 
@@ -52,34 +55,54 @@ export const getAccessTokenFromCookie = () =>
     cookies().get(Cookie.ACCESS_TOKEN)?.value;
 
 export const getUsernameFromCookie = () => {
-    const jwt = getAccessTokenFromCookie();
-    if (!jwt) return null;
+    const accessToken = getAccessTokenFromCookie();
+    if (!accessToken) return null;
 
     const payload = JSON.parse(
-        Buffer.from(jwt?.split('.')[1], 'base64').toString()
+        Buffer.from(accessToken?.split('.')[1], 'base64').toString()
     );
 
     return payload?.username;
 };
 
-export const handleError = (e: unknown) => {
+export const validateSession = (accessTokenOnly = false) => {
+    const username = getUsernameFromCookie();
+
+    if (!username) redirect('/login');
+
+    return accessTokenOnly ? getAccessTokenFromCookie() : username;
+};
+
+export const handleError = async (e: unknown) => {
+    const t = await getTranslations('AccountSettings.errors');
+
     if (e instanceof ZodError) {
         return formatZodError(e);
     }
 
     if (e instanceof NotAuthorizedException) {
-        return formatOtherError('Incorrect credentials');
+        return formatOtherError(t('notAuthorised'));
     }
 
-    if (
-        e instanceof AliasExistsException ||
-        e instanceof CodeMismatchException ||
-        e instanceof ExpiredCodeException
-    ) {
-        return formatOtherError(e.message);
+    if (e instanceof AliasExistsException) {
+        return formatOtherError(t('emailAlreadyExists'));
     }
 
-    const msg = 'Unexpected error occured';
-    console.error(`Error: ${getGenericErrorMessage(e, msg)}`);
-    return formatOtherError(msg);
+    if (e instanceof CodeMismatchException) {
+        return formatOtherError(t('invalidCode'));
+    }
+
+    if (e instanceof ExpiredCodeException) {
+        return formatOtherError(t('expiredCode'));
+    }
+
+    console.error(getMsgFromError(e));
+    return formatOtherError(t('unexpected'));
+};
+
+export const handleApiError = (
+    error = 'Internal server error',
+    status = 500
+) => {
+    return NextResponse.json({ error }, { status });
 };

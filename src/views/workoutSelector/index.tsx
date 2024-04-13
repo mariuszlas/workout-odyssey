@@ -2,7 +2,7 @@
 
 import { FC, Fragment } from 'react';
 import { Menu } from '@headlessui/react';
-import { usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
 import {
     Button,
@@ -12,6 +12,7 @@ import {
     Text,
 } from '@/components';
 import { WorkoutTypes } from '@/interfaces';
+import { usePathname } from '@/navigation';
 import { cn, getWorkoutTypeFromPathname } from '@/utils/helpers';
 import { capitalize } from '@/views/helpers';
 
@@ -23,10 +24,14 @@ interface Props {
 export const WorkoutSelector: FC<Props> = ({ onClose, isMobile }) => {
     const pathname = usePathname();
     const currentWorkoutType = getWorkoutTypeFromPathname(pathname);
+    const t = useTranslations('Dashboard');
 
     const workoutOptions = Object.values(WorkoutTypes).filter(
         workoutType => workoutType !== currentWorkoutType
     );
+
+    const getT = (workoutType: WorkoutTypes) =>
+        capitalize(t('workoutType', { workoutType }));
 
     if (isMobile) {
         return (
@@ -37,7 +42,7 @@ export const WorkoutSelector: FC<Props> = ({ onClose, isMobile }) => {
                             href={workoutType}
                             onClick={() => onClose && onClose()}
                         >
-                            {capitalize(workoutType)}
+                            {getT(workoutType)}
                         </MenuLink>
                     </li>
                 ))}
@@ -50,11 +55,8 @@ export const WorkoutSelector: FC<Props> = ({ onClose, isMobile }) => {
             {({ open }) => (
                 <>
                     <Menu.Button as={Fragment}>
-                        <Button
-                            className="btn-outline btn-primary"
-                            aria-label={capitalize(currentWorkoutType)}
-                        >
-                            <Text value={capitalize(currentWorkoutType)} />
+                        <Button className="btn-outline btn-primary">
+                            <Text value={getT(currentWorkoutType)} />
                             <ChevronDownIcon
                                 className={cn(
                                     'transform duration-300 ease-in-out',
@@ -73,7 +75,7 @@ export const WorkoutSelector: FC<Props> = ({ onClose, isMobile }) => {
                                             href={workoutType}
                                             active={active}
                                         >
-                                            {capitalize(workoutType)}
+                                            {getT(workoutType)}
                                         </MenuLink>
                                     )}
                                 </Menu.Item>

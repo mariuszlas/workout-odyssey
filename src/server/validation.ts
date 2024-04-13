@@ -1,77 +1,125 @@
-import { RefinementCtx, z, ZodError, ZodIssueCode } from 'zod';
+import { getTranslations } from 'next-intl/server';
+import { RefinementCtx, z, ZodError, ZodErrorMap, ZodIssueCode } from 'zod';
 
-import { _t } from '@/constants';
+type ZodI18nTranslation = Awaited<ReturnType<typeof getTranslations<'zod'>>>;
 
-const issue = (message: string, path: string[], fatal = true) => ({
+type MakeZodI18nErrorMap = (t: ZodI18nTranslation) => ZodErrorMap;
+
+enum PasswordError {
+    COMMON_1,
+    COMMON_2,
+    UPPERCASE,
+    NUMBER,
+    NO_MATCH,
+}
+
+const customZodErrorMap: MakeZodI18nErrorMap = t => (error, ctx) => {
+    switch (error.code) {
+        case z.ZodIssueCode.invalid_type:
+            if (error.expected === 'string') {
+                return { message: t('invalidTypeString') };
+            }
+            break;
+        case z.ZodIssueCode.invalid_string:
+            if (error.validation === 'email') {
+                return { message: t('invalidEmail') };
+            }
+            break;
+        case z.ZodIssueCode.too_small:
+            return {
+                message: t('tooShort', { count: error.minimum.toString() }),
+            };
+        case z.ZodIssueCode.too_big:
+            return {
+                message: t('tooLong', { count: error.maximum.toString() }),
+            };
+        case z.ZodIssueCode.custom:
+            switch (error?.params?.type) {
+                case PasswordError.COMMON_1:
+                    return { message: t('password.common1') };
+                case PasswordError.COMMON_2:
+                    return { message: t('password.common2') };
+                case PasswordError.UPPERCASE:
+                    return { message: t('password.uppercaseLetter') };
+                case PasswordError.NUMBER:
+                    return { message: t('password.number') };
+                case PasswordError.NO_MATCH:
+                    return { message: t('password.noMatch') };
+            }
+            break;
+    }
+
+    return { message: ctx.defaultError };
+};
+
+export const setZodErrorMap = async () => {
+    const t = await getTranslations('zod');
+    z.setErrorMap(customZodErrorMap(t));
+};
+
+const issue = (type: PasswordError, path: string[], fatal = true) => ({
     code: ZodIssueCode.custom,
-    message,
     path,
     fatal,
+    params: { type },
 });
 
-const password = z
-    .string()
-    .trim()
-    .min(8, _t.errorPassword2)
-    .max(250, 'Password cannot be longer than 250 characters');
-
-const passwords = z.object({ password, passwordRepeat: password });
-
-type TPasswords = z.infer<typeof passwords>;
-
 const refinePassword = (
-    { password, passwordRepeat }: TPasswords,
+    { password, passwordRepeat }: z.infer<typeof passwords>,
     ctx: RefinementCtx
 ) => {
     if (password === 'Password') {
-        ctx.addIssue(issue(_t.errorPassword3, ['password']));
+        ctx.addIssue(issue(PasswordError.COMMON_1, ['password']));
         return z.NEVER;
     }
 
     if (password === 'password') {
-        ctx.addIssue(issue(_t.errorPassword4, ['password']));
+        ctx.addIssue(issue(PasswordError.COMMON_2, ['password']));
         return z.NEVER;
     }
 
     if (!/[A-Z]/g.test(password)) {
-        ctx.addIssue(issue(_t.errorPassword5, ['password']));
+        ctx.addIssue(issue(PasswordError.UPPERCASE, ['password']));
         return z.NEVER;
     }
 
     if (!/[0-9]/g.test(password)) {
-        ctx.addIssue(issue(_t.errorPassword6, ['password']));
+        ctx.addIssue(issue(PasswordError.NUMBER, ['password']));
         return z.NEVER;
     }
 
     if (password !== passwordRepeat) {
-        ctx.addIssue(issue(_t.errorPassword1, ['password'], false));
-        ctx.addIssue(issue(_t.errorPassword1, ['passwordRepeat'], false));
+        ctx.addIssue(issue(PasswordError.NO_MATCH, ['password'], false));
+        ctx.addIssue(issue(PasswordError.NO_MATCH, ['passwordRepeat'], false));
     }
 };
 
+const password = z.string().trim().min(8).max(250);
+const passwords = z.object({ password, passwordRepeat: password });
 const email = z.string().email().min(5).max(250);
 const name = z.string().trim().min(1).max(32);
-const resetCode = z.string().trim();
+const code = z.string().trim().min(1);
 
 export const nameSchema = z.object({ name });
+
 export const emailSchema = z.object({ email });
+
+export const loginSchema = z.object({ email, password: z.string() });
+
+export const signupSchema = passwords
+    .extend({ email, name })
+    .superRefine(refinePassword);
 
 export const changePasswordSchema = passwords
     .extend({ currentPassword: z.string() })
     .superRefine(refinePassword);
 
-export const userSignupSchema = passwords
-    .extend({ email, name })
-    .superRefine(refinePassword);
-
-export const userLoginSchema = z.object({ email, password: z.string() });
-
 export const resetPasswordSchema = passwords
-    .extend({ passwordResetCode: resetCode })
+    .extend({ passwordResetCode: code })
     .superRefine(refinePassword);
 
 export const emailVerificationSchema = z.object({
-    emailVerificationCode: resetCode,
+    emailVerificationCode: code,
 });
 
 interface FormState {
@@ -93,11 +141,7 @@ export const formatResponse = (
     ok: boolean,
     errors: FormState,
     email?: string
-) => ({
-    ok,
-    email,
-    ...errors,
-});
+) => ({ ok, email, ...errors });
 
 export const getErrors = (formState: FormState | undefined) => ({
     emailError: formState?.fieldErrors['email']?.[0],

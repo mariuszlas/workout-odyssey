@@ -1,6 +1,14 @@
+import { NextResponse } from 'next/server';
+
+import { handleApiError } from '@/server/helpers';
 import { getAllLabels, getCurrentUserId } from '@/server/services';
 
 export async function GET() {
     const userId = await getCurrentUserId();
-    return Response.json(await getAllLabels(userId));
+
+    try {
+        return NextResponse.json(await getAllLabels(userId));
+    } catch (_) {
+        return handleApiError();
+    }
 }

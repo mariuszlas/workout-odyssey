@@ -2,9 +2,9 @@
 
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';
-import { usePathname } from 'next/navigation';
 
 import { Workout, WorkoutTypes } from '@/interfaces';
+import { usePathname } from '@/navigation';
 import { useUI } from '@/providers';
 import { getWorkoutTypeFromPathname } from '@/utils/helpers';
 

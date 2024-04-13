@@ -1,26 +1,21 @@
 import type { FC } from 'react';
-import { usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import useSWR from 'swr';
 
-import {
-    _t,
-    Button,
-    Modal,
-    ModalHeader,
-    ModalProps,
-    Skeleton,
-} from '@/components';
-import type { BestResults as TBestResults } from '@/interfaces';
+import { Button, Modal, ModalHeader, ModalProps, Skeleton } from '@/components';
+import { BestResults as TBestResults, WorkoutTypes } from '@/interfaces';
+import { usePathname } from '@/navigation';
+import { useUI } from '@/providers';
 import { getWorkoutTypeFromPathname } from '@/utils/helpers';
 
 import { LineItem } from './bestResultsLineItem';
 
-const running = [
+const getRunning = (translations: Translations) => [
     { key: 'one_k', value: '1K' },
     { key: 'five_k', value: '5K' },
     { key: 'ten_k', value: '10K' },
-    { key: 'half_marathon', value: 'Half Marathon' },
-    { key: 'marathon', value: 'Marathon' },
+    { key: 'half_marathon', value: translations.halfMarathon },
+    { key: 'marathon', value: translations.marathon },
 ];
 
 const walking = [
@@ -37,7 +32,23 @@ const cycling = [
     { key: 'two_hundred_k', value: '200K' },
 ];
 
-const allKeys = { running, walking, cycling };
+interface Translations {
+    halfMarathon: string;
+    marathon: string;
+}
+
+const getAllKeys = (workoutType: WorkoutTypes, translations: Translations) => {
+    switch (workoutType) {
+        case WorkoutTypes.RUNNING:
+            return getRunning(translations);
+        case WorkoutTypes.WALKING:
+            return walking;
+        case WorkoutTypes.CYCLING:
+            return cycling;
+        default:
+            return [];
+    }
+};
 
 export const BestResultsModal: FC<ModalProps> = ({ isOpen, onClose }) => {
     const pathname = usePathname();
@@ -47,35 +58,44 @@ export const BestResultsModal: FC<ModalProps> = ({ isOpen, onClose }) => {
         `/api/best-results?workoutType=${workoutType}`
     );
 
-    const keys = workoutType ? allKeys[workoutType] : null;
+    const { units } = useUI();
+    const t = useTranslations('Dashboard');
+
+    const translations = {
+        halfMarathon: t('BestResults.halfMarathon'),
+        marathon: t('BestResults.marathon'),
+    };
+    const keys = getAllKeys(workoutType, translations);
 
     return (
         <Modal isOpen={isOpen} onClose={onClose} full>
             <ModalHeader onClose={onClose}>
-                {`${_t.bestResults} for ${workoutType}`}
+                {`${t('BestResults.header')} ${t('workoutType', { workoutType })}`}
             </ModalHeader>
 
             <ul id="best-results" className="mt-6 flex w-full flex-col gap-4">
                 {isLoading
-                    ? keys?.map(({ key, value }) => (
+                    ? keys.map(({ key, value }) => (
                           <Skeleton
                               key={key + value}
                               h={14}
                               className="block h-14 w-full"
                           />
                       ))
-                    : keys?.map(({ key, value }, idx) => (
+                    : keys.map(({ key, value }, idx) => (
                           <LineItem
                               key={idx}
                               data={data?.[key]}
                               header={value}
+                              units={units}
+                              noDataText={t('BestResults.noData')}
                           />
                       ))}
             </ul>
 
             <footer className="mt-6 flex justify-end">
                 <Button className="btn-primary" onClick={onClose}>
-                    {_t.btnClose}
+                    {t('BestResults.cta')}
                 </Button>
             </footer>
         </Modal>

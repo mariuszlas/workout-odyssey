@@ -5,29 +5,21 @@ import { redirect } from 'next/navigation';
 import { User } from '@/db/models';
 
 import { CognitoApi } from '../cognitoAuth';
-import { getUsernameFromCookie } from '../helpers';
+import { validateSession } from '../helpers';
 
 import { getUserWorkoutCount } from './workout';
 
 const getUserByUsername = (username: string | undefined) =>
     User.findOne({ where: { username } });
 
-export const getUserId = async (username: string | undefined) => {
-    return (await getUserByUsername(username))?.id;
-};
+export const getUserId = async (username: string | undefined) =>
+    (await getUserByUsername(username))?.id;
 
 export const getCurrentUserId = async () => {
-    const username = getUsernameFromCookie();
-
-    if (!username) {
-        redirect('/login');
-    }
-
+    const username = validateSession();
     const userId = await getUserId(username);
 
-    if (!userId) {
-        redirect('/login');
-    }
+    if (!userId) redirect('/login');
 
     return userId;
 };
@@ -44,7 +36,6 @@ export const reportUserLogin = async (username: string) => {
 
 const getUserData = async (username: string | undefined) => {
     const user = await getUserByUsername(username);
-
     if (!user) throw new Error();
 
     const count = await getUserWorkoutCount(user.id);
@@ -52,9 +43,7 @@ const getUserData = async (username: string | undefined) => {
     return { ...user.toJSON(), totalNoOfWorkouts: count };
 };
 
-export const getAllUserData = async () => {
-    const username = getUsernameFromCookie();
-
+export const getAllUserData = async (username: string) => {
     const [user, cognitoUser] = await Promise.all([
         getUserData(username),
         new CognitoApi().getUser(username),
@@ -76,7 +65,6 @@ export const createUser = async (
         name: name,
         isDemo: isDemo,
     });
-
     if (!user) return;
 
     return user.toJSON();
@@ -87,7 +75,6 @@ export const updateUserName = async (
     name: string
 ) => {
     const user = await getUserByUsername(username);
-
     if (!user) return;
 
     return await user.update({ name });
@@ -95,7 +82,6 @@ export const updateUserName = async (
 
 export const destroyUser = async (username: string | undefined) => {
     const user = await getUserByUsername(username);
-
     if (!user) return;
 
     return await user.destroy();

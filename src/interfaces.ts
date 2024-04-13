@@ -127,3 +127,12 @@ export enum Cookie {
 export interface ToggleState {
     acceptNewUsers?: boolean;
 }
+
+export interface Units {
+    km: string;
+    kmh: string;
+    h: string;
+    min: string;
+}
+
+export type LocaleParam = { params: { locale: string } };

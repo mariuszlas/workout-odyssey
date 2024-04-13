@@ -1,10 +1,10 @@
 import type { FC, MouseEvent } from 'react';
 import { Fragment, useState } from 'react';
 import { Popover } from '@headlessui/react';
+import { useTranslations } from 'next-intl';
 import useSWR from 'swr';
 
 import {
-    _t,
     Button,
     IconButton,
     Input,
@@ -24,6 +24,7 @@ import { getNewLabel, validateNewLabel } from './helpers';
 export const LabelSelector: FC<NewWorkoutProps> = ({ setWorkout, workout }) => {
     const { data, isLoading } = useSWR<TLabel[]>('/api/labels');
     const labels = data ?? [];
+    const t = useTranslations('Dashboard.WorkoutUpload.Forms.labels');
 
     const [newLabelValue, setNewLabelValue] = useState<string>('');
     const [newLabels, setNewLabels] = useState<TLabel[]>([]);
@@ -42,7 +43,7 @@ export const LabelSelector: FC<NewWorkoutProps> = ({ setWorkout, workout }) => {
             setNewLabels(state => [...state, newLabel]);
             setNewLabelValue('');
         } catch (_) {
-            setError(_t.errorDataInput);
+            setError(t('error'));
         }
     };
 
@@ -69,7 +70,7 @@ export const LabelSelector: FC<NewWorkoutProps> = ({ setWorkout, workout }) => {
             <Popover>
                 <Popover.Button as={Fragment}>
                     <Button className="btn-outline btn-primary">
-                        {_t.btnSelectLabel}
+                        {t('cta')}
                     </Button>
                 </Popover.Button>
 
@@ -84,7 +85,7 @@ export const LabelSelector: FC<NewWorkoutProps> = ({ setWorkout, workout }) => {
                                         onChange={e =>
                                             setNewLabelValue(e.target.value)
                                         }
-                                        placeholder={_t.plcdAddLabel}
+                                        placeholder={t('placeholder')}
                                         className="pr-10"
                                         error={error}
                                     >
@@ -111,7 +112,7 @@ export const LabelSelector: FC<NewWorkoutProps> = ({ setWorkout, workout }) => {
 
                                     {isNoLabels && (
                                         <div className="flex justify-center p-3">
-                                            <Text value={_t.noLabels} />
+                                            <Text value={t('noLabels')} />
                                         </div>
                                     )}
 

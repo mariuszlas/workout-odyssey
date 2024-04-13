@@ -57,4 +57,3 @@ export { Skeleton, SkeletonList } from './skeleton';
 export { Text } from './text';
 export { ThemeSwitch } from './themeSwitch';
 export { notify } from './toast';
-export { _t } from '@/constants';

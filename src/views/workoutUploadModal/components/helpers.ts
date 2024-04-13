@@ -1,5 +1,15 @@
-import { _t, labelColors } from '@/constants';
 import type { TLabel } from '@/interfaces';
+
+export const labelColors = [
+    '#b40813',
+    '#d6411d',
+    '#fac82f',
+    '#198921',
+    '#0c6b74',
+    '#2579d8',
+    '#0c56c9',
+    '#542be3',
+];
 
 export const zeroPad = (n: number | string) =>
     Number(n) < 10 ? `0${n}` : n.toString();
@@ -15,14 +25,14 @@ export const validateNewLabel = (
     const formatedNewLabelValue = formatNewLabelValue(newLabelValue);
 
     if (formatedNewLabelValue.length === 0 || formatedNewLabelValue.length > 25)
-        throw new Error(_t.errorLabelInputLength);
+        throw new Error('A label must contain between 1 and 25 characters');
 
     if (/;/g.test(formatedNewLabelValue))
-        throw new Error(_t.errorLabelInputBadChar);
+        throw new Error('Input must not contain the following characters: ";"');
 
     allLabels.concat(newLabels).forEach(label => {
         if (label.value === formatedNewLabelValue)
-            throw new Error(_t.errorLabelDuplicate);
+            throw new Error('This label already exists');
     });
 };
 
@@ -40,4 +50,11 @@ export const getNewLabel = (
     const randomNum = Math.floor(Math.random() * colors.length);
 
     return { value: formatedNewLabelValue, color: colors[randomNum] };
+};
+
+export const getWeekdayListForLocale = (locale: string) => {
+    const formatter = new Intl.DateTimeFormat(locale, { weekday: 'narrow' });
+    return [...Array(7).keys()].map(m =>
+        formatter.format(new Date(2024, 3, m + 1))
+    );
 };

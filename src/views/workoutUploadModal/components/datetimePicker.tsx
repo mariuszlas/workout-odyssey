@@ -1,6 +1,7 @@
 import type { FC } from 'react';
 import { Fragment, useEffect } from 'react';
 import { Popover } from '@headlessui/react';
+import { useLocale, useTranslations } from 'next-intl';
 
 import {
     ArrowLeft,
@@ -13,13 +14,12 @@ import {
     Select,
     Text,
 } from '@/components';
-import { _t, daysOfWeek } from '@/constants';
 import { cn } from '@/utils/helpers';
-import { getDateTimeTZ, getMonth } from '@/views/helpers';
+import { getDateTimeTZ, getMonthForLocale } from '@/views/helpers';
 
 import { NewWorkoutProps } from '../intrefaces';
 
-import { zeroPad } from './helpers';
+import { getWeekdayListForLocale, zeroPad } from './helpers';
 
 const getTotalDaysInMonth = (year: number, month: number) =>
     new Date(year, month, 0).getDate();
@@ -37,6 +37,9 @@ export const DatetimePicker: FC<NewWorkoutProps> = ({
 }) => {
     const { timestamp } = workout;
     const date = timestamp ? new Date(timestamp) : new Date();
+
+    const t = useTranslations('Dashboard.WorkoutUpload.Forms.dateAndTime');
+    const locale = useLocale();
 
     const setTimestamp = (t: string) => {
         setWorkout(prev => ({ ...prev, timestamp: t }));
@@ -97,7 +100,7 @@ export const DatetimePicker: FC<NewWorkoutProps> = ({
     };
 
     const renderDaysOfWeekRow = () =>
-        daysOfWeek.map((day, idx) => (
+        getWeekdayListForLocale(locale).map((day, idx) => (
             <div key={idx} className="flex justify-center">
                 <div className="flex justify-center">
                     <Text value={day} />
@@ -143,7 +146,7 @@ export const DatetimePicker: FC<NewWorkoutProps> = ({
 
     return (
         <div className="relative">
-            <FormLabel text={_t.selectDateTime} />
+            <FormLabel text={t('label')} />
             <Popover>
                 <Popover.Button as={Fragment}>
                     <InputButton className="w-50">
@@ -174,7 +177,7 @@ export const DatetimePicker: FC<NewWorkoutProps> = ({
                                         </IconButton>
 
                                         <Text
-                                            value={`${getMonth(date.getMonth())} ${date.getFullYear()}`}
+                                            value={`${getMonthForLocale(date.getMonth(), locale)} ${date.getFullYear()}`}
                                         />
 
                                         <IconButton
@@ -205,7 +208,7 @@ export const DatetimePicker: FC<NewWorkoutProps> = ({
                                 </div>
 
                                 <div className="flex items-center justify-center gap-2">
-                                    <Text value={_t.time} />
+                                    <Text value={t('timeLabel')} />
 
                                     <div className="flex items-center gap-2">
                                         <Select
@@ -255,14 +258,14 @@ export const DatetimePicker: FC<NewWorkoutProps> = ({
                                         }}
                                         type="button"
                                     >
-                                        {_t.btnToday}
+                                        {t('ctaSecondary')}
                                     </button>
                                     <button
                                         className="btn btn-primary btn-sm"
                                         onClick={() => close()}
                                         type="button"
                                     >
-                                        {_t.btnDone}
+                                        {t('cta')}
                                     </button>
                                 </div>
                             </div>

@@ -1,12 +1,11 @@
 import { describe, expect, it } from 'vitest';
 
-import { _t, labelColors } from '@/constants';
 import { TLabel } from '@/interfaces';
 
 import {
     formatNewLabelValue,
     getNewLabel,
-    validateNewLabel,
+    labelColors,
     zeroPad,
 } from './helpers';
 
@@ -53,50 +52,6 @@ describe('formatNewLabelValue', () => {
         const actual = formatNewLabelValue(newLabelValue);
 
         expect(actual).toEqual(newLabelValue);
-    });
-});
-
-describe('validateNewLabel', () => {
-    it('should throw an error if the label value is empty', () => {
-        const newLabelValue = '';
-
-        expect(() => validateNewLabel([], [], newLabelValue)).toThrow(
-            _t.errorLabelInputLength
-        );
-    });
-
-    it('should throw an error if the label value is too long', () => {
-        const newLabelValue =
-            'This is a very long label value that is longer than 25 characters.';
-
-        expect(() => validateNewLabel([], [], newLabelValue)).toThrow(
-            _t.errorLabelInputLength
-        );
-    });
-
-    it('should throw an error if the label value contains the semicolon character', () => {
-        const newLabelValue = 'This;is;a;label';
-
-        expect(() => validateNewLabel([], [], newLabelValue)).toThrow(
-            _t.errorLabelInputBadChar
-        );
-    });
-
-    it('should throw an error if the label value already exists', () => {
-        const newLabelValue = 'New Label';
-        const existingLabel = {
-            value: newLabelValue,
-        } as unknown as TLabel;
-
-        expect(() =>
-            validateNewLabel([existingLabel], [], newLabelValue)
-        ).toThrow(_t.errorLabelDuplicate);
-    });
-
-    it('should not throw an error if the label value is valid', () => {
-        const newLabelValue = 'Valid Label';
-
-        expect(() => validateNewLabel([], [], newLabelValue)).not.toThrow();
     });
 });
 

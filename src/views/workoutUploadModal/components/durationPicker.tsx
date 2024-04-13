@@ -1,9 +1,9 @@
 import type { FC, MutableRefObject } from 'react';
 import { Fragment, useEffect, useState } from 'react';
 import { Popover } from '@headlessui/react';
+import { useTranslations } from 'next-intl';
 
 import {
-    _t,
     CloseButton,
     FormLabel,
     Heading,
@@ -32,6 +32,8 @@ export const DurationPicker: FC<NewWorkoutProps> = ({
     const [m, setM] = useState(dayjs.duration(duration, 's').minutes());
     const [h, setH] = useState(dayjs.duration(duration, 's').hours());
 
+    const t = useTranslations('Dashboard.WorkoutUpload.Forms.duration');
+
     useEffect(() => {
         if (isNaN(h)) setH(0);
         if (isNaN(m)) setM(0);
@@ -42,20 +44,20 @@ export const DurationPicker: FC<NewWorkoutProps> = ({
 
     const durationFields = [
         {
-            label: _t.labelHours,
-            plcd: _t.plcdHours,
+            label: t('labelHours'),
+            plcd: t('plcdHours'),
             formatter: 'HH',
             setD: setH,
         },
         {
-            label: _t.labelMinutes,
-            plcd: _t.plcdMinutes,
+            label: t('labelMinutes'),
+            plcd: t('plcdMinutes'),
             formatter: 'mm',
             setD: setM,
         },
         {
-            label: _t.labelSeconds,
-            plcd: _t.plcdSeconds,
+            label: t('labelSeconds'),
+            plcd: t('plcdSeconds'),
             formatter: 'ss',
             setD: setS,
         },
@@ -82,7 +84,7 @@ export const DurationPicker: FC<NewWorkoutProps> = ({
 
     return (
         <div className="relative w-fit">
-            <FormLabel text={_t.duration} />
+            <FormLabel text={t('label')} isRequired />
 
             <Popover>
                 <Popover.Button as={Fragment}>
@@ -97,7 +99,7 @@ export const DurationPicker: FC<NewWorkoutProps> = ({
                             <>
                                 <div className="flex items-center justify-between">
                                     <Heading as="h3" className="text-xl">
-                                        {_t.durationFormHeader}
+                                        {t('header')}
                                     </Heading>
 
                                     <CloseButton onClick={() => close()} />

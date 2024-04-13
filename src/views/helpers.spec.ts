@@ -6,27 +6,7 @@ import {
     formatPace,
     getDateTimeTZ,
     getFormattedMonthAndYear,
-    getMonth,
 } from './helpers';
-
-describe('getMonth', () => {
-    it('should return the short month name if isShort is true', () => {
-        const expectedMonth = 'Jan';
-        const actualMonth = getMonth(0, true);
-
-        expect(actualMonth).toBe(expectedMonth);
-    });
-
-    it('should return the long month name if isShort is false', () => {
-        const expectedMonth = 'January';
-
-        const actualMonth = getMonth(0, false);
-        expect(actualMonth).toBe(expectedMonth);
-
-        const actualMonthDefault = getMonth(0);
-        expect(actualMonthDefault).toBe(expectedMonth);
-    });
-});
 
 describe('capitalize', () => {
     test.each([
@@ -111,7 +91,7 @@ describe('getDateTimeTZ', () => {
     ];
 
     test.each(cases)(
-        'should return correctly formatted date string %s for timestamp %s and timezone %s',
+        'should return correctly formatted date string for timestamp and timezone',
         (expected, timestamp, timezone) => {
             expect(
                 getDateTimeTZ(timestamp as string, timezone as string, false)
@@ -121,18 +101,24 @@ describe('getDateTimeTZ', () => {
 });
 
 describe('getFormattedMonthAndYear', () => {
-    const year = 2023;
-    const month = 1;
+    const cases = [
+        ['Jan 2024', 2024, 1, 'en', true],
+        ['January 2024', 2024, 1, 'en', false],
+        ['sty 2024', 2024, 1, 'pl', true],
+        ['styczeń 2024', 2024, 1, 'pl', false],
+    ];
 
-    it('should return the formatted month and year if isShortMonth is true', () => {
-        const expectedMonthAndYear = 'Jan 2023';
-        const actualMonthAndYear = getFormattedMonthAndYear(year, month, true);
-        expect(actualMonthAndYear).toBe(expectedMonthAndYear);
-    });
-
-    it('should return the formatted month and year if isShortMonth is false', () => {
-        const expectedMonthAndYear = 'January 2023';
-        const actualMonthAndYear = getFormattedMonthAndYear(year, month, false);
-        expect(actualMonthAndYear).toBe(expectedMonthAndYear);
-    });
+    test.each(cases)(
+        'should return correctly formatted month and year',
+        (expected, year, month, locale, isShort) => {
+            expect(
+                getFormattedMonthAndYear(
+                    year as number,
+                    month as number,
+                    locale as string,
+                    isShort as boolean
+                )
+            ).toBe(expected);
+        }
+    );
 });

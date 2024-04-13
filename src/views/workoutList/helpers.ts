@@ -1,4 +1,3 @@
-import { _t } from '@/constants';
 import type { HeaderData, Workout } from '@/interfaces';
 
 import { getFormattedMonthAndYear } from '../helpers';
@@ -42,19 +41,22 @@ export const filterWorkouts = (
 export const getWorkoutListHeading = (
     { year, secStats }: HeaderData,
     isAll: boolean,
+    headers: Record<string, any>,
+    locale: string,
     isShortMonth?: boolean
 ) => {
-    if (isAll) return _t.yearListHeader;
+    if (isAll) return headers['allWorkouts'];
 
     const date = new Date();
     const isCurrentMonth =
         date.getFullYear() === year && date.getMonth() + 1 === secStats;
 
-    if (year === 0 || isCurrentMonth) return _t.monthListHeader;
+    if (year === 0 || isCurrentMonth) return headers['currentMonthWorkouts'];
 
-    return `${_t.monthListHeader2} ${getFormattedMonthAndYear(
+    return `${headers['generic']} ${getFormattedMonthAndYear(
         year,
         secStats,
+        locale,
         isShortMonth
     )}`;
 };

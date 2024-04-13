@@ -1,37 +1,60 @@
 import type { FC } from 'react';
+import { useTranslations } from 'next-intl';
 
-import { _t } from '@/components';
 import type { Workout } from '@/interfaces';
 import { WorkoutTypes } from '@/interfaces';
+import { useUI } from '@/providers';
 import { formatDuration, formatPace, getDateTimeTZ } from '@/views/helpers';
 
 import { LineItem } from './workoutDetailsLineItem';
 
-export const WorkoutDetailsPanel: FC<{ data: Workout }> = ({ data }) => (
-    <ul className="flex flex-col items-stretch gap-2 p-0 sm:px-4">
-        <LineItem type={_t.activity} value={data.type} label={data.label} />
-        <LineItem
-            type={_t.distance}
-            value={`${data.distance.toFixed(1)} ${_t.km}`}
-        />
-        <LineItem
-            type={_t.date}
-            value={getDateTimeTZ(data.timestamp, data.timezone, data.dateOnly)}
-        />
-        <LineItem type={_t.duration} value={formatDuration(data.duration)} />
+export const WorkoutDetailsPanel: FC<{ data: Workout }> = ({ data }) => {
+    const { units } = useUI();
+    const t = useTranslations('Dashboard');
 
-        {data.type === WorkoutTypes.CYCLING ? (
+    return (
+        <ul className="flex flex-col items-stretch gap-2 p-0 sm:px-4">
             <LineItem
-                type={_t.speed}
-                value={`${data.speed.toFixed(1)} ${_t.kmPerHour}`}
+                type={t('WorkoutDetails.activity')}
+                value={t('workoutType', { workoutType: data.type })}
+                label={data.label}
             />
-        ) : (
             <LineItem
-                type={_t.pace}
-                value={`${formatPace(data.pace)} ${_t.perKm}`}
+                type={t('WorkoutDetails.distance')}
+                value={`${data.distance.toFixed(1)} ${units.km}`}
             />
-        )}
+            <LineItem
+                type={t('WorkoutDetails.date')}
+                value={getDateTimeTZ(
+                    data.timestamp,
+                    data.timezone,
+                    data.dateOnly
+                )}
+            />
+            <LineItem
+                type={t('WorkoutDetails.duration')}
+                value={formatDuration(data.duration)}
+            />
 
-        {data.notes && <LineItem type={_t.notes} value={data.notes} notes />}
-    </ul>
-);
+            {data.type === WorkoutTypes.CYCLING ? (
+                <LineItem
+                    type={t('WorkoutDetails.speed')}
+                    value={`${data.speed.toFixed(1)} ${units.kmh}`}
+                />
+            ) : (
+                <LineItem
+                    type={t('WorkoutDetails.pace')}
+                    value={`${formatPace(data.pace)} /${units.km}`}
+                />
+            )}
+
+            {data.notes && (
+                <LineItem
+                    type={t('WorkoutDetails.notes')}
+                    value={data.notes}
+                    notes
+                />
+            )}
+        </ul>
+    );
+};

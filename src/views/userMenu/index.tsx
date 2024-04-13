@@ -2,11 +2,10 @@
 
 import { Fragment, useState } from 'react';
 import { Popover } from '@headlessui/react';
-import { usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import useSWR from 'swr';
 
 import {
-    _t,
     Button,
     Heading,
     IconButton,
@@ -18,15 +17,17 @@ import {
     UserIcon,
 } from '@/components';
 import { UserData } from '@/interfaces';
+import { usePathname } from '@/navigation';
 import { getCognitoAttribute } from '@/utils/helpers';
 
 import { BestResultsModal } from '../bestResultsModal';
 
 export const UserMenu = () => {
     const [isBestResultsModalOpen, setIsBestResultsModalOpen] = useState(false);
+    const t = useTranslations('Navbar');
 
     const pathname = usePathname();
-    const isDashboard = pathname.startsWith('/dashboard');
+    const isDashboardPage = pathname.startsWith('/dashboard');
 
     const { data } = useSWR<UserData>('/api/user');
     const email = getCognitoAttribute(data, 'email');
@@ -34,7 +35,7 @@ export const UserMenu = () => {
 
     return (
         <>
-            {isDashboard ? (
+            {isDashboardPage ? (
                 <>
                     <Popover as="div" className="relative">
                         <Popover.Button as={Fragment}>
@@ -68,18 +69,18 @@ export const UserMenu = () => {
                                     </>
                                 )}
 
-                                {isDashboard && (
+                                {isDashboardPage && (
                                     <>
                                         <MenuButton
                                             onClick={() =>
                                                 setIsBestResultsModalOpen(true)
                                             }
                                         >
-                                            {_t.bestResults}
+                                            {t('bestResultsLink')}
                                         </MenuButton>
 
                                         <MenuLink href="/user" popover>
-                                            {_t.accountSettings}
+                                            {t('accountSettingsLink')}
                                         </MenuLink>
                                     </>
                                 )}
@@ -88,7 +89,7 @@ export const UserMenu = () => {
 
                                 <form action={logoutUser}>
                                     <MenuButton type="submit" hoverRed>
-                                        {_t.signOut}
+                                        {t('logoutCta')}
                                     </MenuButton>
                                 </form>
                             </Popover.Panel>
@@ -106,7 +107,7 @@ export const UserMenu = () => {
                         className="btn-outline btn-primary hidden sm:block"
                         type="submit"
                     >
-                        {_t.signOut}
+                        {t('logoutCta')}
                     </Button>
                 </form>
             )}

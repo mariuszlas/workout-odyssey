@@ -1,13 +1,14 @@
 import type { Dispatch, FC, SetStateAction } from 'react';
 import { useRef, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import useSWR from 'swr';
 
-import { _t, Alert, Badge, Button, Text } from '@/components';
+import { Alert, Badge, Button, Text } from '@/components';
 import { NewWorkout, UserData } from '@/interfaces';
-import { getGenericErrorMessage } from '@/utils/helpers';
+import { getMsgFromError } from '@/utils/helpers';
 
 import { defaultNewWorkout } from '../helpers';
-import { parseXML, readFileAsync } from '../xmlParser';
+import { FileSizeError, parseXML, readFileAsync } from '../xmlParser';
 
 interface Props {
     file: File | null;
@@ -17,20 +18,20 @@ interface Props {
 
 export const FilePicker: FC<Props> = ({ file, setFile, setWorkout }) => {
     const { data: user } = useSWR<UserData>('/api/user');
-
+    const t = useTranslations('Dashboard.WorkoutUpload.Forms.file');
     const [error, setError] = useState<string | null>(null);
     const ref = useRef<HTMLInputElement>(null);
 
     const readFile = async (file: File) => {
         try {
             if (user?.isDemo && file.size > 1000000) {
-                throw new Error(_t.errorDemoFileSize);
+                throw new FileSizeError();
             }
 
             const xmlString = await readFileAsync(file);
 
             if (typeof xmlString !== 'string') {
-                throw new Error(_t.errorParsingFile);
+                throw new Error('Not an XML');
             }
             const data = parseXML(xmlString, file.name);
 
@@ -45,7 +46,12 @@ export const FilePicker: FC<Props> = ({ file, setFile, setWorkout }) => {
 
             setFile(file);
         } catch (e) {
-            setError(getGenericErrorMessage(e, _t.errorParsingFile));
+            if (e instanceof FileSizeError) {
+                setError(t('errors.demoFileSize'));
+            } else {
+                setError(t('errors.generic'));
+            }
+            console.error(getMsgFromError(e));
         }
     };
 
@@ -80,7 +86,7 @@ export const FilePicker: FC<Props> = ({ file, setFile, setWorkout }) => {
                 {file ? (
                     <Badge value={file.name} onClose={removeFile} />
                 ) : (
-                    <Text className="italic" value={_t.noFile} />
+                    <Text className="italic" value={t('noFileSelected')} />
                 )}
 
                 <input
@@ -95,7 +101,7 @@ export const FilePicker: FC<Props> = ({ file, setFile, setWorkout }) => {
                     className="btn-outline btn-primary"
                     onClick={onButtonClick}
                 >
-                    {_t.btnFileInput}
+                    {t('cta')}
                 </Button>
             </div>
         </div>

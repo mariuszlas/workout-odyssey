@@ -4,8 +4,9 @@ import type { FC, ReactNode } from 'react';
 import { Fragment, useState } from 'react';
 import { useFormState } from 'react-dom';
 import { Tab } from '@headlessui/react';
+import { useTranslations } from 'next-intl';
 
-import { _t, Button } from '@/components';
+import { Button } from '@/components';
 import type { NewWorkout, Workout, WorkoutPreview } from '@/interfaces';
 import { cn } from '@/utils/helpers';
 
@@ -53,16 +54,18 @@ export const FormsPanel: FC<Props> = ({ editWorkout, setPreviewData }) => {
     const [workout, setWorkout] = useState<NewWorkout>(
         editWorkout ? { ...editWorkout, coordinates: [] } : defaultNewWorkout
     );
+    const t = useTranslations('Dashboard.WorkoutUpload');
+
     const props = { setWorkout, workout };
     const filePickerProps = { setWorkout, file, setFile };
 
-    const [formState, action] = useFormState(
-        () =>
-            getWorkoutPreview(
-                formatAndValidateData(workout, editWorkout && editWorkout.id)
-            ),
-        undefined
-    );
+    const [formState, action] = useFormState(() => {
+        if (!workout.distance || !workout.duration) return;
+
+        return getWorkoutPreview(
+            formatAndValidateData(workout, editWorkout && editWorkout.id)
+        );
+    }, undefined);
 
     if (formState?.ok) {
         setPreviewData(formState.preview);
@@ -73,11 +76,13 @@ export const FormsPanel: FC<Props> = ({ editWorkout, setPreviewData }) => {
             <Tab.Group defaultIndex={editWorkout ? 1 : 0}>
                 <Tab.List className="tabs tabs-bordered">
                     <CustomTab isDisabled={!!editWorkout}>
-                        {_t.btnUploadFile}
+                        {t('Forms.tabUploadFile')}
                     </CustomTab>
 
                     <CustomTab>
-                        {editWorkout ? _t.btnEditWorkout : _t.btnAddData}
+                        {editWorkout
+                            ? t('Forms.tabEdit')
+                            : t('Forms.tabAddData')}
                     </CustomTab>
                 </Tab.List>
 
@@ -107,7 +112,7 @@ export const FormsPanel: FC<Props> = ({ editWorkout, setPreviewData }) => {
             </div>
 
             <Button className="btn-primary btn-block mt-8" type="submit">
-                {_t.btnUpload}
+                {t('Forms.cta')}
             </Button>
         </form>
     );

@@ -3,9 +3,9 @@
 import type { FC } from 'react';
 import { Fragment, useRef, useState } from 'react';
 import { Menu } from '@headlessui/react';
+import { useTranslations } from 'next-intl';
 
 import {
-    _t,
     EditIcon,
     IconButton,
     InformationIcon,
@@ -25,6 +25,7 @@ import { WorkoutUploadModal } from '../workoutUploadModal';
 export const WorkoutMenu: FC<{ data: Workout }> = ({ data }) => {
     const [top, setTop] = useState(false);
     const ref = useRef<HTMLButtonElement>(null);
+    const t = useTranslations('Dashboard.WorkoutList.WorkoutMenu');
     const MIN_MENU_HEIGHT = 140;
 
     const [isWorkoutUploadModalOpen, setIsWorkoutUploadModalOpen] =
@@ -49,17 +50,17 @@ export const WorkoutMenu: FC<{ data: Workout }> = ({ data }) => {
     const items = [
         {
             onClick: () => setWorkoutDetailsDrawerOpen(true),
-            text: _t.workoutDetails,
+            text: t('details'),
             icon: <InformationIcon />,
         },
         {
             onClick: () => setIsWorkoutUploadModalOpen(true),
-            text: _t.edit,
+            text: t('edit'),
             icon: <EditIcon />,
         },
         {
             onClick: () => setDeleteWorkoutModalOpen(true),
-            text: _t.delete,
+            text: t('delete'),
             icon: <TrashIcon />,
             hoverRed: true,
         },

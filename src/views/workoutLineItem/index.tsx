@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 
-import { _t, Text } from '@/components';
-import type { StatIconType } from '@/interfaces';
+import { Text } from '@/components';
+import type { StatIconType, Units } from '@/interfaces';
 import { Workout, WorkoutTypes } from '@/interfaces';
 
 import { formatDuration, formatPace, getDateTimeTZ } from '../helpers';
@@ -9,6 +9,7 @@ import { getStatIcon } from '../statistics/statsPanel/statsPanelEntry';
 
 export interface Props {
     data: Workout;
+    units?: Units;
 }
 
 export interface TypeProps extends Props {
@@ -44,25 +45,25 @@ export const DateEntry: FC<Props> = ({ data }) => (
     <DataEntry value={getDateTimeTZ(data.timestamp, data.timezone)} />
 );
 
-export const Distance: FC<Props> = ({ data }) => (
-    <DataEntry value={data.distance.toFixed(1)} unit={_t.km} />
+export const Distance: FC<Props> = ({ data, units }) => (
+    <DataEntry value={data.distance.toFixed(1)} unit={units?.km} />
 );
 
 export const Duration: FC<Props> = ({ data }) => (
     <DataEntry value={formatDuration(data.duration)} iconType="clockCircle" />
 );
 
-export const PaceOrSpeed: FC<TypeProps> = ({ data, type }) =>
+export const PaceOrSpeed: FC<TypeProps> = ({ data, type, units }) =>
     type === WorkoutTypes.CYCLING ? (
         <DataEntry
             value={data.speed.toFixed(1)}
-            unit={_t.kmPerHour}
+            unit={units?.kmh}
             iconType="speedometer"
         />
     ) : (
         <DataEntry
             value={formatPace(data.pace)}
-            unit={_t.perKm}
+            unit={`/${units?.km}`}
             iconType="speedometer"
         />
     );

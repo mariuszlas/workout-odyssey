@@ -2,11 +2,10 @@
 
 import type { FC } from 'react';
 import { useState } from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import {} from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
 import {
-    _t,
     BurgerMenuIcon,
     Button,
     Logo,
@@ -14,6 +13,7 @@ import {
     Text,
     ThemeSwitch,
 } from '@/components';
+import { Link, usePathname } from '@/navigation';
 
 import { UserMenu } from '../userMenu';
 import { WorkoutSelector } from '../workoutSelector';
@@ -28,13 +28,14 @@ export const NavBar: FC<{ isProtected?: boolean }> = ({
     const [isDrawerMenuOpen, setIsDrawerMenuOpen] = useState(false);
     const [isWorkoutUploadModalOpen, setIsWorkoutUploadModalOpen] =
         useState(false);
+    const t = useTranslations('Navbar');
 
     const pathname = usePathname();
-    const isLoginPage = pathname === '/login';
-    const isSignupPage = pathname === '/signup';
-    const isEmailVerificationPage = pathname === '/verify';
-    const isDashboard = pathname.startsWith('/dashboard');
-    const isUser = pathname.startsWith('/user');
+    const isLoginPage = pathname.startsWith('/login');
+    const isSignupPage = pathname.startsWith('/signup');
+    const isEmailVerificationPage = pathname.startsWith('/verify');
+    const isDashboardPage = pathname.startsWith('/dashboard');
+    const isAccountSettingsPage = pathname.startsWith('/user');
 
     const showLoginBtn = !(isLoginPage || isEmailVerificationPage);
     const showSignupBtn = !isSignupPage;
@@ -66,14 +67,14 @@ export const NavBar: FC<{ isProtected?: boolean }> = ({
 
                         {isProtected && (
                             <div className="hidden gap-4 md:flex">
-                                {isDashboard && <WorkoutSelector />}
+                                {isDashboardPage && <WorkoutSelector />}
 
-                                {isUser && (
+                                {isAccountSettingsPage && (
                                     <Link
                                         href="/dashboard/running"
                                         className="btn btn-outline btn-primary h-10 min-h-min text-base"
                                     >
-                                        Dashboard
+                                        {t('dashboardLink')}
                                     </Link>
                                 )}
 
@@ -84,7 +85,7 @@ export const NavBar: FC<{ isProtected?: boolean }> = ({
                                         setIsWorkoutUploadModalOpen(true)
                                     }
                                 >
-                                    <Text value={_t.btnAddWorkout} />
+                                    <Text value={t('newWorkoutCta')} />
                                     <PlusIcon />
                                 </Button>
                             </div>
@@ -104,7 +105,7 @@ export const NavBar: FC<{ isProtected?: boolean }> = ({
                                         href="/login"
                                         color="primary"
                                     >
-                                        {_t.btnLogin}
+                                        {t('loginCta')}
                                     </Link>
                                 )}
 
@@ -114,7 +115,7 @@ export const NavBar: FC<{ isProtected?: boolean }> = ({
                                         href="/signup"
                                         color="primary"
                                     >
-                                        {_t.btnSignup}
+                                        {t('signupCta')}
                                     </Link>
                                 )}
                             </>
@@ -129,7 +130,7 @@ export const NavBar: FC<{ isProtected?: boolean }> = ({
                 isProtected={isProtected}
                 isSignupPage={isSignupPage}
                 openWorkoutUploadModal={() => setIsWorkoutUploadModalOpen(true)}
-                isUser={isUser}
+                isAccountSettingsPage={isAccountSettingsPage}
             />
 
             <WorkoutUploadModal

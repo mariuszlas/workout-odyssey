@@ -1,7 +1,7 @@
 import type { TooltipItem } from 'chart.js/auto';
 import { describe, expect, it, vi } from 'vitest';
 
-import { BestMonths, WorkoutsDashboard } from '@/interfaces';
+import { BestMonths, Units, WorkoutsDashboard } from '@/interfaces';
 
 import type { BarChartData, BarChartT } from './chart';
 import * as c from './constants';
@@ -11,7 +11,6 @@ import {
     formatChartTooltip,
     getAvailableYears,
     getDataset,
-    getMonthFromString,
     getNextYearIdx,
     getPreviousYearIdx,
     getSecStats,
@@ -31,7 +30,7 @@ describe('getDataset', () => {
 });
 
 describe('updateChart', () => {
-    const data = [{ x: 'Jun', y: 2 }];
+    const data = [{ x: 'Jun', y: 2, value: 6 }];
 
     it('should update the chart if the chart exists', () => {
         const updateChartFn = vi.fn();
@@ -78,22 +77,13 @@ describe('destroyChart', () => {
     });
 });
 
-describe('getMonthFromString', () => {
-    it('should return the correct month number for a valid month name', () => {
-        expect(getMonthFromString('Jan')).toEqual(1);
-        expect(getMonthFromString('Jul')).toEqual(7);
-        expect(getMonthFromString('Sep')).toEqual(9);
-        expect(getMonthFromString('Dec')).toEqual(12);
-    });
-});
-
 describe('formatChartTooltip', () => {
     it('should return a formatted tooltip string for a valid value', () => {
         const context = {
             parsed: { y: 12.345 },
         } as unknown as TooltipItem<'bar'>;
 
-        const actual = formatChartTooltip(context);
+        const actual = formatChartTooltip(context, { km: 'km' } as Units);
 
         expect(actual).toEqual('12.3 km');
     });

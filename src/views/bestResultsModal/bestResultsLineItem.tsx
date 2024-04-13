@@ -1,16 +1,18 @@
 import type { FC } from 'react';
 
-import { _t, Text } from '@/components';
-import type { Workout } from '@/interfaces';
+import { Text } from '@/components';
+import type { Units, Workout } from '@/interfaces';
 
 import { DateEntry, Duration, PaceOrSpeed } from '../workoutLineItem';
 
 interface Props {
     data: Workout | null | undefined;
     header: string;
+    units: Units;
+    noDataText: string;
 }
 
-export const LineItem: FC<Props> = ({ data, header }) => (
+export const LineItem: FC<Props> = ({ data, header, units, noDataText }) => (
     <li className="flex w-full flex-col items-stretch gap-1">
         <div className="flex flex-col sm:px-4">
             <Text as="p" className="font-medium" value={header} />
@@ -19,12 +21,16 @@ export const LineItem: FC<Props> = ({ data, header }) => (
                     <>
                         <DateEntry data={data} />
                         <div className="flex gap-4">
-                            <Duration data={data} />
-                            <PaceOrSpeed data={data} type={data.type} />
+                            <Duration data={data} units={units} />
+                            <PaceOrSpeed
+                                data={data}
+                                type={data.type}
+                                units={units}
+                            />
                         </div>
                     </>
                 ) : (
-                    <>{_t.noData}</>
+                    <>{noDataText}</>
                 )}
             </div>
         </div>

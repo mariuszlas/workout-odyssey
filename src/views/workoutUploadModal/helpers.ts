@@ -1,25 +1,22 @@
-import { _t } from '@/constants';
-import type { NewWorkout, UploadWorkout, Workout } from '@/interfaces';
+import type { NewWorkout, UploadWorkout } from '@/interfaces';
 import { WorkoutTypes } from '@/interfaces';
 import dayjs from '@/utils/extended-dayjs';
 import { isValidWorkoutType } from '@/utils/helpers';
-
-import { formatDuration, getDateTimeTZ } from '../helpers';
 
 export const formatAndValidateData = (
     workout: NewWorkout,
     id?: number
 ): UploadWorkout => {
-    if (!workout.duration) throw new Error(_t.errorDataInput);
+    if (!workout.duration) throw new Error('Incorrect data input');
 
     let distance = workout.distance;
     if (typeof distance === 'string') distance = parseFloat(distance);
 
-    if (distance < 0.5) throw new Error(_t.errorMinDistance);
+    if (distance < 0.5) throw new Error('Minimum distance is 0.5 km');
 
     const type = workout.type;
     if (!isValidWorkoutType(type)) {
-        throw new Error(_t.errorDataInput);
+        throw new Error('Incorrect data input');
     }
 
     return {
@@ -34,24 +31,6 @@ export const formatAndValidateData = (
         geolocation: workout.coordinates?.length ? workout.coordinates : null,
     };
 };
-
-export const formatPreviewMessage = (
-    existingData: Workout[] | undefined,
-    workout: UploadWorkout
-) => {
-    const dataRecords = existingData?.length || 'no';
-    const isSingular = dataRecords === 1;
-    const date = getDateTimeTZ(workout.timestamp, workout.timezone, false);
-
-    return `${isSingular ? _t.previewMsgIs : _t.previewMsgAre} ${dataRecords} ${
-        isSingular ? _t.previewMsgRecord : _t.previewMsgRecordPlural
-    } for ${workout.type} ${_t.previewMsgOn} ${date}`;
-};
-
-export const formatPreviewItem = (workout: UploadWorkout | Workout) =>
-    `${_t.distance}: ${workout.distance.toFixed(1)} ${_t.km}, ${
-        _t.duration
-    }: ${formatDuration(workout.duration)}`;
 
 export const defaultNewWorkout = {
     type: WorkoutTypes.RUNNING,

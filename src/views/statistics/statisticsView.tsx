@@ -1,10 +1,10 @@
 'use client';
 
 import type { FC } from 'react';
-import { usePathname } from 'next/navigation';
 
 import { useIsBreakpoint } from '@/hooks';
 import type { WorkoutsDashboard } from '@/interfaces';
+import { usePathname } from '@/navigation';
 import { useUI } from '@/providers';
 import { getWorkoutTypeFromPathname } from '@/utils/helpers';
 

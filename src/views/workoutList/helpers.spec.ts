@@ -2,8 +2,6 @@ import { describe, expect, it } from 'vitest';
 
 import { Workout } from '@/interfaces';
 
-import { _t } from '..';
-
 import { SortOptions } from './header/components/sorting';
 import {
     filterWorkouts,

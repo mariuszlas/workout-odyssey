@@ -1,6 +1,7 @@
 import type { FC } from 'react';
+import { useTranslations } from 'next-intl';
 
-import { _t, Select } from '@/components';
+import { Select } from '@/components';
 
 import { handleSort } from './helpers';
 
@@ -24,27 +25,31 @@ export const enum SortOptions {
     PACE_REVERSE = 'pace-reverse',
 }
 
-const SortOptionsMap = [
-    { val: [SortOptions.DATE], text: _t.sortOptDateDesc },
-    { val: [SortOptions.DATE_REVERSE], text: _t.sortOptDateAsc },
-    { val: [SortOptions.DISTANCE], text: _t.sortOptDistanceDesc },
-    { val: [SortOptions.DISTANCE_REVERSE], text: _t.sortOptDistanceAsc },
-    { val: [SortOptions.DURATION], text: _t.sortOptDurationDesc },
-    { val: [SortOptions.DURATION_REVERSE], text: _t.sortOptDurationAsc },
-    { val: [SortOptions.PACE], text: _t.sortOptPaceDesc },
-    { val: [SortOptions.PACE_REVERSE], text: _t.sortOptPaceAsc },
-];
+export const Sorting: FC<SortingProps> = ({ setSortBy }) => {
+    const t = useTranslations('Dashboard.WorkoutList.Header.sorting');
 
-export const Sorting: FC<SortingProps> = ({ setSortBy }) => (
-    <Select
-        className="w-52"
-        onChange={e => handleSort(e, setSortBy)}
-        aria-label="sort workout list"
-    >
-        {SortOptionsMap.map((option, idx) => (
-            <option key={idx} value={option.val}>
-                {option.text}
-            </option>
-        ))}
-    </Select>
-);
+    const SortOptionsMap = [
+        { val: [SortOptions.DATE], text: t('dateDesc') },
+        { val: [SortOptions.DATE_REVERSE], text: t('dateAsc') },
+        { val: [SortOptions.DISTANCE], text: t('distanceDesc') },
+        { val: [SortOptions.DISTANCE_REVERSE], text: t('distanceAsc') },
+        { val: [SortOptions.DURATION], text: t('durationDesc') },
+        { val: [SortOptions.DURATION_REVERSE], text: t('durationAsc') },
+        { val: [SortOptions.PACE], text: t('paceDesc') },
+        { val: [SortOptions.PACE_REVERSE], text: t('paceAsc') },
+    ];
+
+    return (
+        <Select
+            className="w-52"
+            onChange={e => handleSort(e, setSortBy)}
+            aria-label="sort workout list"
+        >
+            {SortOptionsMap.map((option, idx) => (
+                <option key={idx} value={option.val}>
+                    {option.text}
+                </option>
+            ))}
+        </Select>
+    );
+};

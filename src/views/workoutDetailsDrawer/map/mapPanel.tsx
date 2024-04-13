@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { useTranslations } from 'next-intl';
 import useSWR from 'swr';
 
 import { Alert, Skeleton, Text } from '@/components';
@@ -8,6 +9,7 @@ import { Map } from './map';
 
 export const MapPanel: FC<{ id: number }> = ({ id }) => {
     const { data, error, isLoading } = useSWR<Workout>(`/api/workout?id=${id}`);
+    const t = useTranslations('Dashboard.WorkoutDetails');
 
     if (isLoading) {
         return <Skeleton h="full" />;
@@ -16,7 +18,7 @@ export const MapPanel: FC<{ id: number }> = ({ id }) => {
     if (!data?.geometry) {
         return (
             <div className="flex h-full items-center justify-center">
-                <Text value="This workout does not have geolocation data" />
+                <Text value={t('noGeolocation')} />
             </div>
         );
     }
@@ -24,7 +26,7 @@ export const MapPanel: FC<{ id: number }> = ({ id }) => {
     if (error) {
         return (
             <Alert status="error" classes="mb-0">
-                Something went wrong and we could not get the geolocation data
+                {t('errorGeolocation')}
             </Alert>
         );
     }

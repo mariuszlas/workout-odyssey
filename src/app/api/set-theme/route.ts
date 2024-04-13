@@ -1,4 +1,4 @@
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 import { Cookie, Theme } from '@/interfaces';
 import { setCookie } from '@/server/helpers';
@@ -10,5 +10,5 @@ export async function GET(request: NextRequest) {
 
     setCookie(Cookie.THEME, theme, 60 * 60 * 24 * 365, false);
 
-    return new Response(null, { status: 200 });
+    return NextResponse.json(null, { status: 200 });
 }

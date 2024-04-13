@@ -1,6 +1,7 @@
 import { FC, useState } from 'react';
+import { useTranslations } from 'next-intl';
 
-import { _t, ModalHeader } from '@/components';
+import { ModalHeader } from '@/components';
 import type { Workout, WorkoutPreview } from '@/interfaces';
 
 import { FormsPanel } from './formsPanel';
@@ -13,11 +14,12 @@ interface Props {
 
 export const WorkoutUpload: FC<Props> = ({ workout, onClose }) => {
     const [previewData, setPreviewData] = useState<WorkoutPreview | null>(null);
+    const t = useTranslations('Dashboard.WorkoutUpload');
 
     return (
         <>
             <ModalHeader onClose={onClose}>
-                {previewData ? _t.dataPreviewHeader : _t.dataUploadHeader}
+                {previewData ? t('Preview.header') : t('Forms.header')}
             </ModalHeader>
 
             {previewData ? (

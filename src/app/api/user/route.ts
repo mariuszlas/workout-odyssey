@@ -1,12 +1,14 @@
+import { NextResponse } from 'next/server';
+
+import { handleApiError, validateSession } from '@/server/helpers';
 import { getAllUserData } from '@/server/services';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
-
 export async function GET() {
+    const username = validateSession();
+
     try {
-        return Response.json(await getAllUserData());
+        return NextResponse.json(await getAllUserData(username));
     } catch (_) {
-        return Response.json({});
+        return handleApiError();
     }
 }

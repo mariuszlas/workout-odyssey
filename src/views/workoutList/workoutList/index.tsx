@@ -1,7 +1,9 @@
 import type { FC } from 'react';
+import { useTranslations } from 'next-intl';
 
-import { _t, Text } from '@/components/';
+import { Text } from '@/components/';
 import type { Workout, WorkoutTypes } from '@/interfaces';
+import { useUI } from '@/providers';
 
 import type { PageProps } from '../header/components';
 import { Pagination } from '../header/components';
@@ -31,10 +33,13 @@ export const WorkoutList: FC<WorkoutListProps> = ({
     setPageNo,
     isError,
 }) => {
+    const { units } = useUI();
+    const t = useTranslations('Dashboard.WorkoutList.Body');
+
     if (isError) {
         return (
             <div className="my-6 flex w-full justify-center rounded-lg">
-                <Text value={_t.errorFetch} />
+                <Text value={t('error')} />
             </div>
         );
     }
@@ -44,7 +49,7 @@ export const WorkoutList: FC<WorkoutListProps> = ({
             <div className="flex w-full justify-center p-4">
                 <Text
                     data-testid="no-workouts-message"
-                    value={_t.noWorkoutsMsg}
+                    value={t('noWorkouts')}
                 />
             </div>
         );
@@ -57,7 +62,12 @@ export const WorkoutList: FC<WorkoutListProps> = ({
         <>
             <ul className="w-full grow">
                 {pagedWorkouts.map((item, idx) => (
-                    <WorkoutLineItem key={idx} data={item} type={workoutType} />
+                    <WorkoutLineItem
+                        key={idx}
+                        data={item}
+                        type={workoutType}
+                        units={units}
+                    />
                 ))}
             </ul>
 

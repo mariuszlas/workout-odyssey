@@ -3,14 +3,23 @@
 import type { FC, ReactNode } from 'react';
 import { createContext, useContext, useState } from 'react';
 
+import { Units } from '@/interfaces';
+
 interface UIContext {
     year: number;
     secondaryStat: number;
+    units: Units;
 }
 
 const getDefaultUI = (): UIContext => ({
     year: 0,
     secondaryStat: new Date().getFullYear(),
+    units: {
+        km: 'km',
+        kmh: 'km/h',
+        h: 'h',
+        min: 'min',
+    },
 });
 
 interface UIContextType extends UIContext {

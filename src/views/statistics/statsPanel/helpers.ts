@@ -1,28 +1,33 @@
-import { _t } from '@/constants';
 import type { HeaderData } from '@/interfaces';
+import dayjs from '@/utils/extended-dayjs';
 
 import { getFormattedMonthAndYear } from '../../helpers';
 
 export const getStatsPanelHeading = (
     isPrimary: boolean,
     { year, secStats }: HeaderData,
+    locale: string,
+    { yearT, totalT }: { yearT: string; totalT: string },
     isShortMonth?: boolean
 ): string => {
     if (isPrimary) {
-        if (year === 0) return _t.total;
-        else return `${_t.year} ${year}`;
+        if (year === 0) return totalT;
+        else return `${yearT} ${year}`;
     } else {
-        if (year === 0) return `${_t.year} ${secStats}`;
-        else return getFormattedMonthAndYear(year, secStats, isShortMonth);
+        if (year === 0) return `${yearT} ${secStats}`;
+        else
+            return getFormattedMonthAndYear(
+                year,
+                secStats,
+                locale,
+                isShortMonth
+            );
     }
 };
 
-export const getDecimal = (
-    seconds: number | undefined
-): { time: string; unit: string } | undefined => {
-    if (!seconds || seconds < 0) return;
-    const hd = seconds / 3600;
-
-    if (hd >= 1.0) return { time: hd.toFixed(1), unit: _t.h };
-    else return { time: (hd * 60).toFixed(0), unit: _t.m };
+export const formatDurationAsDecimal = (seconds = 0) => {
+    const duration = dayjs.duration(seconds, 's');
+    return duration.hours() >= 1
+        ? duration.asHours().toFixed(1)
+        : duration.asMinutes().toFixed(0);
 };

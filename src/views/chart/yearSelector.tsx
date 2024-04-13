@@ -1,10 +1,11 @@
 'use client';
 
 import { type ChangeEvent, FC, useEffect, useMemo } from 'react';
-import { usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
-import { _t, ArrowLeft, ArrowRight, IconButton, Select } from '@/components';
+import { ArrowLeft, ArrowRight, IconButton, Select } from '@/components';
 import type { BestMonths, WorkoutsDashboard } from '@/interfaces';
+import { usePathname } from '@/navigation';
 import { useUI } from '@/providers';
 import { getWorkoutTypeFromPathname } from '@/utils/helpers';
 
@@ -29,6 +30,8 @@ export const YearSelector: FC<Props> = ({ dashboard }) => {
     const { year, setYear, setSecondaryStat } = useUI();
     const pathname = usePathname();
     const workoutType = getWorkoutTypeFromPathname(pathname);
+
+    const t = useTranslations('Dashboard.Chart');
 
     const availableYears = useMemo(
         () => getAvailableYears(dashboard),
@@ -62,7 +65,7 @@ export const YearSelector: FC<Props> = ({ dashboard }) => {
         ));
         options.unshift(
             <option key={0} value={0}>
-                {_t.total}
+                {t('yearTotal')}
             </option>
         );
         return options;

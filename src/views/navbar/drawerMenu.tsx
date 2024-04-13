@@ -1,7 +1,7 @@
 import type { FC } from 'react';
+import { useTranslations } from 'next-intl';
 
 import {
-    _t,
     CloseButton,
     Drawer,
     logoutUser,
@@ -19,7 +19,7 @@ interface Props extends DrawerProps {
     isProtected: boolean;
     openWorkoutUploadModal: () => void;
     isSignupPage: boolean;
-    isUser: boolean;
+    isAccountSettingsPage: boolean;
 }
 
 export const DrawerMenu: FC<Props> = ({
@@ -28,70 +28,74 @@ export const DrawerMenu: FC<Props> = ({
     openWorkoutUploadModal,
     onClose,
     isSignupPage,
-    isUser,
-}) => (
-    <Drawer isOpen={isOpen} onClose={onClose}>
-        <div className="flex w-full items-center justify-between p-4">
-            <Text className="text-xl font-semibold" value={_t.mainMenu} />
-            <CloseButton onClick={onClose} />
-        </div>
+    isAccountSettingsPage,
+}) => {
+    const t = useTranslations('Navbar');
 
-        <hr className="border-t border-t-base-content border-opacity-20 " />
+    return (
+        <Drawer isOpen={isOpen} onClose={onClose}>
+            <div className="flex w-full items-center justify-between p-4">
+                <Text className="text-xl font-semibold" value={t('mainMenu')} />
+                <CloseButton onClick={onClose} />
+            </div>
 
-        <ul className="w-full p-4">
-            <ThemeSwitch isMobile />
+            <hr className="border-t border-t-base-content border-opacity-20 " />
 
-            {isProtected && (
-                <>
-                    {isUser && (
+            <ul className="w-full p-4">
+                <ThemeSwitch isMobile />
+
+                {isProtected && (
+                    <>
+                        {isAccountSettingsPage && (
+                            <li>
+                                <MenuLink
+                                    href="/dashboard/running"
+                                    onClick={() => onClose()}
+                                    popover
+                                >
+                                    {t('dashboardLink')}
+                                </MenuLink>
+                            </li>
+                        )}
+
                         <li>
-                            <MenuLink
-                                href="/dashboard/running"
-                                onClick={() => onClose()}
-                                popover
+                            <MenuButton
+                                aria-label="add workout"
+                                onClick={() => {
+                                    onClose();
+                                    openWorkoutUploadModal();
+                                }}
                             >
-                                Dashboard
-                            </MenuLink>
-                        </li>
-                    )}
-
-                    <li>
-                        <MenuButton
-                            aria-label="add workout"
-                            onClick={() => {
-                                onClose();
-                                openWorkoutUploadModal();
-                            }}
-                        >
-                            <Text value={_t.btnAddWorkout} />
-                            <PlusIcon />
-                        </MenuButton>
-                    </li>
-
-                    {isUser && (
-                        <form action={logoutUser}>
-                            <MenuButton type="submit" hoverRed>
-                                {_t.signOut}
+                                <Text value={t('newWorkoutCta')} />
+                                <PlusIcon />
                             </MenuButton>
-                        </form>
-                    )}
+                        </li>
 
-                    {!isUser && (
-                        <>
-                            <hr className="my-4 border-t border-t-base-content border-opacity-20 " />
-                            <WorkoutSelector isMobile onClose={onClose} />
-                        </>
-                    )}
-                </>
-            )}
+                        {isAccountSettingsPage && (
+                            <form action={logoutUser}>
+                                <MenuButton type="submit" hoverRed>
+                                    {t('logoutCta')}
+                                </MenuButton>
+                            </form>
+                        )}
 
-            {!isProtected && !isSignupPage && (
-                <li>
-                    <MenuLink href="/signup" onClick={onClose}>
-                        {_t.btnSignup}
-                    </MenuLink>
-                </li>
-            )}
-        </ul>
-    </Drawer>
-);
+                        {!isAccountSettingsPage && (
+                            <>
+                                <hr className="my-4 border-t border-t-base-content border-opacity-20 " />
+                                <WorkoutSelector isMobile onClose={onClose} />
+                            </>
+                        )}
+                    </>
+                )}
+
+                {!isProtected && !isSignupPage && (
+                    <li>
+                        <MenuLink href="/signup" onClick={onClose}>
+                            {t('signupCta')}
+                        </MenuLink>
+                    </li>
+                )}
+            </ul>
+        </Drawer>
+    );
+};

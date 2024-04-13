@@ -1,10 +1,5 @@
 import dayjs from '@/utils/extended-dayjs';
 
-import { _t, months } from '../constants';
-
-export const getMonth = (num: number, isShort = false) =>
-    isShort ? months[num].short : months[num].long;
-
 export const capitalize = (s: string | undefined) =>
     s && s[0].toUpperCase() + s.slice(1);
 
@@ -33,5 +28,16 @@ export const getDateTimeTZ = (
 export const getFormattedMonthAndYear = (
     year: number,
     month: number,
-    isShortMonth?: boolean
-) => `${getMonth(month - 1, isShortMonth)} ${year}`;
+    locale: string,
+    isShort?: boolean
+) =>
+    `${getMonthForLocale(month - 1, locale, isShort ? 'short' : 'long')} ${year}`;
+
+export const getMonthForLocale = (
+    month: number,
+    locale: string,
+    format: 'long' | 'short' = 'long'
+) =>
+    new Intl.DateTimeFormat(locale, { month: format }).format(
+        new Date(2000, month)
+    );

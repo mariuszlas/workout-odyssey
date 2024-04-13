@@ -1,8 +1,8 @@
 import type { FC } from 'react';
 import { useState } from 'react';
+import { useLocale, useTranslations } from 'next-intl';
 
 import {
-    _t,
     Button,
     ChevronDownIcon,
     Collapsible,
@@ -38,6 +38,17 @@ export const WorkoutListHeader: FC<Props> = ({
 }) => {
     const [isOpen, setIsOpen] = useState(false);
     const isMobileOrTabled = useIsBreakpoint('md');
+    const t = useTranslations('Dashboard.WorkoutList.Header');
+    const locale = useLocale();
+
+    const headers = {
+        allWorkouts: t('allWorkouts'),
+        currentMonthWorkouts: t('currentMonthWorkouts'),
+        generic: t('generic'),
+    };
+
+    const toggleProps = { isAll, setIsAll, setPageNo };
+    const filterProps = { filterBy, setFilterBy };
 
     return (
         <header className="w-full">
@@ -47,14 +58,20 @@ export const WorkoutListHeader: FC<Props> = ({
                     className="text-2xl"
                     title="workout-list-section-title"
                 >
-                    {getWorkoutListHeading(headerData, isAll, isMobileOrTabled)}
+                    {getWorkoutListHeading(
+                        headerData,
+                        isAll,
+                        headers,
+                        locale,
+                        isMobileOrTabled
+                    )}
                 </Heading>
 
                 <Button
                     onClick={() => setIsOpen(prev => !prev)}
                     className="btn-primary sm:hidden"
                 >
-                    <Text value={_t.filter} />
+                    <Text value={t('filtering.cta')} />
                     <ChevronDownIcon
                         className={cn(
                             'transform duration-300 ease-in-out',
@@ -64,29 +81,22 @@ export const WorkoutListHeader: FC<Props> = ({
                 </Button>
 
                 <AllWorkoutsToggle
-                    isAll={isAll}
-                    setIsAll={setIsAll}
-                    setPageNo={setPageNo}
+                    {...toggleProps}
                     className="hidden sm:flex"
                 />
             </div>
 
             <div className="mt-4 hidden justify-between gap-6 sm:flex">
-                <Filtering filterBy={filterBy} setFilterBy={setFilterBy} />
+                <Filtering {...filterProps} />
                 <Sorting setSortBy={setSortBy} />
             </div>
 
             <Collapsible isOpen={isOpen} setIsOpen={setIsOpen}>
                 <div className="mt-3 flex flex-col items-start gap-3 sm:hidden">
                     <div className="flex w-full justify-between gap-6">
-                        <Filtering
-                            filterBy={filterBy}
-                            setFilterBy={setFilterBy}
-                        />
+                        <Filtering {...filterProps} />
                         <AllWorkoutsToggle
-                            isAll={isAll}
-                            setIsAll={setIsAll}
-                            setPageNo={setPageNo}
+                            {...toggleProps}
                             className="sm:hidden"
                         />
                     </div>

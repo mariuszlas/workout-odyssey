@@ -1,59 +1,36 @@
-'use client';
-
 import type { FC } from 'react';
-import { useMemo } from 'react';
+import { useTranslations } from 'next-intl';
 
-import { _t, Heading, Text } from '@/components';
+import { Heading } from '@/components';
 import type { WorkoutsDashboard } from '@/interfaces';
-import { useUI } from '@/providers';
 
-import { BarChart } from './chart';
-import { selectChartData } from './helpers';
+import { ChartSection } from './chart';
 import { YearSelector } from './yearSelector';
 
-interface Props {
+export interface Props {
     dashboard: WorkoutsDashboard;
 }
 
-const Chart: FC<Props> = ({ dashboard }) => {
-    const { year } = useUI();
-
-    const chartData = useMemo(
-        () => selectChartData(dashboard, year),
-        [dashboard, year]
-    );
+export const ChartView: FC<Props> = ({ dashboard }) => {
+    const t = useTranslations('Dashboard.Chart');
 
     return (
-        <>
-            {chartData ? (
-                <BarChart chartData={chartData} />
-            ) : (
-                <div className="my-6 flex w-full justify-center">
-                    <Text value={_t.noWorkoutsMsg} />
-                </div>
-            )}
-        </>
+        <section
+            className="flex flex-col items-center gap-2 border-base-content border-opacity-20 p-4 sm:gap-4 sm:rounded-xl sm:border sm:p-6 sm:shadow-lg"
+            data-testid="chart-section"
+        >
+            <header className="flex items-center gap-6">
+                <Heading
+                    as="h2"
+                    title="chart-section-title"
+                    className="text-2xl"
+                    value={t('header')}
+                />
+
+                <YearSelector dashboard={dashboard} />
+            </header>
+
+            <ChartSection dashboard={dashboard} />
+        </section>
     );
 };
-
-export const ChartView: FC<Props> = ({ dashboard }) => (
-    <section
-        className="flex flex-col items-center gap-2 border-base-content border-opacity-20 p-4 sm:gap-4 sm:rounded-xl sm:border sm:p-6 sm:shadow-lg"
-        data-testid="chart-section"
-    >
-        <header className="flex items-center gap-6">
-            <Heading
-                as="h2"
-                title="chart-section-title"
-                className="text-2xl"
-                value={_t.chartSectionH}
-            />
-
-            <YearSelector dashboard={dashboard} />
-        </header>
-
-        {/* <Suspense fallback={<SkeletonList length={4} />}> */}
-        <Chart dashboard={dashboard} />
-        {/* </Suspense> */}
-    </section>
-);

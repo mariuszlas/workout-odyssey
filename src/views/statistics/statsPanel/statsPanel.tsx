@@ -1,12 +1,15 @@
 import type { FC } from 'react';
+import { useLocale, useTranslations } from 'next-intl';
 
-import { _t, Heading } from '@/components';
+import { Heading } from '@/components';
 import { MonthStats, TotalStats, WorkoutTypes, YearStats } from '@/interfaces';
+import { useUI } from '@/providers';
+import dayjs from '@/utils/extended-dayjs';
 
 import { formatPace } from '../../helpers';
 
-import { getDecimal, getStatsPanelHeading } from './helpers';
-import { Field, StatsPanelEntry } from './statsPanelEntry';
+import { formatDurationAsDecimal, getStatsPanelHeading } from './helpers';
+import { StatsPanelEntry } from './statsPanelEntry';
 
 interface Props {
     data: TotalStats | YearStats | MonthStats | undefined;
@@ -22,60 +25,76 @@ export const StatsPanel: FC<Props> = ({
     workoutType,
     isPrimary = false,
     isMobile,
-}) => (
-    <section
-        className="flex flex-col items-start gap-2 border-base-content border-opacity-20 p-4 sm:gap-4 sm:rounded-xl sm:border sm:p-6 sm:shadow-lg"
-        data-testid={`${isPrimary ? 'primary' : 'secondary'}-stats-section`}
-    >
-        <header>
-            <Heading
-                as="h2"
-                title={`${
-                    isPrimary ? 'primary' : 'secondary'
-                }-stats-section-title`}
-                className="text-2xl"
-            >
-                {getStatsPanelHeading(isPrimary, headerData, isMobile)}
-            </Heading>
-        </header>
+}) => {
+    const { units } = useUI();
+    const t = useTranslations('Dashboard.Workout');
+    const locale = useLocale();
 
-        <div className="flex w-full flex-col gap-3">
-            <StatsPanelEntry
-                data={data?.distance?.toFixed(1) ?? 0}
-                field={Field.DISTANCE}
-                units={_t.km}
-                icon="road"
-            />
+    return (
+        <section
+            className="flex flex-col items-start gap-2 border-base-content border-opacity-20 p-4 sm:gap-4 sm:rounded-xl sm:border sm:p-6 sm:shadow-lg"
+            data-testid={`${isPrimary ? 'primary' : 'secondary'}-stats-section`}
+        >
+            <header>
+                <Heading
+                    as="h2"
+                    title={`${
+                        isPrimary ? 'primary' : 'secondary'
+                    }-stats-section-title`}
+                    className="text-2xl"
+                >
+                    {getStatsPanelHeading(
+                        isPrimary,
+                        headerData,
+                        locale,
+                        { yearT: t('year'), totalT: t('total') },
+                        isMobile
+                    )}
+                </Heading>
+            </header>
 
-            <StatsPanelEntry
-                data={getDecimal(data?.duration)?.time ?? 0}
-                field={Field.DURATION}
-                units={getDecimal(data?.duration)?.unit ?? _t.h}
-                icon="clockCircle"
-            />
-
-            {workoutType === WorkoutTypes.CYCLING ? (
+            <div className="flex w-full flex-col gap-3">
                 <StatsPanelEntry
-                    data={data?.speed?.toFixed(1) ?? 0}
-                    field={Field.SPEED}
-                    units={_t.kmPerHour}
-                    icon="speedometer"
+                    data={data?.distance?.toFixed(1) ?? 0}
+                    field={t('distance')}
+                    units={units.km}
+                    icon="road"
                 />
-            ) : (
-                <StatsPanelEntry
-                    data={formatPace(data?.pace ?? 0)}
-                    field={Field.PACE}
-                    units={_t.perKm}
-                    icon="speedometer"
-                />
-            )}
 
-            <StatsPanelEntry
-                data={data?.counts ?? 0}
-                field={Field.EX_TIMES}
-                units={''}
-                icon="counter"
-            />
-        </div>
-    </section>
-);
+                <StatsPanelEntry
+                    data={formatDurationAsDecimal(data?.duration)}
+                    field={t('duration')}
+                    units={
+                        dayjs.duration(data?.duration ?? 0, 's').hours() >= 1
+                            ? units.h
+                            : units.min
+                    }
+                    icon="clockCircle"
+                />
+
+                {workoutType === WorkoutTypes.CYCLING ? (
+                    <StatsPanelEntry
+                        data={data?.speed?.toFixed(1) ?? 0}
+                        field={t('avgSpeed')}
+                        units={units.kmh}
+                        icon="speedometer"
+                    />
+                ) : (
+                    <StatsPanelEntry
+                        data={formatPace(data?.pace ?? 0)}
+                        field={t('avgPace')}
+                        units={`/${units.km}`}
+                        icon="speedometer"
+                    />
+                )}
+
+                <StatsPanelEntry
+                    data={data?.counts ?? 0}
+                    field={t('counts')}
+                    units={''}
+                    icon="counter"
+                />
+            </div>
+        </section>
+    );
+};

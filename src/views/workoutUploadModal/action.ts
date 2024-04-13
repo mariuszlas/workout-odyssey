@@ -1,6 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
+import { getTranslations } from 'next-intl/server';
 
 import { UploadWorkout, Workout as WorkoutT } from '@/interfaces';
 import {
@@ -12,26 +13,32 @@ import {
 
 export const getWorkoutPreview = async (workout: UploadWorkout) => {
     const userId = await getCurrentUserId();
+    const t = await getTranslations('Dashboard.WorkoutUpload.errors');
 
-    const existingWorkouts = (await getWorkoutPreviewDb(
-        workout.type,
-        userId,
-        workout.timestamp
-    )) as any as WorkoutT[];
+    try {
+        const existingWorkouts = (await getWorkoutPreviewDb(
+            workout.type,
+            userId,
+            workout.timestamp
+        )) as any as WorkoutT[];
 
-    return {
-        ok: true,
-        preview: { data: workout, foundData: existingWorkouts },
-    };
+        return {
+            ok: true,
+            preview: { data: workout, foundData: existingWorkouts },
+        };
+    } catch (_) {
+        return { ok: false, preview: null, error: t('generic') };
+    }
 };
 
 export const addNewWorkout = async (
     workout: UploadWorkout,
     isEdit: boolean
 ) => {
-    try {
-        const userId = await getCurrentUserId();
+    const userId = await getCurrentUserId();
+    const t = await getTranslations('Dashboard.WorkoutUpload.errors');
 
+    try {
         if (isEdit) {
             await updateWorkout(workout, userId);
         } else {
@@ -42,6 +49,6 @@ export const addNewWorkout = async (
 
         return { ok: true, error: null };
     } catch (_) {
-        return { ok: false, error: 'Failed to upload the workout data' };
+        return { ok: false, error: t('generic') };
     }
 };

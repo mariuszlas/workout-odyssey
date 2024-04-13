@@ -1,5 +1,6 @@
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
+import { handleApiError } from '@/server/helpers';
 import { getBestResult, getCurrentUserId } from '@/server/services';
 import { isValidWorkoutType } from '@/utils/helpers';
 
@@ -7,9 +8,12 @@ export async function GET(request: NextRequest) {
     const userId = await getCurrentUserId();
     const workoutType = request.nextUrl.searchParams.get('workoutType');
 
-    if (!isValidWorkoutType(workoutType)) {
-        return Response.json(null);
-    }
+    if (!isValidWorkoutType(workoutType))
+        return handleApiError('Invalid workout type', 400);
 
-    return Response.json(await getBestResult(workoutType, userId));
+    try {
+        return NextResponse.json(await getBestResult(workoutType, userId));
+    } catch (_) {
+        return handleApiError();
+    }
 }

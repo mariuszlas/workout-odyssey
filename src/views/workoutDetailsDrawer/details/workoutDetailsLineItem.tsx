@@ -1,6 +1,6 @@
 import type { FC, ReactNode } from 'react';
 
-import { _t, Label, Text } from '@/components';
+import { Label, Text } from '@/components';
 import type { TLabel } from '@/interfaces';
 
 interface Props {

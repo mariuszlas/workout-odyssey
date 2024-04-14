@@ -1,9 +1,17 @@
 import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 
 import { Heading } from '@/components';
+import { LocaleParam } from '@/interfaces';
 import { Link } from '@/navigation';
 
 import HomePageImages from './homePageImages';
+
+export async function generateMetadata({ params: { locale } }: LocaleParam) {
+    const t = await getTranslations({ locale, namespace: 'Metadata.Home' });
+
+    return { title: t('title'), description: t('description') };
+}
 
 export default function HomePage() {
     const t = useTranslations('Home');

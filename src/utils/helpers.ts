@@ -43,7 +43,7 @@ export const getClientCookie = (key: Cookie) =>
               .split('; ')
               .find(row => row.startsWith(`${key}=`))
               ?.split('=')
-              .at(0)
+              .at(1)
         : null;
 
 export const getCognitoAttribute = (

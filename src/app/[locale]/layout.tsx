@@ -1,8 +1,9 @@
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages, getTranslations } from 'next-intl/server';
+import { getMessages } from 'next-intl/server';
 
 import { GA4Script } from '@/components';
 import { Children, Cookie, LocaleParam, Theme } from '@/interfaces';
@@ -12,11 +13,9 @@ import { isValidTheme } from '@/utils/helpers';
 
 import '../globals.css';
 
-export async function generateMetadata({ params: { locale } }: LocaleParam) {
-    const t = await getTranslations({ locale, namespace: 'Metadata.Home' });
-
-    return { title: t('title'), description: t('description') };
-}
+export const metadata: Metadata = {
+    metadataBase: new URL('https://workoutodyssey.com'),
+};
 
 export default async function RootLayout({
     children,

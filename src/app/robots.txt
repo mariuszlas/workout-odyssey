@@ -1,0 +1,8 @@
+User-agent: *
+Disallow: /api/
+Disallow: /verify
+Disallow: /password-reset
+Disallow: /dashboard/
+Disallow: /user
+
+Sitemap: https://workoutodyssey.com/sitemap.xml

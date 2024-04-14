@@ -27,7 +27,7 @@ export function middleware(request: NextRequest) {
 
 export const config = {
     matcher: [
-        '/((?!api|img|_next/static|_next/image|favicon.ico|.*\\.png$).*)',
+        '/((?!api|img|_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|.*\\.png$).*)',
     ],
     missing: [
         { type: 'header', key: 'next-router-prefetch' },

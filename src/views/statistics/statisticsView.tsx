@@ -1,6 +1,7 @@
 'use client';
 
 import type { FC } from 'react';
+import clsx from 'clsx';
 
 import { useIsBreakpoint } from '@/hooks';
 import type { WorkoutsDashboard } from '@/interfaces';
@@ -12,36 +13,32 @@ import { StatsPanel } from './statsPanel/statsPanel';
 import { selectPmStatsData, selectSecStatsData } from './helpers';
 
 interface Props {
-    dashboard: WorkoutsDashboard | undefined;
+    dashboard?: WorkoutsDashboard;
     isLoading?: boolean;
 }
 
-export const StatisticsView: FC<Props> = ({ dashboard }) => {
-    const pathname = usePathname();
-    const isMobileOrTabled = useIsBreakpoint('md');
+export const StatisticsView: FC<Props> = ({ dashboard, isLoading }) => {
+    const isMobile = useIsBreakpoint('md');
     const { year, secondaryStat } = useUI();
 
-    const headerData = { year, secStats: secondaryStat };
+    const pathname = usePathname();
     const workoutType = getWorkoutTypeFromPathname(pathname);
 
+    const headerData = { year, secStats: secondaryStat };
     const pmStatsData = selectPmStatsData(dashboard, year);
     const secStatsData = selectSecStatsData(dashboard, headerData);
 
-    return (
-        <div className="mt-4 grid w-full grid-cols-2 gap-6">
-            <StatsPanel
-                data={pmStatsData}
-                headerData={headerData}
-                isPrimary={true}
-                workoutType={workoutType}
-            />
+    const props = { headerData, workoutType, isLoading };
 
-            <StatsPanel
-                data={secStatsData}
-                headerData={headerData}
-                isMobile={isMobileOrTabled}
-                workoutType={workoutType}
-            />
+    return (
+        <div
+            className={clsx(
+                'mt-4 grid w-full grid-cols-2 gap-6',
+                isLoading && 'h-80'
+            )}
+        >
+            <StatsPanel data={pmStatsData} isPrimary {...props} />
+            <StatsPanel data={secStatsData} isMobile={isMobile} {...props} />
         </div>
     );
 };

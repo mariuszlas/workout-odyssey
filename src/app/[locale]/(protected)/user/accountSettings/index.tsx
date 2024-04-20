@@ -16,6 +16,7 @@ import {
 
 const AccountSettingsBase: FC<Props> = ({ data, isLoading }) => {
     const t = useTranslations('AccountSettings');
+    const props = { data, isLoading };
 
     return (
         <div className="flex flex-col gap-6">
@@ -29,9 +30,9 @@ const AccountSettingsBase: FC<Props> = ({ data, isLoading }) => {
                 </div>
             )}
 
-            <DisplayName data={data} isLoading={isLoading} />
-            <Email data={data} isLoading={isLoading} />
-            <BasicDetails data={data} isLoading={isLoading} />
+            <DisplayName {...props} />
+            <Email {...props} />
+            <BasicDetails {...props} />
             <Password isLoading={isLoading} />
             <AccountDeletion />
         </div>
@@ -39,7 +40,7 @@ const AccountSettingsBase: FC<Props> = ({ data, isLoading }) => {
 };
 
 export const AccountSettingsSkeleton: FC = () => (
-    <AccountSettingsBase data={undefined} isLoading />
+    <AccountSettingsBase isLoading />
 );
 
 export const AccountSettings: FC<{ username: string }> = async ({

@@ -2,7 +2,7 @@ import { FC, Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 
-import { Skeleton, SkeletonList } from '@/components';
+import { SkeletonList } from '@/components';
 import { LocaleParam, WorkoutTypes } from '@/interfaces';
 import {
     getAllWorkouts,
@@ -10,7 +10,7 @@ import {
     getDashboard,
 } from '@/server/services';
 import { isValidWorkoutType } from '@/utils/helpers';
-import { ChartView, StatisticsView, WorkoutListView } from '@/views';
+import { ChartView, StatisticsView, WorkoutListBase } from '@/views';
 import { capitalize } from '@/views/helpers';
 
 type Params = { params: { workoutType: string } };
@@ -26,20 +26,17 @@ export async function generateMetadata({
     };
 }
 
-interface StreamProps {
+interface Props {
     workoutType: WorkoutTypes;
     userId: number;
 }
 
-const WorkoutListStream: FC<StreamProps> = async ({ workoutType, userId }) => {
+const WorkoutListView: FC<Props> = async ({ workoutType, userId }) => {
     const data = await getAllWorkouts(workoutType, userId);
-    return <WorkoutListView data={data} />;
+    return <WorkoutListBase data={data} />;
 };
 
-const ChartAndStatsStream: FC<StreamProps> = async ({
-    workoutType,
-    userId,
-}) => {
+const ChartAndStatsStream: FC<Props> = async ({ workoutType, userId }) => {
     const dashboard = await getDashboard(workoutType, userId);
     return (
         <>
@@ -48,23 +45,6 @@ const ChartAndStatsStream: FC<StreamProps> = async ({
         </>
     );
 };
-
-const ChartAndStatsSkeleton = () => (
-    <>
-        <section className="flex aspect-[3/2] flex-col items-center gap-2 border-base-content border-opacity-20 p-4 sm:gap-4 sm:rounded-xl sm:border sm:p-6 sm:shadow-lg">
-            <Skeleton h={'full'} />
-        </section>
-
-        <div className="mt-4 grid h-80 w-full grid-cols-2 gap-6">
-            <section className="flex flex-col items-start gap-2 border-base-content border-opacity-20 p-4 sm:gap-4 sm:rounded-xl sm:border sm:p-6 sm:shadow-lg">
-                <Skeleton h={'full'} />
-            </section>
-            <section className="flex flex-col items-start gap-2 border-base-content border-opacity-20 p-4 sm:gap-4 sm:rounded-xl sm:border sm:p-6 sm:shadow-lg">
-                <Skeleton h={'full'} />
-            </section>
-        </div>
-    </>
-);
 
 export default async function Dashboard({ params }: Params) {
     if (!isValidWorkoutType(params?.workoutType)) notFound();
@@ -75,7 +55,14 @@ export default async function Dashboard({ params }: Params) {
         <main className="flex justify-center align-middle">
             <div className="grid w-full max-w-8xl grid-cols-12 sm:gap-4 sm:px-8 sm:py-4">
                 <div className="col-span-12 lg:col-span-6 xl:col-span-7">
-                    <Suspense fallback={<ChartAndStatsSkeleton />}>
+                    <Suspense
+                        fallback={
+                            <>
+                                <ChartView isLoading />
+                                <StatisticsView isLoading />
+                            </>
+                        }
+                    >
                         <ChartAndStatsStream
                             workoutType={params.workoutType}
                             userId={userId}
@@ -88,8 +75,8 @@ export default async function Dashboard({ params }: Params) {
                         className="flex flex-col items-start gap-2 border-base-content border-opacity-20 p-4 sm:gap-4 sm:rounded-xl sm:border sm:p-6 sm:shadow-lg lg:min-h-full"
                         data-testid="workout-list-section"
                     >
-                        <Suspense fallback={<SkeletonList length={8} />}>
-                            <WorkoutListStream
+                        <Suspense fallback={<SkeletonList length={4} h={14} />}>
+                            <WorkoutListView
                                 workoutType={params.workoutType}
                                 userId={userId}
                             />

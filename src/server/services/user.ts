@@ -44,6 +44,12 @@ const getUserData = async (username: string | undefined) => {
 };
 
 export const getAllUserData = async (username: string) => {
+    const delay = (delayInms: number) => {
+        return new Promise(resolve => setTimeout(resolve, delayInms));
+    };
+
+    await delay(2000);
+
     const [user, cognitoUser] = await Promise.all([
         getUserData(username),
         new CognitoApi().getUser(username),

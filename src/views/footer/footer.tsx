@@ -8,7 +8,7 @@ export const Footer = () => {
     return (
         <footer className="border-t border-t-base-content border-opacity-20 py-3">
             <div className="mx-auto flex w-full max-w-8xl items-center justify-between px-8">
-                <Text aria-label="copyright note" value={t('copyright')} />
+                <Text data-testid="copyright-note" value={t('copyright')} />
                 <a
                     className="btn btn-square btn-ghost btn-sm text-primary"
                     href="https://gitlab.com/mariuszlas/workout-odyssey"

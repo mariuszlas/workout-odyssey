@@ -11,6 +11,7 @@
         "test": "vitest run",
         "test:watch": "vitest watch",
         "test:coverage": "vitest run --coverage",
+        "test:e2e": "APP_ENV=test pnpm exec playwright test",
         "ts:check": "tsc",
         "lint:check": "next lint",
         "lint:fix": "next lint --fix",
@@ -49,6 +50,7 @@
         "zod": "^3.22.4"
     },
     "devDependencies": {
+        "@playwright/test": "^1.43.1",
         "@types/geojson": "^7946.0.14",
         "@types/google-map-react": "^2.1.10",
         "@types/node": "^20",

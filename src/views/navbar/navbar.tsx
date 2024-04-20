@@ -54,6 +54,7 @@ export const NavBar: FC<{ isProtected?: boolean }> = ({
                                 onClick={() => setIsDrawerMenuOpen(true)}
                                 className="btn btn-ghost h-10 min-h-min"
                                 type="button"
+                                aria-label={t('mainMenu')}
                             >
                                 <BurgerMenuIcon />
                             </button>
@@ -101,7 +102,7 @@ export const NavBar: FC<{ isProtected?: boolean }> = ({
                             <>
                                 {showLoginBtn && (
                                     <Link
-                                        className="btn btn-outline btn-primary h-10 min-h-min text-base"
+                                        className="btn btn-outline btn-primary hidden h-10 min-h-min text-base md:inline-flex"
                                         href="/login"
                                         color="primary"
                                     >
@@ -111,7 +112,7 @@ export const NavBar: FC<{ isProtected?: boolean }> = ({
 
                                 {showSignupBtn && (
                                     <Link
-                                        className="btn btn-primary hidden h-10 min-h-min text-base sm:inline-flex"
+                                        className="btn btn-primary hidden h-10 min-h-min text-base md:inline-flex"
                                         href="/signup"
                                         color="primary"
                                     >
@@ -128,7 +129,8 @@ export const NavBar: FC<{ isProtected?: boolean }> = ({
                 isOpen={isDrawerMenuOpen}
                 onClose={() => setIsDrawerMenuOpen(false)}
                 isProtected={isProtected}
-                isSignupPage={isSignupPage}
+                showLoginBtn={showLoginBtn}
+                showSignupBtn={showSignupBtn}
                 openWorkoutUploadModal={() => setIsWorkoutUploadModalOpen(true)}
                 isAccountSettingsPage={isAccountSettingsPage}
             />

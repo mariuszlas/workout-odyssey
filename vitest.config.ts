@@ -7,6 +7,7 @@ export default defineConfig({
     test: {
         environment: 'jsdom',
         coverage: { include: ['src/**/*.ts', 'src/**/*.tsx'] },
+        include: ['src/**/*.{test,spec}.?(c|m)[jt]s?(x)'],
     },
     resolve: {
         alias: [{ find: '@', replacement: resolve(__dirname, './src') }],

@@ -13,6 +13,7 @@ export const CloseButton = forwardRef<HTMLButtonElement, HTMLBtnProps>(
     ({ className, ...props }, ref) => (
         <Button
             ref={ref}
+            aria-label="close"
             className={cn(
                 'btn-square btn-ghost w-10 focus:outline-offset-0 focus:outline-primary',
                 className

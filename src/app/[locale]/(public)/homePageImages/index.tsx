@@ -16,7 +16,7 @@ import listLight from './img/list-light.webp';
 import statsDark from './img/stats-dark.webp';
 import statsLight from './img/stats-light.webp';
 
-type Props = { subheaders: { title: string; desc: string }[] };
+type Props = { subheaders: { title: string; desc: string; alt: string }[] };
 
 export default function HomePageImages({ subheaders }: Props) {
     const [theme] = useTheme();
@@ -46,7 +46,7 @@ export default function HomePageImages({ subheaders }: Props) {
 
     return (
         <>
-            {images.map(({ img, title, desc, w }, idx) => (
+            {images.map(({ img, title, desc, alt, w }, idx) => (
                 <section
                     key={title}
                     className={cn(
@@ -62,7 +62,7 @@ export default function HomePageImages({ subheaders }: Props) {
                     <Image
                         src={img}
                         width={w}
-                        alt="app screenshot"
+                        alt={alt}
                         loading={idx === 0 ? 'eager' : 'lazy'}
                     />
                 </section>

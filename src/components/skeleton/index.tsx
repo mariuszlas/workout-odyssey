@@ -19,10 +19,15 @@ export const Skeleton: FC<SkeletonProps> = ({ h, className }) => (
     </div>
 );
 
-export const SkeletonList: FC<{ length: number }> = ({ length }) => (
+interface SkeletonListProps {
+    length: number;
+    h?: number | string;
+}
+
+export const SkeletonList: FC<SkeletonListProps> = ({ length, h = 6 }) => (
     <>
         {[...Array(length)].map((_, i) => (
-            <Skeleton key={i} h={6} />
+            <Skeleton key={i} h={h} />
         ))}
     </>
 );

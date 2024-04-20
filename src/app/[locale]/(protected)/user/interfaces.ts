@@ -1,7 +1,7 @@
 import { UserData } from '@/interfaces';
 
 export interface Props {
-    data: UserData | undefined;
+    data?: UserData;
     isLoading?: boolean;
 }
 

@@ -23,14 +23,22 @@ export type ChartType = 'bar';
 export type BarChartData = { x: string; y: number; value: number }[];
 export type BarChartT = Chart<ChartType, BarChartData, string[]>;
 
-const BarChart: FC<{ chartData: BarChartData }> = ({ chartData }) => {
-    const { setSecondaryStat, units } = useUI();
+export const BarChart: FC<{ dashboard: WorkoutsDashboard }> = ({
+    dashboard,
+}) => {
+    const t = useTranslations('Dashboard.Chart');
+    const locale = useLocale();
+
+    const { setSecondaryStat, units, year } = useUI();
     const [theme] = useTheme();
+
     const ref = useRef<HTMLCanvasElement>(null);
     const [chart, setChart] = useState<BarChartT>();
 
-    const t = useTranslations('Dashboard.Chart');
-    const locale = useLocale();
+    const chartData = useMemo(
+        () => selectChartData(dashboard, year, locale),
+        [dashboard, year]
+    );
 
     const handleBarClick = (event: MouseEvent<HTMLCanvasElement>) => {
         const interactionIdx = getInteractionIndex(event, chart, chartData);
@@ -77,21 +85,4 @@ const BarChart: FC<{ chartData: BarChartData }> = ({ chartData }) => {
             {fallbackContent}
         </canvas>
     );
-};
-
-export const ChartSection = ({
-    dashboard,
-}: {
-    dashboard: WorkoutsDashboard;
-}) => {
-    const { year } = useUI();
-    const locale = useLocale();
-
-    // TODO: move this to BarChart ???
-    const chartData = useMemo(
-        () => selectChartData(dashboard, year, locale),
-        [dashboard, year]
-    );
-
-    return <BarChart chartData={chartData} />;
 };

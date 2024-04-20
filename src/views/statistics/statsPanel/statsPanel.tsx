@@ -1,8 +1,14 @@
 import type { FC } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 
-import { Heading } from '@/components';
-import { MonthStats, TotalStats, WorkoutTypes, YearStats } from '@/interfaces';
+import { Heading, Skeleton } from '@/components';
+import {
+    Children,
+    MonthStats,
+    TotalStats,
+    WorkoutTypes,
+    YearStats,
+} from '@/interfaces';
 import { useUI } from '@/providers';
 import dayjs from '@/utils/extended-dayjs';
 
@@ -17,6 +23,7 @@ interface Props {
     workoutType: WorkoutTypes;
     isPrimary?: boolean;
     isMobile?: boolean;
+    isLoading?: boolean;
 }
 
 export const StatsPanel: FC<Props> = ({
@@ -25,16 +32,30 @@ export const StatsPanel: FC<Props> = ({
     workoutType,
     isPrimary = false,
     isMobile,
+    isLoading,
 }) => {
     const { units } = useUI();
     const t = useTranslations('Dashboard.Workout');
     const locale = useLocale();
 
-    return (
+    const SectionWrapper: FC<Children> = ({ children }) => (
         <section
             className="flex flex-col items-start gap-2 border-base-content border-opacity-20 p-4 sm:gap-4 sm:rounded-xl sm:border sm:p-6 sm:shadow-lg"
             data-testid={`${isPrimary ? 'primary' : 'secondary'}-stats-section`}
         >
+            {children}
+        </section>
+    );
+
+    if (isLoading)
+        return (
+            <SectionWrapper>
+                <Skeleton h={'full'} />
+            </SectionWrapper>
+        );
+
+    return (
+        <SectionWrapper>
             <header>
                 <Heading
                     as="h2"
@@ -95,6 +116,6 @@ export const StatsPanel: FC<Props> = ({
                     icon="counter"
                 />
             </div>
-        </section>
+        </SectionWrapper>
     );
 };

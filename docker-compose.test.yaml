@@ -1,0 +1,21 @@
+version: '3.9'
+
+name: workout-odyssey-e2e-mocks
+
+services:
+    wiremock:
+        image: 'wiremock/wiremock:latest'
+        container_name: mock-server
+        volumes:
+            - ./mocks/__files:/home/wiremock/__files
+            - ./mocks/mappings:/home/wiremock/mappings
+        entrypoint:
+            - '/docker-entrypoint.sh'
+            - '--global-response-templating'
+            - '--disable-gzip'
+            - '--verbose'
+        ports:
+            - '8080:8080'
+
+    db:
+        container_name: test-db

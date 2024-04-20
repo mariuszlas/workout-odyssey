@@ -18,7 +18,8 @@ import { WorkoutSelector } from '../workoutSelector';
 interface Props extends DrawerProps {
     isProtected: boolean;
     openWorkoutUploadModal: () => void;
-    isSignupPage: boolean;
+    showLoginBtn: boolean;
+    showSignupBtn: boolean;
     isAccountSettingsPage: boolean;
 }
 
@@ -27,13 +28,14 @@ export const DrawerMenu: FC<Props> = ({
     isOpen,
     openWorkoutUploadModal,
     onClose,
-    isSignupPage,
+    showLoginBtn,
+    showSignupBtn,
     isAccountSettingsPage,
 }) => {
     const t = useTranslations('Navbar');
 
     return (
-        <Drawer isOpen={isOpen} onClose={onClose}>
+        <Drawer isOpen={isOpen} onClose={onClose} size="sm">
             <div className="flex w-full items-center justify-between p-4">
                 <Text className="text-xl font-semibold" value={t('mainMenu')} />
                 <CloseButton onClick={onClose} />
@@ -41,7 +43,7 @@ export const DrawerMenu: FC<Props> = ({
 
             <hr className="border-t border-t-base-content border-opacity-20 " />
 
-            <ul className="w-full p-4">
+            <ul className="w-full p-4" role="menu">
                 <ThemeSwitch isMobile />
 
                 {isProtected && (
@@ -49,6 +51,7 @@ export const DrawerMenu: FC<Props> = ({
                         {isAccountSettingsPage && (
                             <li>
                                 <MenuLink
+                                    role="menuitem"
                                     href="/dashboard/running"
                                     onClick={() => onClose()}
                                     popover
@@ -60,6 +63,7 @@ export const DrawerMenu: FC<Props> = ({
 
                         <li>
                             <MenuButton
+                                role="menuitem"
                                 aria-label="add workout"
                                 onClick={() => {
                                     onClose();
@@ -73,7 +77,11 @@ export const DrawerMenu: FC<Props> = ({
 
                         {isAccountSettingsPage && (
                             <form action={logoutUser}>
-                                <MenuButton type="submit" hoverRed>
+                                <MenuButton
+                                    type="submit"
+                                    hoverRed
+                                    role="menuitem"
+                                >
                                     {t('logoutCta')}
                                 </MenuButton>
                             </form>
@@ -88,12 +96,31 @@ export const DrawerMenu: FC<Props> = ({
                     </>
                 )}
 
-                {!isProtected && !isSignupPage && (
-                    <li>
-                        <MenuLink href="/signup" onClick={onClose}>
-                            {t('signupCta')}
-                        </MenuLink>
-                    </li>
+                {!isProtected && (
+                    <>
+                        {showSignupBtn && (
+                            <li>
+                                <MenuLink
+                                    href="/signup"
+                                    role="menuitem"
+                                    onClick={onClose}
+                                >
+                                    {t('signupCta')}
+                                </MenuLink>
+                            </li>
+                        )}
+                        {showLoginBtn && (
+                            <li>
+                                <MenuLink
+                                    href="/login"
+                                    role="menuitem"
+                                    onClick={onClose}
+                                >
+                                    {t('loginCta')}
+                                </MenuLink>
+                            </li>
+                        )}
+                    </>
                 )}
             </ul>
         </Drawer>

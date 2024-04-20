@@ -1,0 +1,25 @@
+version: '3.9'
+
+name: workout-odyssey
+
+services:
+    app:
+        container_name: app
+        build:
+            context: .
+        image: workout-odyssey:latest
+        restart: unless-stopped
+        ports:
+            - '3000:3000'
+        depends_on:
+            - db
+        environment:
+            - DB_URI=mysql://mysql-user:mysql@db:3306/workouts
+
+    db:
+        container_name: db
+        volumes:
+            - db:/var/lib/mysql
+
+volumes:
+    db:

@@ -46,6 +46,10 @@ export class CognitoApi {
             credentials: { accessKeyId, secretAccessKey },
         };
 
+        if (process.env.APP_ENV === 'test') {
+            config.endpoint = process.env.MOCK_SERVER_URL;
+        }
+
         this.#provider = new CognitoIdentityProviderClient(config);
         this.#clientId = clientId;
         this.#userPoolId = userPoolId;

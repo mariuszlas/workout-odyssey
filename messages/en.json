@@ -5,19 +5,23 @@
         "subheaders": {
             "chart": {
                 "title": "Visualize",
-                "description": "Track your workouts and view the graphical summary"
+                "description": "Track your workouts and view the graphical summary",
+                "alt": "Chart section screenshot"
             },
             "stats": {
                 "title": "Statistics",
-                "description": "Monitor various statistics on monthly or year basis or view all of them"
+                "description": "Monitor various statistics on monthly or year basis or view all of them",
+                "alt": "Statistics section screenshot"
             },
             "list": {
                 "title": "View All",
-                "description": "Get more insight about your workouts in a detailed view"
+                "description": "Get more insight about your workouts in a detailed view",
+                "alt": "Workout list screenshot"
             },
             "bestResults": {
                 "title": "Best Results",
-                "description": "View the your best workouts"
+                "description": "View the your best workouts",
+                "alt": "Best results screenshot"
             }
         }
     },
@@ -58,7 +62,7 @@
             }
         },
         "Verify": {
-            "header": "Password Reset",
+            "header": "Email Verification",
             "cta": "Resend Email",
             "description": "We have sent a verification link to <email></email>. Please check your inbox and click the link to verify your account.",
             "errors": { "generic": "Failed to resend the verification email" }
@@ -341,6 +345,7 @@
         "logoutCta": "Sign Out",
         "toggleLightMode": "Toggle Light Mode",
         "toggleDarkMode": "Toggle Dark Mode",
+        "themeSwitchAria": "Theme switch",
         "mainMenu": "Main Menu",
         "dashboardLink": "Dashboard",
         "bestResultsLink": "Best Results",

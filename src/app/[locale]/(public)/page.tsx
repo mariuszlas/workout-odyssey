@@ -20,18 +20,22 @@ export default function HomePage() {
         {
             title: t('subheaders.chart.title'),
             desc: t('subheaders.chart.description'),
+            alt: t('subheaders.chart.alt'),
         },
         {
             title: t('subheaders.stats.title'),
             desc: t('subheaders.stats.description'),
+            alt: t('subheaders.stats.alt'),
         },
         {
             title: t('subheaders.list.title'),
             desc: t('subheaders.list.description'),
+            alt: t('subheaders.list.alt'),
         },
         {
             title: t('subheaders.bestResults.title'),
             desc: t('subheaders.bestResults.description'),
+            alt: t('subheaders.bestResults.alt'),
         },
     ];
 

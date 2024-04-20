@@ -29,12 +29,7 @@ export const Drawer: FC<DrawerProps> = ({
     size = 'sm',
 }) => (
     <Transition appear show={isOpen} as={Fragment}>
-        <Dialog
-            unmount={unmount}
-            onClose={onClose}
-            className="relative z-50"
-            id="dialog-id"
-        >
+        <Dialog unmount={unmount} onClose={onClose} className="relative z-50">
             <Transition.Child
                 as={Fragment}
                 enter="ease-in duration-300"
@@ -66,8 +61,6 @@ export const Drawer: FC<DrawerProps> = ({
                     leaveTo="-translate-x-full"
                 >
                     <Dialog.Panel
-                        id="app-menu-drawer"
-                        role="dialog"
                         as="section"
                         className={cn(
                             'h-full w-full bg-base-100',

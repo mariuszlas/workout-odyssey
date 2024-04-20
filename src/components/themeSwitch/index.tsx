@@ -22,7 +22,10 @@ export const ThemeSwitch: FC<{ isMobile?: boolean }> = ({ isMobile }) => {
     if (isMobile) {
         return (
             <li>
-                <MenuButton onClick={toggleTheme} aria-label="theme-switch">
+                <MenuButton
+                    onClick={toggleTheme}
+                    aria-label={t('themeSwitchAria')}
+                >
                     <Text>
                         {isDark(theme)
                             ? t('toggleLightMode')
@@ -36,9 +39,9 @@ export const ThemeSwitch: FC<{ isMobile?: boolean }> = ({ isMobile }) => {
 
     return (
         <IconButton
-            aria-label="theme-switch"
+            aria-label={t('themeSwitchAria')}
             onClick={toggleTheme}
-            className="hidden sm:inline-flex"
+            className="hidden md:inline-flex"
         >
             {isDark(theme) ? <SunIcon /> : <MoonIcon />}
         </IconButton>

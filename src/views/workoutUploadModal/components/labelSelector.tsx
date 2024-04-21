@@ -78,7 +78,7 @@ export const LabelSelector: FC<NewWorkoutProps> = ({ setWorkout, workout }) => {
                     <Popover.Panel className="absolute left-0 z-10 mt-1 w-72 rounded-lg border border-base-content border-opacity-20 bg-base-100 p-2 shadow-2xl focus:outline-none">
                         {({ close }) => (
                             <>
-                                <form className="relative w-full">
+                                <form className="w-full">
                                     <Input
                                         type="text"
                                         value={newLabelValue}
@@ -93,6 +93,7 @@ export const LabelSelector: FC<NewWorkoutProps> = ({ setWorkout, workout }) => {
                                             onClick={e => handleAddNewLabel(e)}
                                             type="submit"
                                             className="absolute right-0"
+                                            aria-label={t('placeholder')}
                                         >
                                             <PlusIcon />
                                         </IconButton>

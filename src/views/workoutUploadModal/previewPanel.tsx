@@ -7,8 +7,7 @@ import { useTranslations } from 'next-intl';
 import { Alert, Button, Heading, notify, Text } from '@/components';
 import type { UploadWorkout, Workout, WorkoutPreview } from '@/interfaces';
 import { useUI } from '@/providers';
-
-import { formatDuration, getDateTimeTZ } from '../helpers';
+import { formatDuration, getDateTimeTZ } from '@/utils/helpers';
 
 import { addNewWorkout } from './action';
 

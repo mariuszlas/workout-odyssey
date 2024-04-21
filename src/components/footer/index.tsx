@@ -14,7 +14,7 @@ export const Footer = () => {
                     href="https://gitlab.com/mariuszlas/workout-odyssey"
                     target="_blank"
                     rel="noreferrer"
-                    aria-label="Visit the project's GitLab page"
+                    aria-label={t('ariaLabel')}
                 >
                     <GitlabIcon className="h-8 w-8" />
                 </a>

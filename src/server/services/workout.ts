@@ -128,12 +128,6 @@ export const getWorkoutPreviewDb = async (
 };
 
 export const getAllWorkouts = async (type: WorkoutTypes, user: number) => {
-    const delay = (delayInms: number) => {
-        return new Promise(resolve => setTimeout(resolve, delayInms));
-    };
-
-    await delay(2000);
-
     return JSON.parse(
         JSON.stringify(
             await Workout.findAll({
@@ -207,12 +201,6 @@ const query = (sql: string, type: WorkoutTypes, user: number) =>
     });
 
 export const getDashboard = async (type: WorkoutTypes, user: number) => {
-    const delay = (delayInms: number) => {
-        return new Promise(resolve => setTimeout(resolve, delayInms));
-    };
-
-    await delay(1000);
-
     const [total, years, months] = await Promise.all([
         query(sqlTotalBest, type, user),
         query(sqlYears, type, user),

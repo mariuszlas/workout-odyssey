@@ -15,12 +15,12 @@ import {
 } from '@/components';
 import { Link, usePathname } from '@/navigation';
 
-import { UserMenu } from '../userMenu';
-import { WorkoutSelector } from '../workoutSelector';
 import { WorkoutUploadModal } from '../workoutUploadModal';
 
 import { DrawerMenu } from './drawerMenu';
 import { FloatingNewWorkoutBtn } from './floatingButton';
+import { UserMenu } from './userMenu';
+import { WorkoutSelector } from './workoutSelector';
 
 export const NavBar: FC<{ isProtected?: boolean }> = ({
     isProtected = false,
@@ -80,7 +80,6 @@ export const NavBar: FC<{ isProtected?: boolean }> = ({
                                 )}
 
                                 <Button
-                                    aria-label="add workout"
                                     className="btn btn-outline btn-primary h-10 min-h-min text-base"
                                     onClick={() =>
                                         setIsWorkoutUploadModalOpen(true)

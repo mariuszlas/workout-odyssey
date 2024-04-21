@@ -1,6 +1,5 @@
 import type { HeaderData, Workout } from '@/interfaces';
-
-import { getFormattedMonthAndYear } from '../helpers';
+import { getFormattedMonthAndYear } from '@/utils/helpers';
 
 import { SortOptions } from './header/components/sorting';
 import type { SortByObject } from './workoutList';

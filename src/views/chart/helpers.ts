@@ -8,8 +8,7 @@ import {
     Units,
     type WorkoutsDashboard,
 } from '@/interfaces';
-
-import { getMonthForLocale } from '../helpers';
+import { getMonthForLocale } from '@/utils/helpers';
 
 import type { BarChartData, BarChartT, ChartType } from './chart';
 import * as c from './constants';

@@ -1,5 +1,6 @@
 import { FC } from 'react';
 
+import { StatIconType } from '@/interfaces';
 import { cn } from '@/utils/helpers';
 
 interface Props {
@@ -165,7 +166,6 @@ export const ArrowRight: FC<Props> = ({ className }) => (
         viewBox="0 0 24 24"
         focusable="false"
         className={cn('h-6 w-6', className)}
-        aria-hidden="true"
     >
         <path
             fill="currentColor"
@@ -179,7 +179,6 @@ export const ArrowLeft: FC<Props> = ({ className }) => (
         viewBox="0 0 24 24"
         focusable="false"
         className={cn('h-6 w-6', className)}
-        aria-hidden="true"
     >
         <path
             fill="currentColor"
@@ -193,7 +192,6 @@ export const BrushIcon: FC<Props> = ({ className }) => (
         viewBox="0 0 1024 1024"
         focusable="false"
         className={cn('h-6 w-6', className)}
-        aria-hidden="true"
     >
         <defs>
             <style></style>
@@ -367,7 +365,6 @@ export const CloseIcon: FC<Props> = ({ className }) => (
         viewBox="0 0 24 24"
         focusable="false"
         className={cn('h-6 w-6', className)}
-        aria-hidden="true"
     >
         <path
             fill="currentColor"
@@ -533,3 +530,22 @@ export const MapPinIcon: FC<Props> = ({ className }) => (
         />
     </svg>
 );
+
+export const getStatIcon = (iconType: StatIconType, isLineItem?: boolean) => {
+    const classes = isLineItem
+        ? 'h-5 w-5 text-primary'
+        : 'h-8 w-8 text-primary';
+
+    switch (iconType) {
+        case 'road':
+            return <RoadIcon className={classes} />;
+        case 'clockCircle':
+            return <ClockIcon className={classes} />;
+        case 'speedometer':
+            return <SpeedeometerIcon className={classes} />;
+        case 'counter':
+            return <CounterIcon className={classes} />;
+        default:
+            return null;
+    }
+};

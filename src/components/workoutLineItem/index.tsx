@@ -1,18 +1,17 @@
 import type { FC } from 'react';
 
-import { Text } from '@/components';
 import type { StatIconType, Units } from '@/interfaces';
 import { Workout, WorkoutTypes } from '@/interfaces';
+import { formatDuration, formatPace, getDateTimeTZ } from '@/utils/helpers';
 
-import { formatDuration, formatPace, getDateTimeTZ } from '../helpers';
-import { getStatIcon } from '../statistics/statsPanel/statsPanelEntry';
+import { getStatIcon, Text } from '..';
 
-export interface Props {
+interface Props {
     data: Workout;
     units?: Units;
 }
 
-export interface TypeProps extends Props {
+interface TypeProps extends Props {
     type: WorkoutTypes;
 }
 

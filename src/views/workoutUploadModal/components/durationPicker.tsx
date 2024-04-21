@@ -12,7 +12,7 @@ import {
     MenuTransition,
 } from '@/components';
 import dayjs from '@/utils/extended-dayjs';
-import { formatDuration } from '@/views/helpers';
+import { formatDuration } from '@/utils/helpers';
 
 import { NewWorkoutProps } from '../intrefaces';
 

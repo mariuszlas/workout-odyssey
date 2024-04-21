@@ -3,8 +3,8 @@ import { useTranslations } from 'next-intl';
 
 import { FormLabel, Select } from '@/components';
 import { WorkoutTypes } from '@/interfaces';
+import { capitalize } from '@/utils/helpers';
 
-import { capitalize } from '../../helpers';
 import { NewWorkoutProps } from '../intrefaces';
 
 export const ActivitySelector: FC<NewWorkoutProps> = ({

@@ -1,5 +1,6 @@
 import type { FC } from 'react';
 import { useCallback, useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 import { Button, PlusIcon } from '@/components';
 import { cn } from '@/utils/helpers';
@@ -9,6 +10,8 @@ interface Props {
 }
 
 export const FloatingNewWorkoutBtn: FC<Props> = ({ onClick }) => {
+    const t = useTranslations('Navbar');
+
     const [y, setY] = useState(0);
     const [isVisible, setIsVisible] = useState(true);
 
@@ -42,7 +45,7 @@ export const FloatingNewWorkoutBtn: FC<Props> = ({ onClick }) => {
 
     return (
         <Button
-            aria-label="add workout"
+            aria-label={t('newWorkoutCta')}
             className={cn(
                 { hidden: !isVisible },
                 'btn-circle btn-primary fixed bottom-3 right-3 z-10 drop-shadow-2xl sm:hidden'

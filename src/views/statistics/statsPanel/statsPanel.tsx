@@ -11,8 +11,7 @@ import {
 } from '@/interfaces';
 import { useUI } from '@/providers';
 import dayjs from '@/utils/extended-dayjs';
-
-import { formatPace } from '../../helpers';
+import { formatPace } from '@/utils/helpers';
 
 import { formatDurationAsDecimal, getStatsPanelHeading } from './helpers';
 import { StatsPanelEntry } from './statsPanelEntry';

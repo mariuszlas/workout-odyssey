@@ -8,6 +8,7 @@ export { Collapsible } from './collapsible';
 export { Drawer } from './dialog/drawer';
 export type { DrawerProps, ModalProps } from './dialog/interfaces';
 export { Modal, ModalHeader } from './dialog/modal';
+export { Footer } from './footer';
 export { FormLabel } from './formLabel';
 export { Heading } from './heading';
 export {
@@ -29,6 +30,7 @@ export {
     ExclamationTriangleIcon,
     EyeIcon,
     EyeSlashIcon,
+    getStatIcon,
     GitlabIcon,
     InformationIcon,
     MapPinIcon,
@@ -57,3 +59,4 @@ export { Skeleton, SkeletonList } from './skeleton';
 export { Text } from './text';
 export { ThemeSwitch } from './themeSwitch';
 export { notify } from './toast';
+export { DateEntry, Distance, Duration, PaceOrSpeed } from './workoutLineItem';

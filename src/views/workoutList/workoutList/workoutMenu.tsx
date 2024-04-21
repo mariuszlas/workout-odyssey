@@ -18,9 +18,9 @@ import {
 import { Workout } from '@/interfaces';
 import { cn } from '@/utils/helpers';
 
-import { DeleteWorkoutModal } from '../deleteWorkoutModal';
-import { WorkoutDetailsDrawer } from '../workoutDetailsDrawer';
-import { WorkoutUploadModal } from '../workoutUploadModal';
+import { DeleteWorkoutModal } from '../../deleteWorkoutModal';
+import { WorkoutDetailsDrawer } from '../../workoutDetailsDrawer';
+import { WorkoutUploadModal } from '../../workoutUploadModal';
 
 export const WorkoutMenu: FC<{ data: Workout }> = ({ data }) => {
     const [top, setTop] = useState(false);
@@ -72,7 +72,7 @@ export const WorkoutMenu: FC<{ data: Workout }> = ({ data }) => {
                 <Menu.Button as={Fragment}>
                     <IconButton
                         ref={ref}
-                        aria-label={`workout ${data.id} properties menu`}
+                        aria-label={t('ariaLabel', { id: data.id })}
                         onClick={handleMenuBtnClick}
                     >
                         <MoreVerticalIcon />

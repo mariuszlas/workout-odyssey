@@ -54,7 +54,7 @@ export const LoginForm = () => {
                         error={passwordError}
                         aria-invalid={Boolean(passwordError)}
                         aria-errormessage={passwordError}
-                        iconAriaLabel="toggle password visibility"
+                        iconAriaLabel={t('form.password.aria')}
                     />
 
                     <div className="label justify-end">

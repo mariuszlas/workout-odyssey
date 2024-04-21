@@ -13,7 +13,7 @@ import {
 } from '@/components';
 import { DrawerProps } from '@/components';
 
-import { WorkoutSelector } from '../workoutSelector';
+import { WorkoutSelector } from './workoutSelector';
 
 interface Props extends DrawerProps {
     isProtected: boolean;
@@ -64,7 +64,6 @@ export const DrawerMenu: FC<Props> = ({
                         <li>
                             <MenuButton
                                 role="menuitem"
-                                aria-label="add workout"
                                 onClick={() => {
                                     onClose();
                                     openWorkoutUploadModal();

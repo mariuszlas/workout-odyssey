@@ -43,7 +43,7 @@ export const Sorting: FC<SortingProps> = ({ setSortBy }) => {
         <Select
             className="w-52"
             onChange={e => handleSort(e, setSortBy)}
-            aria-label="sort workout list"
+            aria-label={t('ariaLabel')}
         >
             {SortOptionsMap.map((option, idx) => (
                 <option key={idx} value={option.val}>

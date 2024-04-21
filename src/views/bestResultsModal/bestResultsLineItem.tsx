@@ -1,9 +1,7 @@
 import type { FC } from 'react';
 
-import { Text } from '@/components';
+import { DateEntry, Duration, PaceOrSpeed, Text } from '@/components';
 import type { Units, Workout } from '@/interfaces';
-
-import { DateEntry, Duration, PaceOrSpeed } from '../workoutLineItem';
 
 interface Props {
     data: Workout | null | undefined;

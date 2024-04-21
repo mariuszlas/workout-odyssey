@@ -1,7 +1,6 @@
 import type { HeaderData } from '@/interfaces';
 import dayjs from '@/utils/extended-dayjs';
-
-import { getFormattedMonthAndYear } from '../../helpers';
+import { getFormattedMonthAndYear } from '@/utils/helpers';
 
 export const getStatsPanelHeading = (
     isPrimary: boolean,

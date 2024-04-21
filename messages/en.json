@@ -77,22 +77,27 @@
                 "placeholder": "Jon Snow"
             },
             "password": {
-                "label": "Password"
+                "label": "Password",
+                "aria": "Toggle password visibility"
             },
             "passwordRepeat": {
-                "label": "Confirm Password"
+                "label": "Confirm Password",
+                "aria": "Toggle confirm password visibility"
             },
             "passwordResetCode": {
                 "label": "Password Reset Code"
             },
             "currentPassword": {
-                "label": "Current Password"
+                "label": "Current Password",
+                "aria": "Toggle current password visibility"
             },
             "newPassword": {
-                "label": "New Password"
+                "label": "New Password",
+                "aria": "Toggle new password visibility"
             },
             "newPasswordRepeat": {
-                "label": "Confirm New Password"
+                "label": "Confirm New Password",
+                "aria": "Toggle confirm new password visibility"
             },
             "passwordPlaceholder": "********"
         }
@@ -210,7 +215,12 @@
         "Chart": {
             "header": "Overview",
             "chartFallbackContent": "Workouts chart",
-            "yearTotal": "Total"
+            "yearTotal": "Total",
+            "aria": {
+                "yearSelector": "Select year",
+                "nextYear": "Select next year",
+                "previousYear": "Select previous year"
+            }
         },
         "Workout": {
             "year": "Year",
@@ -227,7 +237,11 @@
                 "allWorkouts": "All Training Records",
                 "currentMonthWorkouts": "Workouts This Month",
                 "allWorkoutsToggle": "All Workouts",
-                "filtering": { "cta": "Filter", "placeholder": "Filter" },
+                "filtering": {
+                    "cta": "Filter",
+                    "placeholder": "Filter",
+                    "ariaLabel": "Clear filter"
+                },
                 "sorting": {
                     "dateDesc": "Date - earliest first",
                     "dateAsc": "Date - oldest first",
@@ -236,17 +250,25 @@
                     "durationDesc": "Duration - longest first",
                     "durationAsc": "Duration - shortest first",
                     "paceDesc": "Pace - slowest first",
-                    "paceAsc": "Pace - fastest first"
+                    "paceAsc": "Pace - fastest first",
+                    "ariaLabel": "Sort workout list"
                 }
             },
             "Body": {
                 "noWorkouts": "No workouts",
                 "error": "Failed to fetch data"
             },
+            "Pagination": {
+                "aria": {
+                    "previousPage": "Previous page",
+                    "nextPage": "Next page"
+                }
+            },
             "WorkoutMenu": {
                 "details": "Workout Details",
                 "edit": "Edit",
-                "delete": "Delete"
+                "delete": "Delete",
+                "ariaLabel": "Workout {id} - properties menu"
             }
         },
         "WorkoutDetails": {
@@ -273,7 +295,11 @@
                     "label": "Date and Time",
                     "timeLabel": "Time",
                     "cta": "Done",
-                    "ctaSecondary": "Today"
+                    "ctaSecondary": "Today",
+                    "aria": {
+                        "previousMonth": "Previous month",
+                        "nextMonth": "Next month"
+                    }
                 },
                 "distance": {
                     "label": "Distance (km)",
@@ -336,7 +362,8 @@
             "marathon": "Marathon",
             "halfMarathon": "Half Marathon"
         },
-        "workoutType": "{workoutType, select, running {running} walking {walking} cycling {cycling} other {}}"
+        "workoutType": "{workoutType, select, running {running} walking {walking} cycling {cycling} other {}}",
+        "ariaLabelCloseBtn": "Close"
     },
     "Navbar": {
         "newWorkoutCta": "Add Workout",
@@ -345,13 +372,17 @@
         "logoutCta": "Sign Out",
         "toggleLightMode": "Toggle Light Mode",
         "toggleDarkMode": "Toggle Dark Mode",
-        "themeSwitchAria": "Theme switch",
+        "themeSwitchAriaLabel": "Theme switch",
         "mainMenu": "Main Menu",
         "dashboardLink": "Dashboard",
         "bestResultsLink": "Best Results",
-        "accountSettingsLink": "Account Settings"
+        "accountSettingsLink": "Account Settings",
+        "aria": { "accountMenu": "Account menu" }
     },
-    "Footer": { "copyright": "© 2024 Mariusz Las" },
+    "Footer": {
+        "copyright": "© 2024 Mariusz Las",
+        "ariaLabel": "Visit the project's GitLab page"
+    },
     "zod": {
         "invalidTypeString": "Must be a string",
         "invalidEmail": "Invalid email",

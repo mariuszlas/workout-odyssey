@@ -13,8 +13,7 @@ import {
 } from '@/components';
 import { WorkoutTypes } from '@/interfaces';
 import { usePathname } from '@/navigation';
-import { cn, getWorkoutTypeFromPathname } from '@/utils/helpers';
-import { capitalize } from '@/views/helpers';
+import { capitalize, cn, getWorkoutTypeFromPathname } from '@/utils/helpers';
 
 interface Props {
     onClose?: () => void;

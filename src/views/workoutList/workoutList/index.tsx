@@ -34,12 +34,12 @@ export const WorkoutList: FC<WorkoutListProps> = ({
     isError,
 }) => {
     const { units } = useUI();
-    const t = useTranslations('Dashboard.WorkoutList.Body');
+    const t = useTranslations('Dashboard.WorkoutList');
 
     if (isError) {
         return (
             <div className="my-6 flex w-full justify-center rounded-lg">
-                <Text value={t('error')} />
+                <Text value={t('Body.error')} />
             </div>
         );
     }
@@ -49,7 +49,7 @@ export const WorkoutList: FC<WorkoutListProps> = ({
             <div className="flex w-full justify-center p-4">
                 <Text
                     data-testid="no-workouts-message"
-                    value={t('noWorkouts')}
+                    value={t('Body.noWorkouts')}
                 />
             </div>
         );
@@ -75,6 +75,10 @@ export const WorkoutList: FC<WorkoutListProps> = ({
                 pageNo={pageNo}
                 setPageNo={setPageNo}
                 totalPages={getTotalPageNum(sortedWorkouts, PAGE_SIZE)}
+                t={{
+                    nextPage: t('Pagination.aria.nextPage'),
+                    previousPage: t('Pagination.aria.previousPage'),
+                }}
             />
         </>
     );

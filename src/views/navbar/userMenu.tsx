@@ -39,7 +39,7 @@ export const UserMenu = () => {
                 <>
                     <Popover as="div" className="relative">
                         <Popover.Button as={Fragment}>
-                            <IconButton aria-label="Account menu">
+                            <IconButton aria-label={t('aria.accountMenu')}>
                                 <UserIcon />
                             </IconButton>
                         </Popover.Button>

@@ -8,8 +8,7 @@ import type { Children, WorkoutsDashboard } from '@/interfaces';
 import { BarChart } from './chart';
 import { YearSelector } from './yearSelector';
 
-// TODO: the same props as for Stats
-export interface Props {
+interface Props {
     dashboard?: WorkoutsDashboard;
     isLoading?: boolean;
 }

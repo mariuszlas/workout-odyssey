@@ -76,12 +76,7 @@ export const BarChart: FC<{ dashboard: WorkoutsDashboard }> = ({
     const fallbackContent = <Text as="p" value={t('chartFallbackContent')} />;
 
     return (
-        <canvas
-            ref={ref}
-            role="img"
-            aria-label="chart"
-            onClick={e => handleBarClick(e)}
-        >
+        <canvas ref={ref} role="img" onClick={e => handleBarClick(e)}>
             {fallbackContent}
         </canvas>
     );

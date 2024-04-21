@@ -99,7 +99,7 @@ export const YearSelector: FC<Props> = ({ dashboard }) => {
     return (
         <div className="flex items-center gap-3" data-testid="year-selector">
             <IconButton
-                aria-label="Select next year"
+                aria-label={t('aria.nextYear')}
                 onClick={() => onChangeYear(NEXT)}
             >
                 <ArrowLeft />
@@ -109,14 +109,14 @@ export const YearSelector: FC<Props> = ({ dashboard }) => {
                 className="w-full max-w-xs"
                 value={year}
                 data-testid="data-year-selector-dropdown"
-                aria-label="select year"
+                aria-label={t('aria.yearSelector')}
                 onChange={onSelectYear}
             >
                 {getOptions(availableYears)}
             </Select>
 
             <IconButton
-                aria-label="Select previous year"
+                aria-label={t('aria.previousYear')}
                 onClick={() => onChangeYear(PREV)}
             >
                 <ArrowRight />

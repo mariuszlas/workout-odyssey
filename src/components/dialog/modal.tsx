@@ -20,7 +20,7 @@ export const ModalHeader: FC<ModalHeaderProps> = ({
         <Dialog.Title as="h2" className="text-2xl font-bold">
             {children}
         </Dialog.Title>
-        <CloseButton onClick={onClose} aria-label="close" />
+        <CloseButton onClick={onClose} />
     </header>
 );
 

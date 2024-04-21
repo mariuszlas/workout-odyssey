@@ -80,7 +80,7 @@ export const SignupForm = () => {
                         error={passwordError}
                         aria-invalid={Boolean(passwordError)}
                         aria-errormessage={passwordError}
-                        iconAriaLabel="toggle password visibility"
+                        iconAriaLabel={t('form.password.aria')}
                     />
                 </div>
 
@@ -93,7 +93,7 @@ export const SignupForm = () => {
                         error={passwordRepeatError}
                         aria-invalid={Boolean(passwordRepeatError)}
                         aria-errormessage={passwordRepeatError}
-                        iconAriaLabel="toggle password repeat visibility"
+                        iconAriaLabel={t('form.passwordRepeat.aria')}
                     />
                 </div>
             </div>

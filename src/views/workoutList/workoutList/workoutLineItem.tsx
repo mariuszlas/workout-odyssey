@@ -1,15 +1,15 @@
 import type { FC } from 'react';
 
-import { Label } from '@/components';
-import { Units, Workout, WorkoutTypes } from '@/interfaces';
-
 import {
     DateEntry,
     Distance,
     Duration,
+    Label,
     PaceOrSpeed,
-} from '../../workoutLineItem';
-import { WorkoutMenu } from '../../workoutMenu';
+} from '@/components';
+import { Units, Workout, WorkoutTypes } from '@/interfaces';
+
+import { WorkoutMenu } from './workoutMenu';
 
 export interface Props {
     data: Workout;

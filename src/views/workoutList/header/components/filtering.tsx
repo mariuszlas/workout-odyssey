@@ -22,7 +22,7 @@ export const Filtering: FC<FilteringProps> = ({ setFilterBy, filterBy }) => {
             />
 
             <IconButton
-                aria-label="Clear filter"
+                aria-label={t('ariaLabel')}
                 onClick={() => setFilterBy('')}
                 className="absolute right-0"
             >

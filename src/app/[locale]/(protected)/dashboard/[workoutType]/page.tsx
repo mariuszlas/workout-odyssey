@@ -9,9 +9,8 @@ import {
     getCurrentUserId,
     getDashboard,
 } from '@/server/services';
-import { isValidWorkoutType } from '@/utils/helpers';
+import { capitalize, isValidWorkoutType } from '@/utils/helpers';
 import { ChartView, StatisticsView, WorkoutListBase } from '@/views';
-import { capitalize } from '@/views/helpers';
 
 type Params = { params: { workoutType: string } };
 

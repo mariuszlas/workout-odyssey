@@ -53,7 +53,7 @@ export const Password: FC<{ isLoading?: boolean }> = ({ isLoading }) => {
                                 error={currentPasswordError}
                                 aria-invalid={Boolean(currentPasswordError)}
                                 aria-errormessage={currentPasswordError}
-                                iconAriaLabel="toggle current password visibility"
+                                iconAriaLabel={authT('currentPassword.aria')}
                             />
                         </div>
 
@@ -67,7 +67,7 @@ export const Password: FC<{ isLoading?: boolean }> = ({ isLoading }) => {
                                 error={passwordError}
                                 aria-invalid={Boolean(passwordError)}
                                 aria-errormessage={passwordError}
-                                iconAriaLabel="toggle password visibility"
+                                iconAriaLabel={authT('newPassword.aria')}
                             />
                         </div>
 
@@ -81,7 +81,7 @@ export const Password: FC<{ isLoading?: boolean }> = ({ isLoading }) => {
                                 error={passwordRepeatError}
                                 aria-invalid={Boolean(passwordRepeatError)}
                                 aria-errormessage={passwordRepeatError}
-                                iconAriaLabel="toggle password repeat visibility"
+                                iconAriaLabel={authT('newPasswordRepeat.aria')}
                             />
                         </div>
 

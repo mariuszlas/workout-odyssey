@@ -4,7 +4,7 @@ import { useTranslations } from 'next-intl';
 import type { Workout } from '@/interfaces';
 import { WorkoutTypes } from '@/interfaces';
 import { useUI } from '@/providers';
-import { formatDuration, formatPace, getDateTimeTZ } from '@/views/helpers';
+import { formatDuration, formatPace, getDateTimeTZ } from '@/utils/helpers';
 
 import { LineItem } from './workoutDetailsLineItem';
 

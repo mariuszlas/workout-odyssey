@@ -14,8 +14,7 @@ import {
     Select,
     Text,
 } from '@/components';
-import { cn } from '@/utils/helpers';
-import { getDateTimeTZ, getMonthForLocale } from '@/views/helpers';
+import { cn, getDateTimeTZ, getMonthForLocale } from '@/utils/helpers';
 
 import { NewWorkoutProps } from '../intrefaces';
 
@@ -164,7 +163,7 @@ export const DatetimePicker: FC<NewWorkoutProps> = ({
                                 <div>
                                     <div className="flex items-center justify-between">
                                         <IconButton
-                                            aria-label="Previous month"
+                                            aria-label={t('aria.previousMonth')}
                                             onClick={() =>
                                                 setDate(
                                                     date.getMonth() - 1,
@@ -181,7 +180,7 @@ export const DatetimePicker: FC<NewWorkoutProps> = ({
                                         />
 
                                         <IconButton
-                                            aria-label="Next month"
+                                            aria-label={t('aria.nextMonth')}
                                             onClick={() =>
                                                 setDate(
                                                     date.getMonth() + 1,

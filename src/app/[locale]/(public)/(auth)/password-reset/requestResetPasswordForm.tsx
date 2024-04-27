@@ -30,9 +30,7 @@ export const RequestResetPasswordForm: FC<Props> = ({
     return (
         <form className="form-control w-full gap-6" action={action}>
             {otherError && (
-                <Alert status="error" classes="mb-0">
-                    {otherError}
-                </Alert>
+                <Alert status="error" classes="mb-0" content={otherError} />
             )}
 
             <Text as="p" value={t('RequestPasswordReset.description')} />

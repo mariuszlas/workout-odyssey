@@ -14,9 +14,10 @@ import {
     Select,
     Text,
 } from '@/components';
+import { usePopover } from '@/hooks';
 import { cn, getDateTimeTZ, getMonthForLocale } from '@/utils/helpers';
 
-import { NewWorkoutProps } from '../intrefaces';
+import { WorkoutForm } from '../intrefaces';
 
 import { getWeekdayListForLocale, zeroPad } from './helpers';
 
@@ -30,18 +31,20 @@ const getMonthDays = (year: number, month: number) => [
     ...Array(getTotalDaysInMonth(year, month)).keys(),
 ];
 
-export const DatetimePicker: FC<NewWorkoutProps> = ({
-    workout,
-    setWorkout,
-}) => {
+export const DatetimePicker: FC<WorkoutForm> = ({ workout, setWorkouts }) => {
     const { timestamp } = workout;
     const date = timestamp ? new Date(timestamp) : new Date();
 
     const t = useTranslations('Dashboard.WorkoutUpload.Forms.dateAndTime');
     const locale = useLocale();
+    const { setRefEl, setPopperElement, styles, attributes } = usePopover();
 
     const setTimestamp = (t: string) => {
-        setWorkout(prev => ({ ...prev, timestamp: t }));
+        setWorkouts(prev =>
+            prev.map(wk =>
+                wk.id === workout.id ? { ...wk, timestamp: t } : wk
+            )
+        );
     };
 
     useEffect(() => {
@@ -144,20 +147,28 @@ export const DatetimePicker: FC<NewWorkoutProps> = ({
         ));
 
     return (
-        <div className="relative">
+        <div>
             <FormLabel text={t('label')} />
             <Popover>
                 <Popover.Button as={Fragment}>
-                    <InputButton className="w-50">
+                    <InputButton className="w-50" ref={setRefEl}>
                         <Text
-                            value={getDateTimeTZ(date, workout.timezone, false)}
+                            value={getDateTimeTZ(
+                                date,
+                                workout?.timezone,
+                                false
+                            )}
                         />
                         <CalendarIcon className="hidden sm:block" />
                     </InputButton>
                 </Popover.Button>
-
                 <MenuTransition>
-                    <Popover.Panel className="absolute left-0 z-10 mt-2 w-fit rounded-lg border border-base-content border-opacity-20 bg-base-100 p-4 shadow-2xl focus:outline-none">
+                    <Popover.Panel
+                        className="w-fit rounded-lg border border-base-content border-opacity-20 bg-base-100 p-4 shadow-2xl focus:outline-none"
+                        ref={setPopperElement}
+                        style={styles.popper}
+                        {...attributes.popper}
+                    >
                         {({ close }) => (
                             <div className="flex flex-col justify-center gap-2">
                                 <div>
@@ -174,11 +185,9 @@ export const DatetimePicker: FC<NewWorkoutProps> = ({
                                         >
                                             <ArrowLeft />
                                         </IconButton>
-
                                         <Text
                                             value={`${getMonthForLocale(date.getMonth(), locale)} ${date.getFullYear()}`}
                                         />
-
                                         <IconButton
                                             aria-label={t('aria.nextMonth')}
                                             onClick={() =>
@@ -193,7 +202,6 @@ export const DatetimePicker: FC<NewWorkoutProps> = ({
                                         </IconButton>
                                     </div>
                                 </div>
-
                                 <div
                                     className={cn(
                                         'grid grid-cols-7',
@@ -205,10 +213,8 @@ export const DatetimePicker: FC<NewWorkoutProps> = ({
                                     {renderCurrentMonthDays()}
                                     {renderNextMonthDays()}
                                 </div>
-
                                 <div className="flex items-center justify-center gap-2">
                                     <Text value={t('timeLabel')} />
-
                                     <div className="flex items-center gap-2">
                                         <Select
                                             value={getHoursFromDate()}
@@ -225,9 +231,7 @@ export const DatetimePicker: FC<NewWorkoutProps> = ({
                                         >
                                             {renderNumberOptions(24)}
                                         </Select>
-
                                         <Text value=":" />
-
                                         <Select
                                             value={getMinutesFromDate()}
                                             onChange={e => {
@@ -245,7 +249,6 @@ export const DatetimePicker: FC<NewWorkoutProps> = ({
                                         </Select>
                                     </div>
                                 </div>
-
                                 <div className="flex justify-between">
                                     <button
                                         className="btn btn-outline btn-primary btn-sm"

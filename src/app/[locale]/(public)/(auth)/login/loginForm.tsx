@@ -25,9 +25,7 @@ export const LoginForm = () => {
         <form action={action} className="form-control w-full gap-6">
             <div className="form-control gap-2">
                 {otherError && (
-                    <Alert status="error" classes="mb-0">
-                        {otherError}
-                    </Alert>
+                    <Alert status="error" classes="mb-0" content={otherError} />
                 )}
 
                 <div>

@@ -40,7 +40,7 @@ export const filterWorkouts = (
 export const getWorkoutListHeading = (
     { year, secStats }: HeaderData,
     isAll: boolean,
-    headers: Record<string, any>,
+    headers: Record<string, string>,
     locale: string,
     isShortMonth?: boolean
 ) => {
@@ -83,6 +83,7 @@ export const sortWorkouts = (
         );
     } else {
         sorted = workouts.sort(
+            //eslint-disable-next-line @typescript-eslint/no-explicit-any
             (a: { [key: string]: any }, b: { [key: string]: any }) =>
                 b[sortBy.sort] - a[sortBy.sort]
         );

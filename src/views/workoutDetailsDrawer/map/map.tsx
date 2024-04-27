@@ -15,6 +15,7 @@ interface Point {
 }
 
 export const Map: FC<{ trajectory: Trajectory }> = ({ trajectory }) => {
+    //eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [map, setMap] = useState<any>();
     const [maps, setMaps] = useState();
     const [isMapLoaded, setIsMapLoaded] = useState(false);

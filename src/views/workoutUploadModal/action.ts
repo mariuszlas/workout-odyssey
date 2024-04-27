@@ -11,28 +11,31 @@ import {
     updateWorkout,
 } from '@/server/services';
 
-export const getWorkoutPreview = async (workout: UploadWorkout) => {
+export const getWorkoutsPreview = async (workouts: UploadWorkout[]) => {
     const userId = await getCurrentUserId();
     const t = await getTranslations('Dashboard.WorkoutUpload.errors');
 
     try {
-        const existingWorkouts = (await getWorkoutPreviewDb(
-            workout.type,
-            userId,
-            workout.timestamp
-        )) as any as WorkoutT[];
+        const existingWorkouts = await Promise.all(
+            workouts.map(workout =>
+                getWorkoutPreviewDb(workout.type, userId, workout.timestamp)
+            )
+        );
 
         return {
             ok: true,
-            preview: { data: workout, foundData: existingWorkouts },
+            preview: workouts.map((workout, idx) => ({
+                data: workout,
+                foundData: existingWorkouts[idx] as unknown as WorkoutT[],
+            })),
         };
     } catch (_) {
         return { ok: false, preview: null, error: t('generic') };
     }
 };
 
-export const addNewWorkout = async (
-    workout: UploadWorkout,
+export const addNewWorkouts = async (
+    workouts: UploadWorkout[],
     isEdit: boolean
 ) => {
     const userId = await getCurrentUserId();
@@ -40,9 +43,11 @@ export const addNewWorkout = async (
 
     try {
         if (isEdit) {
-            await updateWorkout(workout, userId);
+            await updateWorkout(workouts[0], userId);
         } else {
-            await createWorkout(workout, userId);
+            await Promise.all(
+                workouts.map(workout => createWorkout(workout, userId))
+            );
         }
 
         revalidatePath('/(protected)/dashboard/[workoutType]', 'page');

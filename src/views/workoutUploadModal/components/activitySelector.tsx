@@ -5,12 +5,9 @@ import { FormLabel, Select } from '@/components';
 import { WorkoutTypes } from '@/interfaces';
 import { capitalize } from '@/utils/helpers';
 
-import { NewWorkoutProps } from '../intrefaces';
+import { WorkoutForm } from '../intrefaces';
 
-export const ActivitySelector: FC<NewWorkoutProps> = ({
-    workout,
-    setWorkout,
-}) => {
+export const ActivitySelector: FC<WorkoutForm> = ({ workout, setWorkouts }) => {
     const t = useTranslations('Dashboard');
 
     return (
@@ -21,13 +18,19 @@ export const ActivitySelector: FC<NewWorkoutProps> = ({
             />
             <Select
                 id="activity"
-                className="w-full"
-                value={workout.type}
+                className="w-full capitalize"
+                value={workout?.type}
                 onChange={e =>
-                    setWorkout(prev => ({
-                        ...prev,
-                        type: e.target.value as WorkoutTypes,
-                    }))
+                    setWorkouts(prev =>
+                        prev.map(wk =>
+                            wk.id === workout.id
+                                ? {
+                                      ...wk,
+                                      type: e.target.value as WorkoutTypes,
+                                  }
+                                : wk
+                        )
+                    )
                 }
             >
                 {Object.values(WorkoutTypes).map(

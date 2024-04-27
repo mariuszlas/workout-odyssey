@@ -1,5 +1,9 @@
 import type { TLabel } from '@/interfaces';
 
+import { FileSizeError } from '../xmlParser';
+
+const DEMO_USER_MAX_FILE_SIZE = 1000000;
+
 export const labelColors = [
     '#b40813',
     '#d6411d',
@@ -58,3 +62,13 @@ export const getWeekdayListForLocale = (locale: string) => {
         formatter.format(new Date(2024, 3, m + 1))
     );
 };
+
+export const validateFileSize = (
+    files: File[],
+    isDemoUser: boolean | undefined
+) =>
+    files.forEach(file => {
+        if (isDemoUser && file.size > DEMO_USER_MAX_FILE_SIZE) {
+            throw new FileSizeError();
+        }
+    });

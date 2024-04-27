@@ -3,9 +3,9 @@ import { useTranslations } from 'next-intl';
 
 import { FormLabel } from '@/components';
 
-import { NewWorkoutProps } from '../intrefaces';
+import { WorkoutForm } from '../intrefaces';
 
-export const NotesInput: FC<NewWorkoutProps> = ({ setWorkout, workout }) => {
+export const NotesInput: FC<WorkoutForm> = ({ setWorkouts, workout }) => {
     const t = useTranslations('Dashboard.WorkoutUpload.Forms.notes');
 
     return (
@@ -15,7 +15,13 @@ export const NotesInput: FC<NewWorkoutProps> = ({ setWorkout, workout }) => {
                 className="textarea textarea-bordered h-20 hover:border-opacity-40 focus:border-primary focus:outline-1 focus:outline-offset-0 focus:outline-primary"
                 value={workout?.notes ?? ''}
                 onChange={e =>
-                    setWorkout(prev => ({ ...prev, notes: e.target.value }))
+                    setWorkouts(prev =>
+                        prev.map(wk =>
+                            wk.id === workout.id
+                                ? { ...wk, notes: e.target.value }
+                                : wk
+                        )
+                    )
                 }
             />
         </div>

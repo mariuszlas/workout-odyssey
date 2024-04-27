@@ -1,7 +1,7 @@
 'use client';
 
 import type { FC } from 'react';
-import { Fragment, useRef, useState } from 'react';
+import { Fragment, useState } from 'react';
 import { Menu } from '@headlessui/react';
 import { useTranslations } from 'next-intl';
 
@@ -15,18 +15,18 @@ import {
     Text,
     TrashIcon,
 } from '@/components';
+import { usePopover } from '@/hooks';
 import { Workout } from '@/interfaces';
-import { cn } from '@/utils/helpers';
 
 import { DeleteWorkoutModal } from '../../deleteWorkoutModal';
 import { WorkoutDetailsDrawer } from '../../workoutDetailsDrawer';
 import { WorkoutUploadModal } from '../../workoutUploadModal';
 
 export const WorkoutMenu: FC<{ data: Workout }> = ({ data }) => {
-    const [top, setTop] = useState(false);
-    const ref = useRef<HTMLButtonElement>(null);
     const t = useTranslations('Dashboard.WorkoutList.WorkoutMenu');
-    const MIN_MENU_HEIGHT = 140;
+    const { setRefEl, setPopperElement, styles, attributes } = usePopover({
+        position: 'bottom-end',
+    });
 
     const [isWorkoutUploadModalOpen, setIsWorkoutUploadModalOpen] =
         useState(false);
@@ -34,18 +34,6 @@ export const WorkoutMenu: FC<{ data: Workout }> = ({ data }) => {
         useState(false);
     const [isWorkoutDetailsDrawerOpen, setWorkoutDetailsDrawerOpen] =
         useState(false);
-
-    const handleMenuBtnClick = () => {
-        if (ref?.current) {
-            const btnBottomPosition =
-                ref.current.getBoundingClientRect().bottom;
-            const shouldDisplayMenuAboveBtn =
-                window.innerHeight - btnBottomPosition < MIN_MENU_HEIGHT;
-            if (shouldDisplayMenuAboveBtn) {
-                setTop(true);
-            }
-        }
-    };
 
     const items = [
         {
@@ -68,23 +56,21 @@ export const WorkoutMenu: FC<{ data: Workout }> = ({ data }) => {
 
     return (
         <>
-            <Menu as="div" className="relative">
+            <Menu as="div">
                 <Menu.Button as={Fragment}>
                     <IconButton
-                        ref={ref}
+                        ref={setRefEl}
                         aria-label={t('ariaLabel', { id: data.id })}
-                        onClick={handleMenuBtnClick}
                     >
                         <MoreVerticalIcon />
                     </IconButton>
                 </Menu.Button>
-
                 <MenuTransition>
                     <Menu.Items
-                        className={cn(
-                            'absolute right-0 z-10 w-52 rounded-lg border border-base-content border-opacity-20 bg-base-100 p-2 shadow-2xl focus:outline-none',
-                            top ? 'bottom-0 mb-11' : 'mt-1'
-                        )}
+                        className="w-52 rounded-lg border border-base-content border-opacity-20 bg-base-100 p-2 shadow-2xl focus:outline-none"
+                        ref={setPopperElement}
+                        style={styles.popper}
+                        {...attributes.popper}
                     >
                         {items.map(({ onClick, text, icon, hoverRed }) => (
                             <Menu.Item key={text}>

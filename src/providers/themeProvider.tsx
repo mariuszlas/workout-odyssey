@@ -42,6 +42,7 @@ export const ThemeProvider: FC<Props> = ({ children, specifiedTheme }) => {
         const themeCookie = getClientCookie(Cookie.THEME);
 
         if (!isFirstRender.current || (isFirstRender.current && !themeCookie)) {
+            //eslint-disable-next-line @typescript-eslint/no-floating-promises
             setServerTheme();
         }
 

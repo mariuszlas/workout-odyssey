@@ -1,4 +1,4 @@
-import type { FC, MouseEvent } from 'react';
+import type { FC } from 'react';
 import { Fragment, useState } from 'react';
 import { Popover } from '@headlessui/react';
 import { useTranslations } from 'next-intl';
@@ -15,26 +15,26 @@ import {
     SkeletonList,
     Text,
 } from '@/components';
+import { usePopover } from '@/hooks';
 import type { TLabel } from '@/interfaces';
 
-import { NewWorkoutProps } from '../intrefaces';
+import { WorkoutForm } from '../intrefaces';
 
 import { getNewLabel, validateNewLabel } from './helpers';
 
-export const LabelSelector: FC<NewWorkoutProps> = ({ setWorkout, workout }) => {
+export const LabelSelector: FC<WorkoutForm> = ({ setWorkouts, workout }) => {
     const { data, isLoading } = useSWR<TLabel[]>('/api/labels');
-    const labels = data ?? [];
     const t = useTranslations('Dashboard.WorkoutUpload.Forms.labels');
-
     const [newLabelValue, setNewLabelValue] = useState<string>('');
     const [newLabels, setNewLabels] = useState<TLabel[]>([]);
     const [error, setError] = useState<string | null>(null);
+    const { setRefEl, setPopperElement, styles, attributes } = usePopover();
 
+    const labels = data ?? [];
     const isNoLabels = labels?.length + newLabels.length === 0 && !isLoading;
     const isLabelsList = !isNoLabels && !isLoading;
 
-    const handleAddNewLabel = (e: MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
+    const handleAddNewLabel = () => {
         setError(null);
 
         try {
@@ -53,7 +53,11 @@ export const LabelSelector: FC<NewWorkoutProps> = ({ setWorkout, workout }) => {
                 key={label.color + label.value}
                 hoverNoColor
                 onClick={() => {
-                    setWorkout(prev => ({ ...prev, label }));
+                    setWorkouts(prev =>
+                        prev.map(wk =>
+                            wk.id === workout.id ? { ...wk, label } : wk
+                        )
+                    );
                     close();
                 }}
             >
@@ -66,19 +70,24 @@ export const LabelSelector: FC<NewWorkoutProps> = ({ setWorkout, workout }) => {
         ));
 
     return (
-        <div className="relative flex flex-wrap items-center justify-between gap-4">
+        <div className="flex flex-wrap items-center justify-between gap-4">
             <Popover>
                 <Popover.Button as={Fragment}>
-                    <Button className="btn-outline btn-primary">
+                    <Button className="btn-outline btn-primary" ref={setRefEl}>
                         {t('cta')}
                     </Button>
                 </Popover.Button>
 
                 <MenuTransition>
-                    <Popover.Panel className="absolute left-0 z-10 mt-1 w-72 rounded-lg border border-base-content border-opacity-20 bg-base-100 p-2 shadow-2xl focus:outline-none">
+                    <Popover.Panel
+                        className="w-72 rounded-lg border border-base-content border-opacity-20 bg-base-100 p-2 shadow-2xl focus:outline-none"
+                        ref={setPopperElement}
+                        style={styles.popper}
+                        {...attributes.popper}
+                    >
                         {({ close }) => (
                             <>
-                                <form className="w-full">
+                                <div className="w-full">
                                     <Input
                                         type="text"
                                         value={newLabelValue}
@@ -90,33 +99,28 @@ export const LabelSelector: FC<NewWorkoutProps> = ({ setWorkout, workout }) => {
                                         error={error}
                                     >
                                         <IconButton
-                                            onClick={e => handleAddNewLabel(e)}
-                                            type="submit"
+                                            onClick={handleAddNewLabel}
                                             className="absolute right-0"
                                             aria-label={t('placeholder')}
                                         >
                                             <PlusIcon />
                                         </IconButton>
                                     </Input>
-                                </form>
-
+                                </div>
                                 {labels?.length + newLabels?.length > 0 && (
                                     <hr className="mb-2 mt-4 border-t border-t-base-content border-opacity-20 " />
                                 )}
-
                                 <div className="max-h-44 overflow-y-scroll">
                                     {isLoading && (
                                         <div className="flex flex-col items-stretch gap-3 p-3">
-                                            <SkeletonList length={3} />
+                                            <SkeletonList length={6} />
                                         </div>
                                     )}
-
                                     {isNoLabels && (
                                         <div className="flex justify-center p-3">
                                             <Text value={t('noLabels')} />
                                         </div>
                                     )}
-
                                     {isLabelsList && (
                                         <>
                                             {renderLabelsList(
@@ -137,7 +141,13 @@ export const LabelSelector: FC<NewWorkoutProps> = ({ setWorkout, workout }) => {
                 <Label
                     label={workout.label}
                     onClose={() =>
-                        setWorkout(prev => ({ ...prev, label: null }))
+                        setWorkouts(prev =>
+                            prev.map(wk =>
+                                wk.id === workout.id
+                                    ? { ...wk, label: null }
+                                    : wk
+                            )
+                        )
                     }
                 />
             )}

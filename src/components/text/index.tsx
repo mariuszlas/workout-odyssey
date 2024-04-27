@@ -1,18 +1,8 @@
-import type {
-    FC,
-    HTMLAttributes,
-    JSXElementConstructor,
-    ReactElement,
-    ReactNodeArray,
-} from 'react';
+import type { FC, HTMLAttributes, ReactNode } from 'react';
 import { createElement } from 'react';
 
 interface Props extends HTMLAttributes<HTMLSpanElement | HTMLParagraphElement> {
-    value?:
-        | string
-        | ReactElement<any, string | JSXElementConstructor<any>>
-        | ReactNodeArray
-        | number;
+    value?: string | number | ReactNode;
     as?: 'p' | 'span';
 }
 

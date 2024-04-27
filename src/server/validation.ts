@@ -125,6 +125,7 @@ export const emailVerificationSchema = z.object({
 interface FormState {
     other: string | null;
     fieldErrors: Record<string, string[] | undefined>;
+    ok?: boolean;
 }
 
 export const formatZodError = (e: ZodError): FormState => ({

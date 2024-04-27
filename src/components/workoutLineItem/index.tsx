@@ -1,68 +1,74 @@
 import type { FC } from 'react';
 
 import type { StatIconType, Units } from '@/interfaces';
-import { Workout, WorkoutTypes } from '@/interfaces';
 import { formatDuration, formatPace, getDateTimeTZ } from '@/utils/helpers';
 
 import { getStatIcon, Text } from '..';
 
-interface Props {
-    data: Workout;
-    units?: Units;
-}
-
-interface TypeProps extends Props {
-    type: WorkoutTypes;
-}
-
 interface DataEntryProps {
     value?: string | number;
     unit?: string;
-    iconType?: StatIconType;
+    iconType?: StatIconType | null;
 }
 
-const DataEntry: FC<DataEntryProps> = ({ value, unit, iconType }) => {
-    const content = (
-        <Text>
-            {value} {unit}
-        </Text>
-    );
+const DataEntry: FC<DataEntryProps> = ({ value, unit = '', iconType }) => {
+    const textContent = <Text>{`${value} ${unit}`}</Text>;
 
-    if (!iconType) {
-        return content;
-    }
+    if (!iconType) return textContent;
 
     return (
-        <div className="flex items-center gap-1 sm:gap-2">
+        <div className="flex items-center gap-1">
             {getStatIcon(iconType, true)}
-            {content}
+            {textContent}
         </div>
     );
 };
 
-export const DateEntry: FC<Props> = ({ data }) => (
-    <DataEntry value={getDateTimeTZ(data.timestamp, data.timezone)} />
+interface DateProps {
+    timestamp: string | Date | undefined;
+    tz: string | undefined;
+    dateOnly?: boolean;
+}
+
+interface Props {
+    units?: Units;
+    icon?: boolean;
+}
+
+interface NumericProps extends Props {
+    value: number;
+}
+
+export const DateEntry: FC<DateProps> = ({
+    timestamp,
+    tz,
+    dateOnly = true,
+}) => <DataEntry value={getDateTimeTZ(timestamp, tz, dateOnly)} />;
+
+export const Distance: FC<NumericProps> = ({ value, units, icon = false }) => (
+    <DataEntry
+        value={value.toFixed(1)}
+        unit={units?.km}
+        iconType={icon ? 'road' : null}
+    />
 );
 
-export const Distance: FC<Props> = ({ data, units }) => (
-    <DataEntry value={data.distance.toFixed(1)} unit={units?.km} />
+export const Duration: FC<NumericProps> = ({ value }) => (
+    <DataEntry value={formatDuration(value)} iconType="clockCircle" />
 );
 
-export const Duration: FC<Props> = ({ data }) => (
-    <DataEntry value={formatDuration(data.duration)} iconType="clockCircle" />
+export const Pace: FC<NumericProps> = ({ value, units }) => (
+    <DataEntry
+        value={formatPace(value)}
+        unit={`/${units?.km}`}
+        iconType="speedometer"
+    />
 );
 
-export const PaceOrSpeed: FC<TypeProps> = ({ data, type, units }) =>
-    type === WorkoutTypes.CYCLING ? (
-        <DataEntry
-            value={data.speed.toFixed(1)}
-            unit={units?.kmh}
-            iconType="speedometer"
-        />
-    ) : (
-        <DataEntry
-            value={formatPace(data.pace)}
-            unit={`/${units?.km}`}
-            iconType="speedometer"
-        />
-    );
+export const Speed: FC<NumericProps> = ({ value, units }) => (
+    <DataEntry
+        value={value.toFixed(1)}
+        unit={units?.kmh}
+        iconType="speedometer"
+    />
+);

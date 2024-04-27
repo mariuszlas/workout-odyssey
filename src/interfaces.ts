@@ -32,7 +32,9 @@ export interface UploadWorkout extends BaseWorkout {
 }
 
 export interface NewWorkout extends BaseWorkout {
-    coordinates: Position[];
+    id?: number;
+    coordinates?: Position[];
+    file?: File;
 }
 
 export interface PagedWorkoutList {
@@ -81,10 +83,10 @@ export interface BestResults {
     [key: string]: Workout | null;
 }
 
-export interface WorkoutPreview {
+export type WorkoutPreview = {
     data: UploadWorkout;
     foundData: Workout[];
-}
+}[];
 
 export interface User {
     username: string;

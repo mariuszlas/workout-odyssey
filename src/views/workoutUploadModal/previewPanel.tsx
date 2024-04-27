@@ -1,19 +1,18 @@
 'use client';
 
-import { type FC, useEffect } from 'react';
+import { Dispatch, type FC, SetStateAction, useEffect } from 'react';
 import { useFormState } from 'react-dom';
 import { useTranslations } from 'next-intl';
 
-import { Alert, Button, Heading, notify, Text } from '@/components';
-import type { UploadWorkout, Workout, WorkoutPreview } from '@/interfaces';
-import { useUI } from '@/providers';
-import { formatDuration, getDateTimeTZ } from '@/utils/helpers';
+import { Alert, Button, notify } from '@/components';
+import type { WorkoutPreview } from '@/interfaces';
 
-import { addNewWorkout } from './action';
+import { addNewWorkouts } from './action';
+import { PreviewListItem } from './components';
 
 interface Props {
     workoutPreview: WorkoutPreview;
-    setPreviewData: (data: WorkoutPreview | null) => void;
+    setPreviewData: Dispatch<SetStateAction<WorkoutPreview>>;
     isEdit: boolean;
     onClose: () => void;
 }
@@ -24,26 +23,38 @@ export const PreviewPanel: FC<Props> = ({
     isEdit,
     onClose,
 }) => {
+    const t = useTranslations('Dashboard.WorkoutUpload.Preview');
+
     const [formState, action] = useFormState(
-        () => addNewWorkout(dataToUpload, isEdit),
+        () =>
+            addNewWorkouts(
+                workoutPreview.map(({ data }) => data),
+                isEdit
+            ),
         undefined
     );
 
-    const { units } = useUI();
-    const t = useTranslations('Dashboard');
-
-    const existingData = workoutPreview?.foundData;
-    const dataToUpload = workoutPreview?.data;
-    const isExistingData = existingData && existingData.length > 0;
+    const isExistingData = workoutPreview?.some(obj => {
+        if (isEdit) {
+            return (
+                obj.foundData?.length > 0 &&
+                obj.foundData.some(
+                    foundDataObj => foundDataObj.id !== obj.data.id
+                )
+            );
+        } else {
+            return obj.foundData?.length > 0;
+        }
+    });
 
     useEffect(() => {
         if (formState?.ok) {
             if (isEdit) {
-                notify.success(t('WorkoutUpload.Preview.notify.updateSuccess'));
+                notify.success(t('notify.updateSuccess'));
                 onClose();
             } else {
-                notify.success(t('WorkoutUpload.Preview.notify.uploadSuccess'));
-                setPreviewData(null);
+                notify.success(t('notify.uploadSuccess'));
+                setPreviewData([]);
             }
         }
 
@@ -52,68 +63,48 @@ export const PreviewPanel: FC<Props> = ({
         }
     }, [formState]);
 
-    const formatPreviewItem = (workout: UploadWorkout | Workout) =>
-        t('WorkoutUpload.Preview.previewDetails', {
-            distance: `${workout.distance.toFixed(1)} ${units.km}`,
-            duration: formatDuration(workout.duration),
-        });
-
     return (
         <>
-            <div className="flex flex-col items-stretch gap-4">
-                <Alert
-                    status={isExistingData ? 'warning' : 'success'}
-                    classes="m-0 p-2"
-                >
-                    {t('WorkoutUpload.Preview.alertDetails', {
-                        count: existingData.length,
-                        type: t('workoutType', {
-                            workoutType: dataToUpload.type,
-                        }),
-                        date: getDateTimeTZ(
-                            dataToUpload.timestamp,
-                            dataToUpload.timezone,
-                            true
-                        ),
-                    })}
-                </Alert>
-
+            <div className="flex flex-1 flex-col gap-4">
                 {isExistingData && (
-                    <div data-testid="found-data-section">
-                        <Heading
-                            as="h3"
-                            value={t('WorkoutUpload.Preview.foundDataHeader')}
-                        />
-                        <ul>
-                            {existingData.map(workout => (
-                                <li key={workout.id}>
-                                    {formatPreviewItem(workout)}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
+                    <Alert
+                        classes="m-0 p-2"
+                        status="warning"
+                        title={t('warningTitle')}
+                        content={t('warningAlert')}
+                    />
                 )}
 
-                <div data-testid="data-to-upload-section">
-                    <Heading
-                        as="h3"
-                        value={t('WorkoutUpload.Preview.toUpoadHeader')}
-                    />
-                    <Text value={formatPreviewItem(dataToUpload)} />
-                </div>
+                <ul className="flex max-h-96 flex-wrap gap-3 overflow-y-scroll">
+                    {workoutPreview.map((item, idx) => (
+                        <PreviewListItem
+                            key={idx}
+                            {...item}
+                            isEdit={isEdit}
+                            removeItem={() => {
+                                setPreviewData(prev =>
+                                    prev.filter(
+                                        prevObj =>
+                                            prevObj.data.id !== item.data.id
+                                    )
+                                );
+                            }}
+                        />
+                    ))}
+                </ul>
             </div>
 
-            <div className="flex justify-end gap-4">
+            <div className="mt-6 flex justify-end gap-4">
                 <Button
                     className="btn-ghost"
-                    onClick={() => setPreviewData(null)}
+                    onClick={() => setPreviewData([])}
                 >
-                    {t('WorkoutUpload.Preview.ctaSecondary')}
+                    {t('ctaSecondary')}
                 </Button>
 
                 <form action={action}>
                     <Button className="btn-primary" type="submit">
-                        {t('WorkoutUpload.Preview.cta')}
+                        {t('cta')}
                     </Button>
                 </form>
             </div>

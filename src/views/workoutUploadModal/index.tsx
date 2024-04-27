@@ -10,8 +10,8 @@ interface Props extends ModalProps {
 }
 
 export const WorkoutUploadModal: FC<Props> = ({ workout, isOpen, onClose }) => (
-    <Modal isOpen={isOpen} onClose={onClose} full>
-        <div className="relative flex flex-col gap-4">
+    <Modal isOpen={isOpen} onClose={onClose} full large>
+        <div className="relative flex min-h-72 flex-col gap-4">
             <WorkoutUpload workout={workout} onClose={onClose} />
         </div>
     </Modal>

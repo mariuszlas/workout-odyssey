@@ -25,9 +25,11 @@ export const MapPanel: FC<{ id: number }> = ({ id }) => {
 
     if (error) {
         return (
-            <Alert status="error" classes="mb-0">
-                {t('errorGeolocation')}
-            </Alert>
+            <Alert
+                status="error"
+                classes="mb-0"
+                content={t('errorGeolocation')}
+            />
         );
     }
 

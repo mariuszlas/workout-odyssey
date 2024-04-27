@@ -22,11 +22,7 @@ export const VerifyForm: FC<{ email: string }> = ({ email }) => {
 
     return (
         <div className="flex flex-col gap-8">
-            {error && (
-                <Alert status="error" classes="mb-0">
-                    {error}
-                </Alert>
-            )}
+            {error && <Alert status="error" classes="mb-0" content={error} />}
 
             <Text
                 as="p"

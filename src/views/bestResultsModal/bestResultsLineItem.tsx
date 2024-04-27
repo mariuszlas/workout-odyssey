@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 
-import { DateEntry, Duration, PaceOrSpeed, Text } from '@/components';
-import type { Units, Workout } from '@/interfaces';
+import { DateEntry, Duration, Pace, Speed, Text } from '@/components';
+import { type Units, type Workout, WorkoutTypes } from '@/interfaces';
 
 interface Props {
     data: Workout | null | undefined;
@@ -17,14 +17,17 @@ export const LineItem: FC<Props> = ({ data, header, units, noDataText }) => (
             <div className="flex flex-wrap justify-between">
                 {data ? (
                     <>
-                        <DateEntry data={data} />
+                        <DateEntry
+                            timestamp={data.timestamp}
+                            tz={data.timezone}
+                        />
                         <div className="flex gap-4">
-                            <Duration data={data} units={units} />
-                            <PaceOrSpeed
-                                data={data}
-                                type={data.type}
-                                units={units}
-                            />
+                            <Duration value={data.duration} />
+                            {data.type === WorkoutTypes.CYCLING ? (
+                                <Speed value={data.speed} units={units} />
+                            ) : (
+                                <Pace value={data.pace} units={units} />
+                            )}
                         </div>
                     </>
                 ) : (

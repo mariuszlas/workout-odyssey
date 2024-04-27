@@ -3,12 +3,9 @@ import { useTranslations } from 'next-intl';
 
 import { FormLabel, Select } from '@/components';
 
-import { NewWorkoutProps } from '../intrefaces';
+import { WorkoutForm } from '../intrefaces';
 
-export const TimezoneSelector: FC<NewWorkoutProps> = ({
-    workout,
-    setWorkout,
-}) => {
+export const TimezoneSelector: FC<WorkoutForm> = ({ workout, setWorkouts }) => {
     const t = useTranslations('Dashboard.WorkoutUpload.Forms.timezone');
 
     return (
@@ -19,7 +16,13 @@ export const TimezoneSelector: FC<NewWorkoutProps> = ({
                 value={workout.timezone}
                 className="max-w-44"
                 onChange={e => {
-                    setWorkout(prev => ({ ...prev, timezone: e.target.value }));
+                    setWorkouts(prev =>
+                        prev.map(wk =>
+                            wk.id === workout.id
+                                ? { ...wk, timezone: e.target.value }
+                                : wk
+                        )
+                    );
                 }}
             >
                 {Intl.supportedValuesOf('timeZone').map((value, idx) => (

@@ -31,7 +31,7 @@ export const Email: FC<Props> = ({ data, isLoading }) => {
     const formRef = useRef<HTMLFormElement>(null);
 
     useEffect(() => {
-        if ((requestUpdateState as any)?.ok) {
+        if (requestUpdateState?.ok) {
             setIsVerify(true);
         }
         if (requestUpdateState?.other) {
@@ -40,14 +40,14 @@ export const Email: FC<Props> = ({ data, isLoading }) => {
     }, [requestUpdateState]);
 
     useEffect(() => {
-        if ((verifyUpdateState as any)?.ok) {
+        if (verifyUpdateState?.ok) {
             setIsVerify(false);
             notify.success(t('notify.success'));
         }
         if (verifyUpdateState?.other) {
             notify.error(verifyUpdateState.other);
         }
-    }, [verifyUpdateState]);
+    }, [verifyUpdateState, t]);
 
     const cancelEmailVerification = () => {
         if (formRef.current) {

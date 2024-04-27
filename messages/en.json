@@ -275,21 +275,21 @@
             "header": "Workout Details",
             "activity": "Activity",
             "distance": "Distance",
-            "pace": "Pace",
-            "speed": "Average speed",
-            "date": "Date",
-            "duration": "Duration",
+            "pace": "Average Pace",
+            "speed": "Average Speed",
+            "date": "Start Time",
+            "duration": "Total Duration",
             "notes": "Notes",
             "noGeolocation": "This workout does not have geolocation data",
             "errorGeolocation": "Something went wrong and we could not get the geolocation data"
         },
         "WorkoutUpload": {
             "Forms": {
-                "header": "Data Upload",
+                "uploadHeader": "Workout Upload",
+                "editHeader": "Edit Workout Data",
                 "cta": "Upload",
                 "tabUploadFile": "Upload File",
                 "tabAddData": "Add Data Manually",
-                "tabEdit": "Edit Workout Data",
                 "activity": { "label": "Workout Type" },
                 "dateAndTime": {
                     "label": "Date and Time",
@@ -315,13 +315,20 @@
                     "labelSeconds": "Seconds",
                     "plcdSeconds": "SS"
                 },
-                "file": {
-                    "cta": "Browse",
-                    "noFileSelected": "No file selected",
+                "files": {
+                    "description": "Drag and drop your files here or",
+                    "cta": "Browse Files",
+                    "fileTypeTitle": "Supported file types",
                     "fileTypeInfo": "Only tsx files exported from the Coros Pace app are currently supported",
                     "errors": {
                         "demoFileSize": "Maximum file size for demo users is 1 MB",
                         "generic": "Could not parse the file"
+                    },
+                    "noFileSelected": "No files selected",
+                    "aria": {
+                        "remove": "Remove this file from the list",
+                        "edit": "Edit data for this file",
+                        "back": "Back to files flist"
                     }
                 },
                 "timezone": { "label": "Timezone" },
@@ -331,20 +338,27 @@
                     "placeholder": "Add a new label",
                     "error": "Incorrect data input",
                     "noLabels": "No labels"
+                },
+                "confirmation": {
+                    "title": "Discard Files",
+                    "description": "Are you sure you want to switch to manual upload? The currently selected files will be discarded.",
+                    "confirmCta": "Discard",
+                    "cancelCta": "Cancel"
                 }
             },
             "Preview": {
                 "header": "Data Preview",
                 "cta": "Upload",
                 "ctaSecondary": "Cancel",
-                "foundDataHeader": "Found Data",
-                "toUpoadHeader": "Data to Upload",
-                "previewDetails": "Distance: {distance}, Duration: {duration}",
+                "foundDataHeader": "Existing Data",
+                "warningTitle": "Similar existing data found",
+                "warningAlert": "For some of the workouts there are already records for the same date and activity type. Check the details below. You may remove those workouts or ignore this warning and proceed with upload.",
                 "alertDetails": "There {count, plural, =0 {are no} =1 {is} other {are}} {count, plural, =0 {} other {#}} {count, plural, =1 {record} other {records}} for {type} on {date}",
                 "notify": {
                     "uploadSuccess": "Workout was successfully uploaded",
                     "updateSuccess": "Workout was successfully updated"
-                }
+                },
+                "aria": { "remove": "Remove this workout from the list" }
             },
             "errors": { "generic": "Failed to upload the workout data" }
         },

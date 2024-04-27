@@ -17,6 +17,7 @@ module.exports = {
         'no-console': ['warn', { allow: ['warn', 'error'] }],
         quotes: ['error', 'single', { avoidEscape: true }],
         'react/display-name': 'off',
+        'react-hooks/exhaustive-deps': 'off',
         'react/jsx-filename-extension': [
             'warn',
             { extensions: ['.js', '.jsx', '.ts', '.tsx'] },

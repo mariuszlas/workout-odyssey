@@ -23,7 +23,7 @@ export const Password: FC<{ isLoading?: boolean }> = ({ isLoading }) => {
         getErrors(formState);
 
     useEffect(() => {
-        if ((formState as any)?.ok) {
+        if (formState?.ok) {
             notify.success(t('notify.success'));
             if (formRef?.current) {
                 formRef.current.reset();
@@ -32,7 +32,7 @@ export const Password: FC<{ isLoading?: boolean }> = ({ isLoading }) => {
         if (formState?.other) {
             notify.error(formState.other);
         }
-    }, [formState]);
+    }, [formState, t]);
 
     return (
         <Container

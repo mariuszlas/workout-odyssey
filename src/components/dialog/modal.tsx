@@ -69,7 +69,7 @@ export const Modal: FC<ModalProps> = ({
                         className={cn(
                             'm-auto rounded-xl border border-base-content border-opacity-20 bg-base-100 p-4 sm:p-6',
                             full && 'w-full',
-                            large ? 'max-w-screen-md' : 'max-w-md'
+                            large ? 'max-w-lg' : 'max-w-md'
                         )}
                     >
                         {children}

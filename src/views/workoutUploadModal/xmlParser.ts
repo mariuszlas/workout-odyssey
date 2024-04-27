@@ -49,6 +49,18 @@ export const readFileAsync = (file: File) => {
     });
 };
 
+export const readFilesAsync = (files: File[]) => {
+    return Promise.all(
+        files.map(async file => {
+            const xmlString = await readFileAsync(file);
+
+            if (typeof xmlString !== 'string') throw new Error('Not an XML');
+
+            return parseXML(xmlString, file.name);
+        })
+    );
+};
+
 export const getRoot = (xmlString: string) => {
     const document = new DOMParser().parseFromString(xmlString, 'text/xml');
     return document.querySelector(ROOT_TAG);

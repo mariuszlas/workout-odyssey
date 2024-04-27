@@ -1,9 +1,11 @@
 export { ActivitySelector } from './activitySelector';
+export { ConfirmationModal } from './confirmationModal';
 export { DatetimePicker } from './datetimePicker';
 export { DistanceInput } from './distanceInput';
 export { DurationPicker } from './durationPicker';
-export { FileInfo } from './fileInfo';
+export { FileList } from './fileList';
 export { FilePicker } from './filePicker';
 export { LabelSelector } from './labelSelector';
 export { NotesInput } from './notesInput';
+export { PreviewListItem } from './previewListItem';
 export { TimezoneSelector } from './timezoneSelector';

@@ -1,50 +1,31 @@
-import type { FC, ReactNode } from 'react';
+import type { FC } from 'react';
+import clsx from 'clsx';
 
 import { Label, Text } from '@/components';
 import type { TLabel } from '@/interfaces';
 
 interface Props {
-    type?: string;
+    title?: string;
     value?: string | number;
     notes?: boolean;
     label?: TLabel | null;
-    children?: ReactNode;
 }
 
-export const LineItem: FC<Props> = ({
-    type,
-    value,
-    label,
-    notes,
-    children,
-}) => {
-    const header = <Text className="font-medium" value={type} />;
-
-    let body = <Text value={value} />;
-    if (label) {
-        body = (
-            <div className="flex gap-2">
+export const LineItem: FC<Props> = ({ title, value, label, notes }) => (
+    <li
+        className={clsx(
+            'flex flex-wrap justify-between border-t border-t-base-content border-opacity-20 px-4 py-2 first:border-t-0',
+            notes ? 'gap-x-12' : 'gap-x-4'
+        )}
+    >
+        <Text className="font-medium" value={title} />
+        {label ? (
+            <div className="flex flex-wrap gap-x-4 ">
                 <Label label={label} />
-                {body}
+                <Text value={value} />
             </div>
-        );
-    }
-
-    return (
-        <li className="flex flex-wrap justify-between">
-            {!notes && (
-                <>
-                    {header}
-                    {body}
-                </>
-            )}
-            {notes && (
-                <div className="flex flex-col items-stretch">
-                    {header}
-                    {body}
-                </div>
-            )}
-            {children}
-        </li>
-    );
-};
+        ) : (
+            <Text value={value} />
+        )}
+    </li>
+);

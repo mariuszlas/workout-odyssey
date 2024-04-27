@@ -11,10 +11,11 @@ import {
     InputButton,
     MenuTransition,
 } from '@/components';
+import { usePopover } from '@/hooks';
 import dayjs from '@/utils/extended-dayjs';
 import { formatDuration } from '@/utils/helpers';
 
-import { NewWorkoutProps } from '../intrefaces';
+import { WorkoutForm } from '../intrefaces';
 
 type PopoverOnClose = (
     focusableElement?:
@@ -23,24 +24,27 @@ type PopoverOnClose = (
         | undefined
 ) => void;
 
-export const DurationPicker: FC<NewWorkoutProps> = ({
-    workout,
-    setWorkout,
-}) => {
+export const DurationPicker: FC<WorkoutForm> = ({ workout, setWorkouts }) => {
     const { duration } = workout;
     const [s, setS] = useState(dayjs.duration(duration, 's').seconds());
     const [m, setM] = useState(dayjs.duration(duration, 's').minutes());
     const [h, setH] = useState(dayjs.duration(duration, 's').hours());
 
     const t = useTranslations('Dashboard.WorkoutUpload.Forms.duration');
+    const { setRefEl, setPopperElement, styles, attributes } = usePopover({
+        position: 'bottom-end',
+    });
 
     useEffect(() => {
         if (isNaN(h)) setH(0);
         if (isNaN(m)) setM(0);
         if (isNaN(s)) setS(0);
+        const duration = s + m * 60 + h * 3600;
 
-        setWorkout(prev => ({ ...prev, duration: s + m * 60 + h * 3600 }));
-    }, [s, m, h, setWorkout]);
+        setWorkouts(prev =>
+            prev.map(wk => (wk.id === workout.id ? { ...wk, duration } : wk))
+        );
+    }, [s, m, h, setWorkouts]);
 
     const durationFields = [
         {
@@ -83,30 +87,30 @@ export const DurationPicker: FC<NewWorkoutProps> = ({
         ));
 
     return (
-        <div className="relative w-fit">
+        <div className="w-fit">
             <FormLabel text={t('label')} isRequired />
-
             <Popover>
                 <Popover.Button as={Fragment}>
-                    <InputButton className="w-24">
+                    <InputButton className="w-24" ref={setRefEl}>
                         {formatDuration(duration)}
                     </InputButton>
                 </Popover.Button>
-
                 <MenuTransition>
-                    <Popover.Panel className="absolute right-0 z-10 mt-2 max-w-md rounded-lg border border-base-content border-opacity-20 bg-base-100 bg-opacity-100 p-4 opacity-100 shadow-2xl focus:outline-none">
+                    <Popover.Panel
+                        className="max-w-md rounded-lg border border-base-content border-opacity-20 bg-base-100 bg-opacity-100 p-4 opacity-100 shadow-2xl focus:outline-none"
+                        ref={setPopperElement}
+                        style={styles.popper}
+                        {...attributes.popper}
+                    >
                         {({ close }) => (
                             <>
                                 <div className="flex items-center justify-between">
                                     <Heading as="h3" className="text-xl">
                                         {t('header')}
                                     </Heading>
-
                                     <CloseButton onClick={() => close()} />
                                 </div>
-
                                 <hr className="my-2 border-t border-t-base-content border-opacity-20 " />
-
                                 <div className="flex gap-4">
                                     {renderDurationFields(close)}
                                 </div>

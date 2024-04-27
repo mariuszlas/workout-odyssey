@@ -3,7 +3,7 @@
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';
 
-import { Workout, WorkoutTypes } from '@/interfaces';
+import { Workout } from '@/interfaces';
 import { usePathname } from '@/navigation';
 import { useUI } from '@/providers';
 import { getWorkoutTypeFromPathname } from '@/utils/helpers';
@@ -45,7 +45,6 @@ export const WorkoutListBase: FC<{ data?: Workout[] }> = ({ data = [] }) => {
             />
 
             <WorkoutList
-                workoutType={workoutType as WorkoutTypes}
                 sortBy={sortBy}
                 workouts={filterdWks}
                 pageNo={pageNo}

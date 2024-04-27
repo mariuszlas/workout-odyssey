@@ -11,9 +11,10 @@ import {
     MenuTransition,
     Text,
 } from '@/components';
+import { usePopover } from '@/hooks';
 import { WorkoutTypes } from '@/interfaces';
 import { usePathname } from '@/navigation';
-import { capitalize, cn, getWorkoutTypeFromPathname } from '@/utils/helpers';
+import { cn, getWorkoutTypeFromPathname } from '@/utils/helpers';
 
 interface Props {
     onClose?: () => void;
@@ -24,13 +25,11 @@ export const WorkoutSelector: FC<Props> = ({ onClose, isMobile }) => {
     const pathname = usePathname();
     const currentWorkoutType = getWorkoutTypeFromPathname(pathname);
     const t = useTranslations('Dashboard');
+    const { setRefEl, setPopperElement, styles, attributes } = usePopover();
 
     const workoutOptions = Object.values(WorkoutTypes).filter(
         workoutType => workoutType !== currentWorkoutType
     );
-
-    const getT = (workoutType: WorkoutTypes) =>
-        capitalize(t('workoutType', { workoutType }));
 
     if (isMobile) {
         return (
@@ -38,10 +37,11 @@ export const WorkoutSelector: FC<Props> = ({ onClose, isMobile }) => {
                 {Object.values(WorkoutTypes).map(workoutType => (
                     <li key={workoutType.toString()}>
                         <MenuLink
+                            className="capitalize"
                             href={workoutType}
                             onClick={() => onClose && onClose()}
                         >
-                            {getT(workoutType)}
+                            {t('workoutType', { workoutType })}
                         </MenuLink>
                     </li>
                 ))}
@@ -50,12 +50,20 @@ export const WorkoutSelector: FC<Props> = ({ onClose, isMobile }) => {
     }
 
     return (
-        <Menu as="div" className="relative">
+        <Menu as="div">
             {({ open }) => (
                 <>
                     <Menu.Button as={Fragment}>
-                        <Button className="btn-outline btn-primary">
-                            <Text value={getT(currentWorkoutType)} />
+                        <Button
+                            className="btn-outline btn-primary"
+                            ref={setRefEl}
+                        >
+                            <Text
+                                className="capitalize"
+                                value={t('workoutType', {
+                                    workoutType: currentWorkoutType,
+                                })}
+                            />
                             <ChevronDownIcon
                                 className={cn(
                                     'transform duration-300 ease-in-out',
@@ -64,17 +72,22 @@ export const WorkoutSelector: FC<Props> = ({ onClose, isMobile }) => {
                             />
                         </Button>
                     </Menu.Button>
-
                     <MenuTransition>
-                        <Menu.Items className="absolute left-0 z-10 mt-1 w-52 rounded-lg border border-base-content border-opacity-20 bg-base-100 p-2 shadow-2xl focus:outline-none">
+                        <Menu.Items
+                            className="w-52 rounded-lg border border-base-content border-opacity-20 bg-base-100 p-2 shadow-2xl focus:outline-none"
+                            ref={setPopperElement}
+                            style={styles.popper}
+                            {...attributes.popper}
+                        >
                             {workoutOptions.map(workoutType => (
                                 <Menu.Item key={workoutType.toString()}>
                                     {({ active }) => (
                                         <MenuLink
                                             href={workoutType}
+                                            className="capitalize"
                                             active={active}
                                         >
-                                            {getT(workoutType)}
+                                            {t('workoutType', { workoutType })}
                                         </MenuLink>
                                     )}
                                 </Menu.Item>

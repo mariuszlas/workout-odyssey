@@ -13,18 +13,18 @@ export const WorkoutDetailsPanel: FC<{ data: Workout }> = ({ data }) => {
     const t = useTranslations('Dashboard');
 
     return (
-        <ul className="flex flex-col items-stretch gap-2 p-0 sm:px-4">
+        <ul className="rounded-lg border border-base-content border-opacity-20">
             <LineItem
-                type={t('WorkoutDetails.activity')}
+                title={t('WorkoutDetails.activity')}
                 value={t('workoutType', { workoutType: data.type })}
                 label={data.label}
             />
             <LineItem
-                type={t('WorkoutDetails.distance')}
+                title={t('WorkoutDetails.distance')}
                 value={`${data.distance.toFixed(1)} ${units.km}`}
             />
             <LineItem
-                type={t('WorkoutDetails.date')}
+                title={t('WorkoutDetails.date')}
                 value={getDateTimeTZ(
                     data.timestamp,
                     data.timezone,
@@ -32,25 +32,23 @@ export const WorkoutDetailsPanel: FC<{ data: Workout }> = ({ data }) => {
                 )}
             />
             <LineItem
-                type={t('WorkoutDetails.duration')}
+                title={t('WorkoutDetails.duration')}
                 value={formatDuration(data.duration)}
             />
-
             {data.type === WorkoutTypes.CYCLING ? (
                 <LineItem
-                    type={t('WorkoutDetails.speed')}
+                    title={t('WorkoutDetails.speed')}
                     value={`${data.speed.toFixed(1)} ${units.kmh}`}
                 />
             ) : (
                 <LineItem
-                    type={t('WorkoutDetails.pace')}
+                    title={t('WorkoutDetails.pace')}
                     value={`${formatPace(data.pace)} /${units.km}`}
                 />
             )}
-
             {data.notes && (
                 <LineItem
-                    type={t('WorkoutDetails.notes')}
+                    title={t('WorkoutDetails.notes')}
                     value={data.notes}
                     notes
                 />

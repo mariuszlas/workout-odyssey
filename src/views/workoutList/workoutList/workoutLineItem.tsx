@@ -5,7 +5,8 @@ import {
     Distance,
     Duration,
     Label,
-    PaceOrSpeed,
+    Pace,
+    Speed,
 } from '@/components';
 import { Units, Workout, WorkoutTypes } from '@/interfaces';
 
@@ -13,31 +14,31 @@ import { WorkoutMenu } from './workoutMenu';
 
 export interface Props {
     data: Workout;
-    type: WorkoutTypes;
     units: Units;
 }
 
-export const WorkoutLineItem: FC<Props> = ({ ...props }) => (
+export const WorkoutLineItem: FC<Props> = ({ data, units }) => (
     <li className="w-full">
-        <div className="gap2 flex justify-between py-2 sm:px-4 sm:py-1.5">
+        <div className="flex justify-between gap-2 py-2 sm:px-4 sm:py-1.5">
             <div>
                 <div className="flex gap-4 font-medium">
-                    <Distance {...props} />
-
-                    {props.data.label && (
-                        <Label label={props.data.label} small />
-                    )}
+                    <Distance value={data.distance} units={units} />
+                    {data.label && <Label label={data.label} small />}
                 </div>
 
-                <div className="flex gap-2 sm:gap-4">
-                    <Duration {...props} />
-                    <PaceOrSpeed {...props} />
+                <div className="flex gap-4 sm:gap-6">
+                    <Duration value={data.duration} />
+                    {data.type === WorkoutTypes.CYCLING ? (
+                        <Speed value={data.speed} units={units} />
+                    ) : (
+                        <Pace value={data.pace} units={units} />
+                    )}
                 </div>
             </div>
 
             <div className="flex items-center gap-1 sm:gap-4">
-                <DateEntry {...props} />
-                <WorkoutMenu {...props} />
+                <DateEntry timestamp={data.timestamp} tz={data.timezone} />
+                <WorkoutMenu data={data} />
             </div>
         </div>
 

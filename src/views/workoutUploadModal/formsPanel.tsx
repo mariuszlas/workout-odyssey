@@ -1,44 +1,73 @@
 'use client';
 
-import type { FC, ReactNode } from 'react';
+import type { Dispatch, FC, ReactNode, SetStateAction } from 'react';
 import { Fragment, useState } from 'react';
-import { useFormState } from 'react-dom';
 import { Tab } from '@headlessui/react';
 import { useTranslations } from 'next-intl';
 
-import { Button } from '@/components';
-import type { NewWorkout, Workout, WorkoutPreview } from '@/interfaces';
+import type { WorkoutPreview } from '@/interfaces';
 import { cn } from '@/utils/helpers';
 
-import { getWorkoutPreview } from './action';
-import {
-    ActivitySelector,
-    DatetimePicker,
-    DistanceInput,
-    DurationPicker,
-    FileInfo,
-    FilePicker,
-    LabelSelector,
-    NotesInput,
-    TimezoneSelector,
-} from './components';
-import { defaultNewWorkout, formatAndValidateData } from './helpers';
+import { ConfirmationModal } from './components';
+import { FilesUpload } from './filesUpload';
+import { ManualUpload } from './manualUpload';
 
 interface Props {
-    editWorkout?: Workout;
-    setPreviewData: (data: WorkoutPreview | null) => void;
+    setPreviewData: Dispatch<SetStateAction<WorkoutPreview>>;
 }
 
-interface CustomTabProps {
-    isDisabled?: boolean;
-    children: ReactNode;
-}
+export const FormsPanel: FC<Props> = ({ setPreviewData }) => {
+    const [selectedIndex, setSelectedIndex] = useState(0);
+    const [isOpen, setIsOpen] = useState(false);
+    const [hasFilesSelected, setHasFilesSelected] = useState(false);
+    const t = useTranslations('Dashboard.WorkoutUpload.Forms');
 
-const CustomTab: FC<CustomTabProps> = ({ isDisabled, children }) => (
+    const onTabSelection = () => {
+        if (selectedIndex === 0 && hasFilesSelected) {
+            setIsOpen(true);
+            return;
+        }
+        setSelectedIndex(prev => (prev === 0 ? 1 : 0));
+    };
+
+    return (
+        <>
+            <Tab.Group selectedIndex={selectedIndex} onChange={onTabSelection}>
+                <div>
+                    <Tab.List className="tabs tabs-bordered">
+                        <CustomTab>{t('tabUploadFile')} </CustomTab>
+                        <CustomTab>{t('tabAddData')}</CustomTab>
+                    </Tab.List>
+                </div>
+                <Tab.Panels>
+                    <Tab.Panel>
+                        <FilesUpload
+                            setPreviewData={setPreviewData}
+                            setHasFilesSelected={setHasFilesSelected}
+                        />
+                    </Tab.Panel>
+                    <Tab.Panel>
+                        <ManualUpload setPreviewData={setPreviewData} />
+                    </Tab.Panel>
+                </Tab.Panels>
+            </Tab.Group>
+
+            <ConfirmationModal
+                isOpen={isOpen}
+                onClose={() => setIsOpen(false)}
+                confirmAction={() => {
+                    setSelectedIndex(1);
+                    setIsOpen(false);
+                }}
+            />
+        </>
+    );
+};
+
+const CustomTab: FC<{ children: ReactNode }> = ({ children }) => (
     <Tab as={Fragment}>
         {({ selected }) => (
             <button
-                disabled={isDisabled}
                 className={cn('tab h-full w-full p-2 text-base font-semibold', {
                     'tab-active text-primary': selected,
                 })}
@@ -48,72 +77,3 @@ const CustomTab: FC<CustomTabProps> = ({ isDisabled, children }) => (
         )}
     </Tab>
 );
-
-export const FormsPanel: FC<Props> = ({ editWorkout, setPreviewData }) => {
-    const [file, setFile] = useState<File | null>(null);
-    const [workout, setWorkout] = useState<NewWorkout>(
-        editWorkout ? { ...editWorkout, coordinates: [] } : defaultNewWorkout
-    );
-    const t = useTranslations('Dashboard.WorkoutUpload');
-
-    const props = { setWorkout, workout };
-    const filePickerProps = { setWorkout, file, setFile };
-
-    const [formState, action] = useFormState(() => {
-        if (!workout.distance || !workout.duration) return;
-
-        return getWorkoutPreview(
-            formatAndValidateData(workout, editWorkout && editWorkout.id)
-        );
-    }, undefined);
-
-    if (formState?.ok) {
-        setPreviewData(formState.preview);
-    }
-
-    return (
-        <form action={action}>
-            <Tab.Group defaultIndex={editWorkout ? 1 : 0}>
-                <Tab.List className="tabs tabs-bordered">
-                    <CustomTab isDisabled={!!editWorkout}>
-                        {t('Forms.tabUploadFile')}
-                    </CustomTab>
-
-                    <CustomTab>
-                        {editWorkout
-                            ? t('Forms.tabEdit')
-                            : t('Forms.tabAddData')}
-                    </CustomTab>
-                </Tab.List>
-
-                <Tab.Panels>
-                    <Tab.Panel>
-                        <div className="flex flex-col items-stretch gap-4 py-4">
-                            <FilePicker {...filePickerProps} />
-                            <FileInfo />
-                        </div>
-                    </Tab.Panel>
-
-                    <Tab.Panel>
-                        <div className="flex flex-wrap justify-between gap-2 py-4">
-                            <ActivitySelector {...props} />
-                            <DistanceInput {...props} />
-                            <DurationPicker {...props} />
-                            <DatetimePicker {...props} />
-                            <TimezoneSelector {...props} />
-                        </div>
-                    </Tab.Panel>
-                </Tab.Panels>
-            </Tab.Group>
-
-            <div className="flex flex-col items-stretch gap-4">
-                <LabelSelector {...props} />
-                <NotesInput {...props} />
-            </div>
-
-            <Button className="btn-primary btn-block mt-8" type="submit">
-                {t('Forms.cta')}
-            </Button>
-        </form>
-    );
-};

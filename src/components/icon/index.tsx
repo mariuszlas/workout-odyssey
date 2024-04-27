@@ -531,6 +531,36 @@ export const MapPinIcon: FC<Props> = ({ className }) => (
     </svg>
 );
 
+export const FileUpladIcon: FC<Props> = ({ className }) => (
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="currentColor"
+        viewBox="0 0 16 16"
+        className={cn('h-6 w-6', className)}
+    >
+        <path d="M9.293 0H4a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V4.707A1 1 0 0013.707 4L10 .293A1 1 0 009.293 0zM9.5 3.5v-2l3 3h-2a1 1 0 01-1-1zM6.354 9.854a.5.5 0 01-.708-.708l2-2a.5.5 0 01.708 0l2 2a.5.5 0 01-.708.708L8.5 8.707V12.5a.5.5 0 01-1 0V8.707L6.354 9.854z" />
+    </svg>
+);
+
+export const BackArrow: FC<Props> = ({ className }) => (
+    <svg
+        viewBox="0 0 512 512"
+        fill="currentColor"
+        height="1em"
+        width="1em"
+        className={cn('h-6 w-6', className)}
+    >
+        <path
+            fill="none"
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={48}
+            d="M244 400L100 256l144-144M120 256h292"
+        />
+    </svg>
+);
+
 export const getStatIcon = (iconType: StatIconType, isLineItem?: boolean) => {
     const classes = isLineItem
         ? 'h-5 w-5 text-primary'

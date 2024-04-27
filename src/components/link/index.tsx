@@ -1,4 +1,4 @@
-import { ComponentProps, forwardRef } from 'react';
+import { ComponentProps, forwardRef, ReactNode } from 'react';
 
 import { Link } from '@/navigation';
 import { cn } from '@/utils/helpers';
@@ -8,7 +8,7 @@ interface Props extends ComponentProps<typeof Link> {
     danger?: boolean;
     popover?: boolean;
     className?: string;
-    children?: any;
+    children?: ReactNode;
 }
 
 export const MenuLink = forwardRef<HTMLAnchorElement, Props>(

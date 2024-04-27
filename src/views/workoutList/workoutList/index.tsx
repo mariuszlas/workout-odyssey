@@ -2,7 +2,7 @@ import type { FC } from 'react';
 import { useTranslations } from 'next-intl';
 
 import { Text } from '@/components/';
-import type { Workout, WorkoutTypes } from '@/interfaces';
+import type { Workout } from '@/interfaces';
 import { useUI } from '@/providers';
 
 import type { PageProps } from '../header/components';
@@ -19,14 +19,12 @@ export interface SortByObject {
 }
 
 interface WorkoutListProps extends PageProps {
-    workoutType: WorkoutTypes;
     sortBy: SortByObject;
     workouts: Workout[] | undefined;
     isError: boolean;
 }
 
 export const WorkoutList: FC<WorkoutListProps> = ({
-    workoutType,
     sortBy,
     workouts,
     pageNo,
@@ -62,12 +60,7 @@ export const WorkoutList: FC<WorkoutListProps> = ({
         <>
             <ul className="w-full grow">
                 {pagedWorkouts.map((item, idx) => (
-                    <WorkoutLineItem
-                        key={idx}
-                        data={item}
-                        type={workoutType}
-                        units={units}
-                    />
+                    <WorkoutLineItem key={idx} data={item} units={units} />
                 ))}
             </ul>
 

@@ -32,6 +32,19 @@ export const formatAndValidateData = (
     };
 };
 
+export const formatData = (workouts: NewWorkout[]): UploadWorkout[] =>
+    workouts.map(workout => ({
+        id: workout.id,
+        type: workout.type,
+        distance: workout.distance,
+        timestamp: workout.timestamp,
+        timezone: workout.timezone,
+        duration: workout.duration,
+        label: workout.label,
+        notes: workout.notes,
+        geolocation: workout.coordinates?.length ? workout.coordinates : null,
+    }));
+
 export const defaultNewWorkout = {
     type: WorkoutTypes.RUNNING,
     timestamp: '',

@@ -27,7 +27,7 @@ export const WorkoutDetailsDrawer: FC<Props> = ({
 
                 <hr className="border-t border-t-base-content border-opacity-20 " />
 
-                <div className="flex-grow p-4 sm:p-6">
+                <div className="flex-grow p-4">
                     <div className="flex h-full flex-col gap-4">
                         <WorkoutDetailsPanel data={workout} />
                         <MapPanel id={workout.id} />

@@ -14,6 +14,7 @@ export { Heading } from './heading';
 export {
     ArrowLeft,
     ArrowRight,
+    BackArrow,
     BrushIcon,
     BurgerMenuIcon,
     CalendarIcon,
@@ -30,6 +31,7 @@ export {
     ExclamationTriangleIcon,
     EyeIcon,
     EyeSlashIcon,
+    FileUpladIcon,
     getStatIcon,
     GitlabIcon,
     InformationIcon,
@@ -59,4 +61,4 @@ export { Skeleton, SkeletonList } from './skeleton';
 export { Text } from './text';
 export { ThemeSwitch } from './themeSwitch';
 export { notify } from './toast';
-export { DateEntry, Distance, Duration, PaceOrSpeed } from './workoutLineItem';
+export { DateEntry, Distance, Duration, Pace, Speed } from './workoutLineItem';

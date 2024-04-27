@@ -1,50 +1,47 @@
-import type { Dispatch, FC, SetStateAction } from 'react';
+import type { Dispatch, DragEvent, FC, SetStateAction } from 'react';
 import { useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import useSWR from 'swr';
 
-import { Alert, Badge, Button, Text } from '@/components';
+import { Alert, Button, FileUpladIcon, Text } from '@/components';
 import { NewWorkout, UserData } from '@/interfaces';
 import { getMsgFromError } from '@/utils/helpers';
 
 import { defaultNewWorkout } from '../helpers';
-import { FileSizeError, parseXML, readFileAsync } from '../xmlParser';
+import { FileSizeError, readFilesAsync } from '../xmlParser';
+
+import { validateFileSize } from './helpers';
 
 interface Props {
-    file: File | null;
-    setFile: Dispatch<SetStateAction<File | null>>;
-    setWorkout: Dispatch<SetStateAction<NewWorkout>>;
+    setWorkouts: Dispatch<SetStateAction<NewWorkout[]>>;
 }
 
-export const FilePicker: FC<Props> = ({ file, setFile, setWorkout }) => {
+const ACCEPTED_FILE_TYPE = '.tcx';
+
+export const FilePicker: FC<Props> = ({ setWorkouts }) => {
     const { data: user } = useSWR<UserData>('/api/user');
-    const t = useTranslations('Dashboard.WorkoutUpload.Forms.file');
+    const t = useTranslations('Dashboard.WorkoutUpload.Forms.files');
     const [error, setError] = useState<string | null>(null);
     const ref = useRef<HTMLInputElement>(null);
 
-    const readFile = async (file: File) => {
+    const readFiles = async (fileList: FileList) => {
         try {
-            if (user?.isDemo && file.size > 1000000) {
-                throw new FileSizeError();
-            }
+            const files = Array.from(fileList);
+            validateFileSize(files, user?.isDemo);
+            const filesData = await readFilesAsync(files);
 
-            const xmlString = await readFileAsync(file);
-
-            if (typeof xmlString !== 'string') {
-                throw new Error('Not an XML');
-            }
-            const data = parseXML(xmlString, file.name);
-
-            setWorkout(prev => ({
-                ...prev,
-                distance: data.distance,
-                timestamp: data.timestamp.split('Z')[0],
-                duration: data.duration,
-                type: data.type,
-                coordinates: data.coordinates,
+            const state = filesData.map((fileData, idx) => ({
+                ...defaultNewWorkout,
+                distance: fileData.distance,
+                timestamp: fileData.timestamp.split('Z')[0],
+                duration: fileData.duration,
+                type: fileData.type,
+                coordinates: fileData.coordinates,
+                file: files[idx],
+                id: idx,
             }));
 
-            setFile(file);
+            setWorkouts(state);
         } catch (e) {
             if (e instanceof FileSizeError) {
                 setError(t('errors.demoFileSize'));
@@ -55,55 +52,55 @@ export const FilePicker: FC<Props> = ({ file, setFile, setWorkout }) => {
         }
     };
 
-    const onInputChange = async () => {
-        if (ref.current && ref.current.files) {
-            const file = ref.current.files[0];
-            await readFile(file);
-        }
-    };
-
-    const onButtonClick = () => {
+    const handleBrowseFilesBtn = () => {
         if (ref && ref.current) {
             setError(null);
             ref.current.click();
         }
     };
 
-    const removeFile = () => {
-        setWorkout(prev => ({ ...prev, ...defaultNewWorkout }));
-        setFile(null);
+    const onInputChange = async () => {
+        if (ref.current && ref.current.files) {
+            await readFiles(ref.current.files);
+        }
+    };
+
+    const handleFileDrop = async (e: DragEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        const droppedFiles = e.dataTransfer.files;
+        if (droppedFiles.length > 0) {
+            await readFiles(droppedFiles);
+        }
     };
 
     return (
-        <div>
-            {error && (
-                <Alert status="error" classes="my-4">
-                    {error}
-                </Alert>
-            )}
-
-            <div className="flex items-center justify-between gap-4">
-                {file ? (
-                    <Badge value={file.name} onClose={removeFile} />
-                ) : (
-                    <Text className="italic" value={t('noFileSelected')} />
-                )}
-
+        <>
+            {error && <Alert status="error" classes="my-4" content={error} />}
+            <Alert
+                classes="m-0 p-2"
+                status="info"
+                title={t('fileTypeTitle')}
+                content={t('fileTypeInfo')}
+            />
+            <div
+                className="flex flex-col items-center gap-4 rounded-lg border border-teal-500 bg-teal-50 p-4"
+                onDrop={handleFileDrop}
+                onDragOver={e => {
+                    e.preventDefault();
+                }}
+            >
+                <FileUpladIcon className="h-8 w-8 text-primary" />
+                <Text> {t('description')}</Text>
+                <Button onClick={handleBrowseFilesBtn}>{t('cta')}</Button>
                 <input
                     type="file"
                     ref={ref}
                     className="hidden"
                     onChange={onInputChange}
-                    accept=".tcx"
+                    accept={ACCEPTED_FILE_TYPE}
+                    multiple
                 />
-
-                <Button
-                    className="btn-outline btn-primary"
-                    onClick={onButtonClick}
-                >
-                    {t('cta')}
-                </Button>
             </div>
-        </div>
+        </>
     );
 };

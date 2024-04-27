@@ -23,7 +23,7 @@ export default function AccountSettingsPage() {
     const t = useTranslations('AccountSettings');
 
     return (
-        <main className="mx-auto px-4 py-6">
+        <main className="mx-auto px-2 py-6 md:px-4">
             <Heading className="pb-8 md:px-4" value={t('header')} />
 
             <div className=" flex max-w-screen-lg gap-8 md:px-4">

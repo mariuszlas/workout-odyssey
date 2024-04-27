@@ -18,13 +18,13 @@ export const DisplayName: FC<Props> = ({ data, isLoading }) => {
     const t = useTranslations('AccountSettings.sections.name');
 
     useEffect(() => {
-        if ((formState as any)?.ok) {
+        if (formState?.ok) {
             notify.success(t('notify.success'));
         }
         if (formState?.other) {
             notify.error(formState.other);
         }
-    }, [formState]);
+    }, [formState, t]);
 
     return (
         <Container id={ID.DISPLAY_NAME} isLoading={isLoading}>

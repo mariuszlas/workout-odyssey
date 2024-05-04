@@ -23,17 +23,13 @@ export default function AccountSettingsPage() {
     const t = useTranslations('AccountSettings');
 
     return (
-        <main className="mx-auto px-2 py-6 md:px-4">
-            <Heading className="pb-8 md:px-4" value={t('header')} />
-
-            <div className=" flex max-w-screen-lg gap-8 md:px-4">
-                <div>
-                    <Suspense fallback={<AccountSettingsSkeleton />}>
-                        <AccountSettings username={username} />
-                    </Suspense>
-                </div>
-
-                <div className="visible hidden w-[30rem] lg:block">
+        <main className="mx-auto p-4 sm:p-6">
+            <Heading className="pb-6 sm:pb-8" value={t('header')} />
+            <div className="flex max-w-screen-lg gap-6">
+                <Suspense fallback={<AccountSettingsSkeleton />}>
+                    <AccountSettings username={username} />
+                </Suspense>
+                <div className="hidden w-[30rem] lg:block">
                     <Sidebar />
                 </div>
             </div>

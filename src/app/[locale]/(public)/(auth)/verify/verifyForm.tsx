@@ -23,14 +23,12 @@ export const VerifyForm: FC<{ email: string }> = ({ email }) => {
     return (
         <div className="flex flex-col gap-8">
             {error && <Alert status="error" classes="mb-0" content={error} />}
-
             <Text
                 as="p"
                 value={t.rich('Verify.description', {
                     email: () => <Text className="font-bold" value={email} />,
                 })}
             />
-
             <div className="flex flex-wrap justify-end gap-4">
                 <div className="flex items-center gap-2">
                     {pending ? (
@@ -38,7 +36,6 @@ export const VerifyForm: FC<{ email: string }> = ({ email }) => {
                     ) : (
                         success && <CheckIcon className="text-success" />
                     )}
-
                     <form action={action}>
                         <Button
                             type="submit"
@@ -49,9 +46,8 @@ export const VerifyForm: FC<{ email: string }> = ({ email }) => {
                         </Button>
                     </form>
                 </div>
-
                 <Link
-                    className="btn btn-primary  h-10 min-h-min"
+                    className="btn btn-primary h-10 min-h-min text-nowrap"
                     href="/login"
                     color="primary"
                 >

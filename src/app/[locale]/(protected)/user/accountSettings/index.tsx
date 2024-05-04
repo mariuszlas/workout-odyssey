@@ -19,17 +19,18 @@ const AccountSettingsBase: FC<Props> = ({ data, isLoading }) => {
     const props = { data, isLoading };
 
     return (
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-4 sm:gap-6">
             {data?.isDemo && (
                 <div className="flex items-center gap-2 rounded-lg border-l-4 border-l-blue-600 bg-blue-100 p-2">
-                    <InformationIcon className="h-10 w-10 text-blue-600" />
+                    <div>
+                        <InformationIcon className="h-8 w-8 text-blue-600" />
+                    </div>
                     <Text
                         className="text-info-content"
                         value={t('demoAccountLimit')}
                     />
                 </div>
             )}
-
             <DisplayName {...props} />
             <Email {...props} />
             <BasicDetails {...props} />

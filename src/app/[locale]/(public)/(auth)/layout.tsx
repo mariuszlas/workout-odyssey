@@ -18,15 +18,14 @@ export default function PublicAuthLayout({ children }: Children) {
     };
 
     return (
-        <main className="flex grow py-6 sm:bg-base-200">
+        <main className="flex grow p-4 sm:bg-base-200 sm:p-6">
             <section
-                className="sm:border-1 m-auto w-full max-w-md bg-base-100 p-8 sm:rounded-xl sm:shadow-lg"
+                className="sm:border-1 m-auto w-full max-w-md bg-base-100 sm:rounded-xl sm:p-6 sm:shadow-lg"
                 data-testid={`${pathname.slice(1)}-form`}
             >
                 <header className="pb-4">
                     <Heading value={headers[pathname]} />
                 </header>
-
                 {children}
             </section>
         </main>

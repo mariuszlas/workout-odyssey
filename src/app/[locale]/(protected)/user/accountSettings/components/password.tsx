@@ -43,12 +43,11 @@ export const Password: FC<{ isLoading?: boolean }> = ({ isLoading }) => {
             <form action={action} ref={formRef}>
                 <Body title={t('title')}>
                     <div className="flex flex-col gap-3">
-                        <div>
+                        <div className="max-w-96">
                             <PasswordInput
                                 id="currentPassword"
                                 name="currentPassword"
                                 label={authT('currentPassword.label')}
-                                className="max-w-80 "
                                 placeholder={authT('passwordPlaceholder')}
                                 error={currentPasswordError}
                                 aria-invalid={Boolean(currentPasswordError)}
@@ -56,12 +55,10 @@ export const Password: FC<{ isLoading?: boolean }> = ({ isLoading }) => {
                                 iconAriaLabel={authT('currentPassword.aria')}
                             />
                         </div>
-
-                        <div>
+                        <div className="max-w-96">
                             <PasswordInput
                                 id="password"
                                 name="password"
-                                className="max-w-80"
                                 label={authT('newPassword.label')}
                                 placeholder={authT('passwordPlaceholder')}
                                 error={passwordError}
@@ -70,12 +67,10 @@ export const Password: FC<{ isLoading?: boolean }> = ({ isLoading }) => {
                                 iconAriaLabel={authT('newPassword.aria')}
                             />
                         </div>
-
-                        <div>
+                        <div className="max-w-96">
                             <PasswordInput
                                 id="passwordRepeat"
                                 name="passwordRepeat"
-                                className="max-w-80"
                                 label={authT('newPasswordRepeat.label')}
                                 placeholder={authT('passwordPlaceholder')}
                                 error={passwordRepeatError}
@@ -84,7 +79,6 @@ export const Password: FC<{ isLoading?: boolean }> = ({ isLoading }) => {
                                 iconAriaLabel={authT('newPasswordRepeat.aria')}
                             />
                         </div>
-
                         <div>
                             <Text
                                 as="p"
@@ -103,7 +97,6 @@ export const Password: FC<{ isLoading?: boolean }> = ({ isLoading }) => {
                         </div>
                     </div>
                 </Body>
-
                 <Footer>
                     <Button className="btn btn-primary" type="submit">
                         {t('cta')}

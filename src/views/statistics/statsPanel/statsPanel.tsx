@@ -25,6 +25,18 @@ interface Props {
     isLoading?: boolean;
 }
 
+const StatsPanelWrapper: FC<Children & { testId: string }> = ({
+    children,
+    testId,
+}) => (
+    <section
+        className="flex flex-col items-start gap-2 border-base-content border-opacity-20 sm:gap-4 sm:rounded-xl sm:border sm:p-6 sm:shadow-lg"
+        data-testid={testId}
+    >
+        {children}
+    </section>
+);
+
 export const StatsPanel: FC<Props> = ({
     data,
     headerData,
@@ -37,32 +49,21 @@ export const StatsPanel: FC<Props> = ({
     const t = useTranslations('Dashboard.Workout');
     const locale = useLocale();
 
-    const SectionWrapper: FC<Children> = ({ children }) => (
-        <section
-            className="flex flex-col items-start gap-2 border-base-content border-opacity-20 p-4 sm:gap-4 sm:rounded-xl sm:border sm:p-6 sm:shadow-lg"
-            data-testid={`${isPrimary ? 'primary' : 'secondary'}-stats-section`}
-        >
-            {children}
-        </section>
-    );
+    const statType = isPrimary ? 'primary' : 'secondary';
+    const testId = `${statType}-stats-section`;
+    const headingTitle = `${statType}-stats-section-title`;
 
     if (isLoading)
         return (
-            <SectionWrapper>
+            <StatsPanelWrapper testId={testId}>
                 <Skeleton h={'full'} />
-            </SectionWrapper>
+            </StatsPanelWrapper>
         );
 
     return (
-        <SectionWrapper>
+        <StatsPanelWrapper testId={testId}>
             <header>
-                <Heading
-                    as="h2"
-                    title={`${
-                        isPrimary ? 'primary' : 'secondary'
-                    }-stats-section-title`}
-                    className="text-2xl"
-                >
+                <Heading as="h2" title={headingTitle} className="text-2xl">
                     {getStatsPanelHeading(
                         isPrimary,
                         headerData,
@@ -72,7 +73,6 @@ export const StatsPanel: FC<Props> = ({
                     )}
                 </Heading>
             </header>
-
             <div className="flex w-full flex-col gap-3">
                 <StatsPanelEntry
                     data={data?.distance?.toFixed(1) ?? 0}
@@ -80,7 +80,6 @@ export const StatsPanel: FC<Props> = ({
                     units={units.km}
                     icon="road"
                 />
-
                 <StatsPanelEntry
                     data={formatDurationAsDecimal(data?.duration)}
                     field={t('duration')}
@@ -91,7 +90,6 @@ export const StatsPanel: FC<Props> = ({
                     }
                     icon="clockCircle"
                 />
-
                 {workoutType === WorkoutTypes.CYCLING ? (
                     <StatsPanelEntry
                         data={data?.speed?.toFixed(1) ?? 0}
@@ -107,7 +105,6 @@ export const StatsPanel: FC<Props> = ({
                         icon="speedometer"
                     />
                 )}
-
                 <StatsPanelEntry
                     data={data?.counts ?? 0}
                     field={t('counts')}
@@ -115,6 +112,6 @@ export const StatsPanel: FC<Props> = ({
                     icon="counter"
                 />
             </div>
-        </SectionWrapper>
+        </StatsPanelWrapper>
     );
 };

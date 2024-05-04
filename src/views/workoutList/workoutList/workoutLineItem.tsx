@@ -19,14 +19,13 @@ export interface Props {
 
 export const WorkoutLineItem: FC<Props> = ({ data, units }) => (
     <li className="w-full">
-        <div className="flex justify-between gap-2 py-2 sm:px-4 sm:py-1.5">
-            <div>
-                <div className="flex gap-4 font-medium">
+        <div className="flex justify-between gap-2 py-2 sm:py-1.5 sm:pl-4">
+            <div className="overflow-hidden">
+                <div className="flex flex-wrap gap-x-4 font-medium">
                     <Distance value={data.distance} units={units} />
                     {data.label && <Label label={data.label} small />}
                 </div>
-
-                <div className="flex gap-4 sm:gap-6">
+                <div className="flex flex-wrap gap-x-4 sm:gap-x-6">
                     <Duration value={data.duration} />
                     {data.type === WorkoutTypes.CYCLING ? (
                         <Speed value={data.speed} units={units} />
@@ -35,13 +34,11 @@ export const WorkoutLineItem: FC<Props> = ({ data, units }) => (
                     )}
                 </div>
             </div>
-
             <div className="flex items-center gap-1 sm:gap-4">
                 <DateEntry timestamp={data.timestamp} tz={data.timezone} />
                 <WorkoutMenu data={data} />
             </div>
         </div>
-
         <hr className="border-t border-t-primary" />
     </li>
 );

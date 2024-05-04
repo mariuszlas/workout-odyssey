@@ -12,7 +12,9 @@ interface DataEntryProps {
 }
 
 const DataEntry: FC<DataEntryProps> = ({ value, unit = '', iconType }) => {
-    const textContent = <Text>{`${value} ${unit}`}</Text>;
+    const textContent = (
+        <Text className="text-nowrap">{`${value} ${unit}`}</Text>
+    );
 
     if (!iconType) return textContent;
 

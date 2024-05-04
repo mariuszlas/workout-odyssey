@@ -75,7 +75,7 @@ export const FilePicker: FC<Props> = ({ setWorkouts }) => {
 
     return (
         <>
-            {error && <Alert status="error" classes="my-4" content={error} />}
+            {error && <Alert status="error" classes="m-0" content={error} />}
             <Alert
                 classes="m-0 p-2"
                 status="info"

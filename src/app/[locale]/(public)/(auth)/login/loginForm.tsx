@@ -16,7 +16,10 @@ export const LoginForm = () => {
     const t = useTranslations('Auth');
 
     const signupLink = (value: ReactNode) => (
-        <Link href="/signup" className="link link-primary font-medium">
+        <Link
+            href="/signup"
+            className="link link-primary text-nowrap font-medium"
+        >
             {value}
         </Link>
     );
@@ -27,7 +30,6 @@ export const LoginForm = () => {
                 {otherError && (
                     <Alert status="error" classes="mb-0" content={otherError} />
                 )}
-
                 <div>
                     <Input
                         autoFocus
@@ -42,7 +44,6 @@ export const LoginForm = () => {
                         aria-errormessage={emailError}
                     />
                 </div>
-
                 <div>
                     <PasswordInput
                         id="password"
@@ -54,10 +55,9 @@ export const LoginForm = () => {
                         aria-errormessage={passwordError}
                         iconAriaLabel={t('form.password.aria')}
                     />
-
                     <div className="label justify-end">
                         <Link
-                            className="link link-primary"
+                            className="link link-primary text-nowrap"
                             href="/password-reset"
                         >
                             {t('Login.forgotPasswordLink')}
@@ -65,11 +65,9 @@ export const LoginForm = () => {
                     </div>
                 </div>
             </div>
-
             <Button type="submit" className="btn-primary btn-block">
                 {t('Login.cta')}
             </Button>
-
             <div>{t.rich('Login.signupLink', { link: signupLink })}</div>
         </form>
     );

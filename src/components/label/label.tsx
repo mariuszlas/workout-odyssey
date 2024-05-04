@@ -19,12 +19,12 @@ export const Label: FC<Props> = ({ onClose, label, small }) => {
     return (
         <div
             className={cn(
-                'badge text-neutral-100',
-                small ? 'badge-md' : 'badge-lg'
+                'w-fit overflow-hidden overflow-ellipsis rounded-badge text-neutral-100',
+                small ? 'h-5 px-2 text-sm' : 'h-6 px-3'
             )}
             style={{ background: `${label.color}` }}
         >
-            <Text value={label.value} />
+            <Text className="text-nowrap" value={label.value} />
             {onClose && (
                 <button
                     className="ml-2 p-0.5"

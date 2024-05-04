@@ -280,7 +280,7 @@
             "date": "Start Time",
             "duration": "Total Duration",
             "notes": "Notes",
-            "noGeolocation": "This workout does not have geolocation data",
+            "noGeolocation": "This workout doesn't have geolocation data",
             "errorGeolocation": "Something went wrong and we could not get the geolocation data"
         },
         "WorkoutUpload": {

@@ -3,43 +3,43 @@ import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 
 import { Heading, Skeleton } from '@/components';
-import type { Children, WorkoutsDashboard } from '@/interfaces';
+import type {
+    Children,
+    Dashboarad,
+    Loading,
+    WorkoutsDashboard,
+} from '@/interfaces';
 
 import { BarChart } from './chart';
 import { YearSelector } from './yearSelector';
 
-interface Props {
-    dashboard?: WorkoutsDashboard;
-    isLoading?: boolean;
-}
+const ChartViewWrapper: FC<Children & Loading> = ({ children, isLoading }) => (
+    <section
+        className={clsx(
+            'flex flex-col items-center gap-2 border-base-content border-opacity-20 sm:gap-4 sm:rounded-xl sm:border sm:p-6 sm:shadow-lg',
+            isLoading && 'aspect-[3/2]'
+        )}
+        data-testid="chart-section"
+    >
+        {children}
+    </section>
+);
 
-export const ChartView: FC<Props> = ({
+export const ChartView: FC<Dashboarad & Loading> = ({
     dashboard = {} as WorkoutsDashboard,
     isLoading,
 }) => {
     const t = useTranslations('Dashboard.Chart');
 
-    const SectionWrapper: FC<Children> = ({ children }) => (
-        <section
-            className={clsx(
-                'flex flex-col items-center gap-2 border-base-content border-opacity-20 p-4 sm:gap-4 sm:rounded-xl sm:border sm:p-6 sm:shadow-lg',
-                isLoading && 'aspect-[3/2]'
-            )}
-            data-testid="chart-section"
-        >
-            {children}
-        </section>
-    );
-
     if (isLoading)
         return (
-            <SectionWrapper>
+            <ChartViewWrapper isLoading>
                 <Skeleton h={'full'} />
-            </SectionWrapper>
+            </ChartViewWrapper>
         );
 
     return (
-        <SectionWrapper>
+        <ChartViewWrapper>
             <header className="flex items-center gap-6">
                 <Heading
                     as="h2"
@@ -47,11 +47,9 @@ export const ChartView: FC<Props> = ({
                     className="text-2xl"
                     value={t('header')}
                 />
-
                 <YearSelector dashboard={dashboard} />
             </header>
-
             <BarChart dashboard={dashboard} />
-        </SectionWrapper>
+        </ChartViewWrapper>
     );
 };

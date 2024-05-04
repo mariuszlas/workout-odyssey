@@ -32,9 +32,7 @@ export const RequestResetPasswordForm: FC<Props> = ({
             {otherError && (
                 <Alert status="error" classes="mb-0" content={otherError} />
             )}
-
             <Text as="p" value={t('RequestPasswordReset.description')} />
-
             <div>
                 <Input
                     autoFocus
@@ -48,7 +46,6 @@ export const RequestResetPasswordForm: FC<Props> = ({
                     aria-errormessage={emailError}
                 />
             </div>
-
             <Button type="submit" className="btn-primary btn-block">
                 {t('RequestPasswordReset.cta')}
             </Button>

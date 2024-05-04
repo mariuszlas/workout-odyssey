@@ -2,7 +2,6 @@ import { FC, Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 
-import { SkeletonList } from '@/components';
 import { LocaleParam, WorkoutTypes } from '@/interfaces';
 import {
     getAllWorkouts,
@@ -10,7 +9,7 @@ import {
     getDashboard,
 } from '@/server/services';
 import { capitalize, isValidWorkoutType } from '@/utils/helpers';
-import { ChartView, StatisticsView, WorkoutListBase } from '@/views';
+import { ChartView, StatisticsView, WorkoutListView } from '@/views';
 
 type Params = { params: { workoutType: string } };
 
@@ -30,9 +29,9 @@ interface Props {
     userId: number;
 }
 
-const WorkoutListView: FC<Props> = async ({ workoutType, userId }) => {
+const WorkoutListStream: FC<Props> = async ({ workoutType, userId }) => {
     const data = await getAllWorkouts(workoutType, userId);
-    return <WorkoutListBase data={data} />;
+    return <WorkoutListView data={data} />;
 };
 
 const ChartAndStatsStream: FC<Props> = async ({ workoutType, userId }) => {
@@ -47,41 +46,32 @@ const ChartAndStatsStream: FC<Props> = async ({ workoutType, userId }) => {
 
 export default async function Dashboard({ params }: Params) {
     if (!isValidWorkoutType(params?.workoutType)) notFound();
-
     const userId = await getCurrentUserId();
 
     return (
-        <main className="flex justify-center align-middle">
-            <div className="grid w-full max-w-8xl grid-cols-12 sm:gap-4 sm:px-8 sm:py-4">
-                <div className="col-span-12 lg:col-span-6 xl:col-span-7">
-                    <Suspense
-                        fallback={
-                            <>
-                                <ChartView isLoading />
-                                <StatisticsView isLoading />
-                            </>
-                        }
-                    >
-                        <ChartAndStatsStream
-                            workoutType={params.workoutType}
-                            userId={userId}
-                        />
-                    </Suspense>
-                </div>
-
-                <div className="col-span-12 lg:col-span-6 xl:col-span-5">
-                    <section
-                        className="flex flex-col items-start gap-2 border-base-content border-opacity-20 p-4 sm:gap-4 sm:rounded-xl sm:border sm:p-6 sm:shadow-lg lg:min-h-full"
-                        data-testid="workout-list-section"
-                    >
-                        <Suspense fallback={<SkeletonList length={4} h={14} />}>
-                            <WorkoutListView
-                                workoutType={params.workoutType}
-                                userId={userId}
-                            />
-                        </Suspense>
-                    </section>
-                </div>
+        <main className="mx-auto grid w-full max-w-8xl grid-cols-12 gap-6 p-4 sm:p-6">
+            <div className="col-span-12 flex flex-col gap-6 lg:col-span-6 xl:col-span-7">
+                <Suspense
+                    fallback={
+                        <>
+                            <ChartView isLoading />
+                            <StatisticsView isLoading />
+                        </>
+                    }
+                >
+                    <ChartAndStatsStream
+                        workoutType={params.workoutType}
+                        userId={userId}
+                    />
+                </Suspense>
+            </div>
+            <div className="col-span-12 lg:col-span-6 xl:col-span-5">
+                <Suspense fallback={<WorkoutListView isLoading />}>
+                    <WorkoutListStream
+                        workoutType={params.workoutType}
+                        userId={userId}
+                    />
+                </Suspense>
             </div>
         </main>
     );

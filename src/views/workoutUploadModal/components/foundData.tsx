@@ -1,7 +1,6 @@
 'use client';
 
 import { type FC } from 'react';
-import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 
 import { Alert, DateEntry, Distance, Duration, Text } from '@/components';
@@ -36,18 +35,11 @@ export const FoundData: FC<Props> = ({ data, foundData }) => {
                 className="font-medium"
                 value={t('WorkoutUpload.Preview.foundDataHeader')}
             />
-
             <ul className="rounded-lg border border-base-content border-opacity-20">
                 {foundData.map((workout, idx) => (
                     <li
                         key={idx}
-                        className={clsx(
-                            'flex gap-6 overflow-hidden overflow-ellipsis px-4 py-2',
-                            {
-                                'border-t border-t-base-content border-opacity-20':
-                                    idx !== 0,
-                            }
-                        )}
+                        className="flex flex-wrap gap-x-4 overflow-hidden overflow-ellipsis border-t border-t-base-content border-opacity-20 px-4 py-2 first:border-t-0 sm:gap-x-6"
                     >
                         <DateEntry
                             timestamp={data.timestamp}

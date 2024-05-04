@@ -43,7 +43,7 @@ export const NavBar: FC<{ isProtected?: boolean }> = ({
     return (
         <>
             <header className="sticky top-0 z-50 w-full border-b border-b-base-content border-opacity-20 bg-base-100 bg-opacity-30 py-2 shadow-sm backdrop-blur-lg">
-                <nav className="mx-auto flex w-full max-w-8xl items-center px-4 sm:px-8">
+                <nav className="mx-auto flex w-full max-w-8xl items-center px-4 sm:px-6">
                     <div className="navbar-start">
                         <div className="hidden md:block">
                             <Logo isProtected={isProtected} />

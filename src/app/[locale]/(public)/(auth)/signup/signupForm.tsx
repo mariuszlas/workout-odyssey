@@ -28,7 +28,10 @@ export const SignupForm = () => {
     } = getErrors(formState);
 
     const loginLink = (value: ReactNode) => (
-        <Link href="/login" className="link link-primary font-medium">
+        <Link
+            href="/login"
+            className="link link-primary text-nowrap font-medium"
+        >
             {value}
         </Link>
     );
@@ -39,7 +42,6 @@ export const SignupForm = () => {
                 {otherError && (
                     <Alert status="error" classes="mb-0" content={otherError} />
                 )}
-
                 <div>
                     <Input
                         autoFocus
@@ -54,7 +56,6 @@ export const SignupForm = () => {
                         aria-errormessage={emailError}
                     />
                 </div>
-
                 <div>
                     <Input
                         required
@@ -68,7 +69,6 @@ export const SignupForm = () => {
                         aria-errormessage={nameError}
                     />
                 </div>
-
                 <div>
                     <PasswordInput
                         id="password"
@@ -81,7 +81,6 @@ export const SignupForm = () => {
                         iconAriaLabel={t('form.password.aria')}
                     />
                 </div>
-
                 <div>
                     <PasswordInput
                         id="passwordRepeat"
@@ -95,11 +94,9 @@ export const SignupForm = () => {
                     />
                 </div>
             </div>
-
             <Button type="submit" className="btn-primary btn-block">
                 {t('Signup.cta')}
             </Button>
-
             <div>{t.rich('Signup.loginLink', { link: loginLink })}</div>
         </form>
     );

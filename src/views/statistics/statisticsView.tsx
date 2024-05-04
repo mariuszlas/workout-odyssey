@@ -4,7 +4,7 @@ import type { FC } from 'react';
 import clsx from 'clsx';
 
 import { useIsBreakpoint } from '@/hooks';
-import type { WorkoutsDashboard } from '@/interfaces';
+import type { Dashboarad, Loading } from '@/interfaces';
 import { usePathname } from '@/navigation';
 import { useUI } from '@/providers';
 import { getWorkoutTypeFromPathname } from '@/utils/helpers';
@@ -12,12 +12,10 @@ import { getWorkoutTypeFromPathname } from '@/utils/helpers';
 import { StatsPanel } from './statsPanel/statsPanel';
 import { selectPmStatsData, selectSecStatsData } from './helpers';
 
-interface Props {
-    dashboard?: WorkoutsDashboard;
-    isLoading?: boolean;
-}
-
-export const StatisticsView: FC<Props> = ({ dashboard, isLoading }) => {
+export const StatisticsView: FC<Dashboarad & Loading> = ({
+    dashboard,
+    isLoading,
+}) => {
     const isMobile = useIsBreakpoint('md');
     const { year, secondaryStat } = useUI();
 
@@ -33,7 +31,7 @@ export const StatisticsView: FC<Props> = ({ dashboard, isLoading }) => {
     return (
         <div
             className={clsx(
-                'mt-4 grid w-full grid-cols-2 gap-6',
+                'grid w-full grid-cols-2 gap-6',
                 isLoading && 'h-80'
             )}
         >

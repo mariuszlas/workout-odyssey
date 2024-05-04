@@ -2,7 +2,7 @@ import type { FC } from 'react';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 
-import { Button, PlusIcon } from '@/components';
+import { PlusIcon } from '@/components';
 import { cn } from '@/utils/helpers';
 
 interface Props {
@@ -44,15 +44,15 @@ export const FloatingNewWorkoutBtn: FC<Props> = ({ onClick }) => {
     }, [handleScroll]);
 
     return (
-        <Button
+        <button
             aria-label={t('newWorkoutCta')}
             className={cn(
                 { hidden: !isVisible },
-                'btn-circle btn-primary fixed bottom-3 right-3 z-10 drop-shadow-2xl sm:hidden'
+                'fixed bottom-3 right-3 z-10 rounded-full bg-secondary p-5 text-white drop-shadow-2xl sm:hidden'
             )}
             onClick={onClick}
         >
             <PlusIcon />
-        </Button>
+        </button>
     );
 };

@@ -18,6 +18,7 @@ const config: Config = {
                 light: {
                     ...themes['light'],
                     primary: '#14b8a6', // teal-500
+                    secondary: '#a514b8',
 
                     '--rounded-btn': '0.75rem',
                     '--btn-text-case': 'capitalize',
@@ -28,6 +29,7 @@ const config: Config = {
                 dark: {
                     ...themes['dark'],
                     primary: '#14b8a6',
+                    secondary: '#a514b8',
 
                     '--rounded-btn': '0.75rem',
                     '--btn-text-case': 'capitalize',

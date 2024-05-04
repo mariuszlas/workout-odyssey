@@ -138,3 +138,7 @@ export interface Units {
 }
 
 export type LocaleParam = { params: { locale: string } };
+
+export type Dashboarad = { dashboard?: WorkoutsDashboard };
+
+export type Loading = { isLoading?: boolean };

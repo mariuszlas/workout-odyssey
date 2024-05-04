@@ -35,9 +35,7 @@ export const PasswordResetForm: FC<Props> = ({
                 {otherError && (
                     <Alert status="error" classes="mb-0" content={otherError} />
                 )}
-
                 <Text as="p" value={t('ResetPassword.description')} />
-
                 <div>
                     <Input
                         required
@@ -51,7 +49,6 @@ export const PasswordResetForm: FC<Props> = ({
                         aria-errormessage={passwordResetCodeError}
                     />
                 </div>
-
                 <div>
                     <PasswordInput
                         id="password"
@@ -64,7 +61,6 @@ export const PasswordResetForm: FC<Props> = ({
                         iconAriaLabel={t('form.newPassword.aria')}
                     />
                 </div>
-
                 <div>
                     <PasswordInput
                         id="passwordRepeat"
@@ -78,16 +74,14 @@ export const PasswordResetForm: FC<Props> = ({
                     />
                 </div>
             </div>
-
             <Button type="submit" className="btn-primary btn-block">
                 {t('ResetPassword.cta')}
             </Button>
-
             <div className="flex justify-end">
                 <button
                     type="button"
                     onClick={() => setShouldDisplayPasswordResetForm(false)}
-                    className="link link-primary font-medium"
+                    className="link link-primary text-nowrap font-medium"
                 >
                     {t('ResetPassword.requestPasswordResetLink')}
                 </button>

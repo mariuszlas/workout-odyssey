@@ -47,7 +47,7 @@ export const PreviewListItem: FC<Props> = ({
                     : 'border-base-content'
             )}
         >
-            <div className="flex items-center justify-between gap-4">
+            <div className="flex justify-between gap-4">
                 <div className="overflow-hidden overflow-ellipsis">
                     <div className="flex items-center gap-4">
                         <Text className="font-medium capitalize">
@@ -58,10 +58,11 @@ export const PreviewListItem: FC<Props> = ({
                         {data?.label && <Label label={data.label} small />}
                     </div>
 
-                    <div className="flex gap-6">
+                    <div className="flex flex-wrap gap-x-4 sm:gap-x-6">
                         <DateEntry
                             timestamp={data.timestamp}
                             tz={data.timezone}
+                            dateOnly={false}
                         />
                         <Distance value={data.distance} units={units} icon />
                         <Duration value={data.duration} />

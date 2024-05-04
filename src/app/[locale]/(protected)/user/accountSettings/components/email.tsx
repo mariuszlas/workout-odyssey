@@ -63,32 +63,28 @@ export const Email: FC<Props> = ({ data, isLoading }) => {
                 ref={formRef}
             >
                 <Body title={t('title')} description={t('description')}>
-                    <div>
+                    <div className="max-w-96">
                         <Input
                             id="email"
                             name="email"
                             type="email"
-                            className="max-w-72"
                             defaultValue={getCognitoAttribute(data, 'email')}
                             error={emailError}
                             aria-invalid={Boolean(emailError)}
                             aria-errormessage={emailError}
                         />
                     </div>
-
                     {isVerify && (
                         <div className="flex flex-col gap-3 pt-4">
                             <Text
                                 as="p"
                                 value={t('verification.description')}
                             />
-
-                            <div>
+                            <div className="max-w-96">
                                 <Input
                                     id="emailVerificationCode"
                                     name="emailVerificationCode"
                                     type="text"
-                                    className="max-w-72"
                                     placeholder={t(
                                         'verification.codePlaceholder'
                                     )}
@@ -104,7 +100,6 @@ export const Email: FC<Props> = ({ data, isLoading }) => {
                         </div>
                     )}
                 </Body>
-
                 <Footer info={isVerify ? '' : t('ctaInfo')}>
                     <div className="flex gap-4">
                         {isVerify && (

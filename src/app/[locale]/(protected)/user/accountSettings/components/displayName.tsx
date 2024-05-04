@@ -30,13 +30,12 @@ export const DisplayName: FC<Props> = ({ data, isLoading }) => {
         <Container id={ID.DISPLAY_NAME} isLoading={isLoading}>
             <form action={action}>
                 <Body title={t('title')} description={t('description')}>
-                    <div>
+                    <div className="max-w-96">
                         <Input
                             required
                             id="name"
                             name="name"
                             type="text"
-                            className="max-w-72"
                             defaultValue={data?.name}
                             error={nameError}
                             aria-invalid={Boolean(nameError)}
@@ -44,7 +43,6 @@ export const DisplayName: FC<Props> = ({ data, isLoading }) => {
                         />
                     </div>
                 </Body>
-
                 <Footer info={t('ctaInfo')}>
                     <Button className="btn btn-primary" type="submit">
                         {t('cta')}

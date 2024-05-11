@@ -51,15 +51,15 @@ export const PreviewPanel: FC<Props> = ({
         if (formState?.ok) {
             if (isEdit) {
                 notify.success(t('notify.updateSuccess'));
-                onClose();
             } else {
                 notify.success(t('notify.uploadSuccess'));
-                setPreviewData([]);
             }
+            onClose();
         }
 
         if (formState?.error) {
             notify.error(formState.error);
+            setPreviewData([]);
         }
     }, [formState]);
 

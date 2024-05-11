@@ -12,8 +12,8 @@ interface UIContext {
 }
 
 const getDefaultUI = (): UIContext => ({
-    year: 0,
-    secondaryStat: new Date().getFullYear(),
+    year: new Date().getFullYear(),
+    secondaryStat: new Date().getMonth(),
     units: {
         km: 'km',
         kmh: 'km/h',

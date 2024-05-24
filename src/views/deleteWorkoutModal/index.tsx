@@ -14,7 +14,7 @@ import {
 import { deleteWorkoutById } from './action';
 
 interface Props extends ModalProps {
-    id: number;
+    id: string;
 }
 
 const ModalCta: FC<Props> = ({ id, onClose }) => {

@@ -20,7 +20,7 @@ interface BaseWorkout {
 }
 
 export interface Workout extends BaseWorkout {
-    id: number;
+    id: string;
     pace: number;
     speed: number;
     geometry: LineString | null;
@@ -28,11 +28,11 @@ export interface Workout extends BaseWorkout {
 
 export interface UploadWorkout extends BaseWorkout {
     geolocation: number[][] | null;
-    id?: number | undefined;
+    id?: string | undefined;
 }
 
 export interface NewWorkout extends BaseWorkout {
-    id?: number;
+    id?: string;
     coordinates?: Position[];
     file?: File;
 }
@@ -96,7 +96,7 @@ export interface User {
 }
 
 export interface UserData extends User {
-    id: number;
+    id: string;
     name: string | undefined;
     createdAt?: Date | undefined;
     updatedAt?: Date | undefined;

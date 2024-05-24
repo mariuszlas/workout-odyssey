@@ -5,7 +5,7 @@ import { isValidWorkoutType } from '@/utils/helpers';
 
 export const formatAndValidateData = (
     workout: NewWorkout,
-    id?: number
+    id?: string
 ): UploadWorkout => {
     if (!workout.duration) throw new Error('Incorrect data input');
 

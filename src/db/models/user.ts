@@ -9,7 +9,7 @@ import {
 import sequelize from '../connection';
 
 class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
-    public declare readonly id: CreationOptional<number>;
+    public declare readonly id: CreationOptional<string>;
     public declare username: string;
     public declare name: string;
     public declare isDemo: boolean;

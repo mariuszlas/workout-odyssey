@@ -14,12 +14,12 @@ services:
         depends_on:
             - db
         environment:
-            - DB_URI=mysql://mysql-user:mysql@db:3306/workouts
+            - DB_URI=postgres://mysql-user:mysql@localhost:5432/workouts
 
     db:
         container_name: db
         volumes:
-            - db:/var/lib/mysql
+            - db:/var/lib/postgresql/data
 
 volumes:
     db:

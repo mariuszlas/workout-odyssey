@@ -15,7 +15,7 @@ class Workout extends Model<
     InferAttributes<Workout>,
     InferCreationAttributes<Workout>
 > {
-    public declare readonly id: CreationOptional<number>;
+    public declare readonly id: CreationOptional<string>;
     public declare type: WorkoutTypes;
     public declare timestamp: Date;
     public declare timezone: string;
@@ -26,8 +26,8 @@ class Workout extends Model<
     public declare speed: number;
     public declare notes: string | null;
     public declare geometry: CreationOptional<LineString | null>;
-    public declare userId: number;
-    public declare labelId: CreationOptional<number | null>;
+    public declare userId: string;
+    public declare labelId: CreationOptional<string | null>;
 }
 
 Workout.init(

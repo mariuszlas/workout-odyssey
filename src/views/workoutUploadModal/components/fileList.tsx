@@ -16,7 +16,7 @@ interface Props {
 
 export const FileList: FC<Props> = ({ setWorkouts, workouts }) => {
     const [isFormOpen, setIsFormOpen] = useState(false);
-    const [selectedWorkoutId, setSelectedWorkoutId] = useState<number>();
+    const [selectedWorkoutId, setSelectedWorkoutId] = useState<string>();
     const t = useTranslations('Dashboard.WorkoutUpload.Forms.files');
 
     if (!workouts.length) {

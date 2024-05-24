@@ -38,7 +38,7 @@ export const FilePicker: FC<Props> = ({ setWorkouts }) => {
                 type: fileData.type,
                 coordinates: fileData.coordinates,
                 file: files[idx],
-                id: idx,
+                id: `${idx}`,
             }));
 
             setWorkouts(state);

@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
     if (!id) return handleApiError('Parameter `id` is required', 400);
 
     try {
-        const workout = await getWorkoutById(Number(id));
+        const workout = await getWorkoutById(id);
         if (!workout) return handleApiError('Workout was not found', 404);
 
         return NextResponse.json(workout);

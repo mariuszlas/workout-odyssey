@@ -34,7 +34,7 @@ const workoutExclusionParams = [
     'geometry',
 ];
 
-export const getWorkoutById = async (id: number) =>
+export const getWorkoutById = async (id: string) =>
     await Workout.findByPk(id, {
         attributes: { exclude: ['userId', 'labelId', 'UserId', 'LabelId'] },
         include: labelOpts,
@@ -44,7 +44,7 @@ export const getWorkoutById = async (id: number) =>
 
 export const updateWorkout = async (
     workoutDto: UploadWorkout,
-    userId: number
+    userId: string
 ) => {
     let labelId = null;
 
@@ -73,7 +73,7 @@ export const updateWorkout = async (
     });
 };
 
-export const createWorkout = async (workout: UploadWorkout, userId: number) => {
+export const createWorkout = async (workout: UploadWorkout, userId: string) => {
     const labelId = await findOrCreateLabel(userId, workout.label);
 
     const geometry = workout?.geolocation?.length
@@ -98,12 +98,12 @@ export const createWorkout = async (workout: UploadWorkout, userId: number) => {
     });
 };
 
-export const deleteWorkout = async (id: number) =>
+export const deleteWorkout = async (id: string) =>
     await Workout.destroy({ where: { id } });
 
 export const getWorkoutPreviewDb = async (
     type: WorkoutTypes,
-    user: number,
+    user: string,
     timestamp: string
 ) => {
     const ts = new Date(timestamp);
@@ -127,7 +127,7 @@ export const getWorkoutPreviewDb = async (
     });
 };
 
-export const getAllWorkouts = async (type: WorkoutTypes, user: number) => {
+export const getAllWorkouts = async (type: WorkoutTypes, user: string) => {
     return JSON.parse(
         JSON.stringify(
             await Workout.findAll({
@@ -142,7 +142,7 @@ export const getAllWorkouts = async (type: WorkoutTypes, user: number) => {
 
 export const getCurrentMonthWorkouts = async (
     type: WorkoutTypes,
-    user: number
+    user: string
 ) => {
     const now = new Date();
     const result = await Workout.findAll({
@@ -161,7 +161,7 @@ export const getCurrentMonthWorkouts = async (
     return JSON.parse(JSON.stringify(result)) as TWorkout[];
 };
 
-export const getBestResult = async (type: WorkoutTypes, user: number) => {
+export const getBestResult = async (type: WorkoutTypes, user: string) => {
     const queryResult = await Promise.all(
         ranges[type].map(range =>
             Workout.findAll({
@@ -194,13 +194,13 @@ export const getBestResult = async (type: WorkoutTypes, user: number) => {
     return res as BestResults;
 };
 
-const query = (sql: string, type: WorkoutTypes, user: number) =>
+const query = (sql: string, type: WorkoutTypes, user: string) =>
     sequlize.query(sql, {
         type: QueryTypes.SELECT,
         replacements: { type, user },
     });
 
-export const getDashboard = async (type: WorkoutTypes, user: number) => {
+export const getDashboard = async (type: WorkoutTypes, user: string) => {
     const [total, years, months] = await Promise.all([
         query(sqlTotalBest, type, user),
         query(sqlYears, type, user),
@@ -209,5 +209,5 @@ export const getDashboard = async (type: WorkoutTypes, user: number) => {
     return { total: total.at(0), years, months } as WorkoutsDashboard;
 };
 
-export const getUserWorkoutCount = async (user: number) =>
+export const getUserWorkoutCount = async (user: string) =>
     await Workout.count({ where: { userId: user } });

@@ -12,7 +12,7 @@ class Label extends Model<
     InferAttributes<Label>,
     InferCreationAttributes<Label>
 > {
-    public declare readonly id: CreationOptional<number>;
+    public declare readonly id: CreationOptional<string>;
     public declare color: string;
     public declare value: string;
     public declare userId: CreationOptional<string>;

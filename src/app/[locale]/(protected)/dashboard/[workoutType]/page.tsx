@@ -26,7 +26,7 @@ export async function generateMetadata({
 
 interface Props {
     workoutType: WorkoutTypes;
-    userId: number;
+    userId: string;
 }
 
 const WorkoutListStream: FC<Props> = async ({ workoutType, userId }) => {

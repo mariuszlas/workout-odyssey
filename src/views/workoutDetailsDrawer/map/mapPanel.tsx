@@ -7,7 +7,7 @@ import { Trajectory, Workout } from '@/interfaces';
 
 import { Map } from './map';
 
-export const MapPanel: FC<{ id: number }> = ({ id }) => {
+export const MapPanel: FC<{ id: string }> = ({ id }) => {
     const { data, error, isLoading } = useSWR<Workout>(`/api/workout?id=${id}`);
     const t = useTranslations('Dashboard.WorkoutDetails');
 

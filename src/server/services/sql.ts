@@ -1,6 +1,6 @@
 export const sqlTotalBest = `
 SELECT
-    COUNT(id) AS counts,
+    COUNT(id)::int AS counts,
     SUM(distance) AS distance,
     SUM(duration) AS duration,
     AVG(pace) AS pace,
@@ -10,8 +10,8 @@ WHERE type = :type AND user_id = :user`;
 
 export const sqlYears = `
 SELECT
-    EXTRACT (year FROM timestamp) AS year,
-    COUNT(id) AS counts,
+    EXTRACT (year FROM timestamp)::int AS year,
+    COUNT(id)::int AS counts,
     SUM(distance) AS distance,
     SUM(duration) AS duration,
     AVG(pace) AS pace,
@@ -23,9 +23,9 @@ ORDER BY EXTRACT(year FROM timestamp);`;
 
 export const sqlMonths = `
 SELECT
-    EXTRACT (year FROM timestamp) AS year,
-    EXTRACT (month FROM timestamp) AS month,
-    COUNT(id) AS counts,
+    EXTRACT (year FROM timestamp)::int AS year,
+    EXTRACT (month FROM timestamp)::int AS month,
+    COUNT(id)::int AS counts,
     SUM(distance) AS distance,
     SUM(duration) AS duration,
     AVG(pace) AS pace,

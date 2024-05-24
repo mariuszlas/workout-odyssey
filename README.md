@@ -13,7 +13,7 @@ Workout Odyssey helps people stay organized and motivated with their workouts. T
 
 ## Overview
 
-Workout Odyssey is a full-stack Next.js app. Sequelize is used as ORM to interact with a MySQL database. Chart.js is library of choice used for rendering charts on HTML5 Canvas with great performance. The end-to-end test are automated with Playwright.
+Workout Odyssey is a full-stack Next.js app. Sequelize is used as ORM to interact with a PostgreSQL database (with PostGIS extension). Chart.js is library of choice used for rendering charts on HTML5 Canvas with great performance. The end-to-end test are automated with Playwright.
 
 ## Development
 
@@ -39,4 +39,4 @@ The unit test suit can be run with `pnpm test` (or `pnpm test:watch` to run in w
 
 #### E2E Tests
 
-The the end-to-end tests can be run locally with `pnpm test:e2e` which builds the app, starts the production build on port `3000` and runs all the Playwright tests. In case of any failuers, a test report can be accessed at `http://localhost:9323`. The mock server and test database are required to run e2e tests and must be started before the test run with `sh ./scripts/startMock.sh` which will spin up wiremock server running on port `8080` (mocks are located in `mocks/mappings` directory and available mappings can be viewed at `/__admin/mappings`) and a mysql database populated with data from `mocks/dbTestData`. The data base has mock data for 2 users: `bob@test.com` and `alice@test.com` with a common password `Password1`. The containters and their volumes can be removed with `sh ./scripts/testCleanup.sh`.
+The the end-to-end tests can be run locally with `pnpm test:e2e` which builds the app, starts the production build on port `3000` and runs all the Playwright tests. In case of any failures, a test report can be accessed at `http://localhost:9323`. The mock server and test database are required to run e2e tests and must be started before the test run with `sh ./scripts/startMock.sh` which will spin up wiremock server running on port `8080` (mocks are located in `mocks/mappings` directory and available mappings can be viewed at `/__admin/mappings`) and a postgis database populated with data from `mocks/dbTestData`. The data base has mock data for 2 users: `bob@test.com` and `alice@test.com` with a common password `Password1`. The containters and their volumes can be removed with `sh ./scripts/testCleanup.sh`.

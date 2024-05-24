@@ -7,7 +7,7 @@ const withNextIntl = createNextIntlPlugin();
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     experimental: {
-        serverComponentsExternalPackages: ['sequelize', 'mysql2'],
+        serverComponentsExternalPackages: ['sequelize'],
         serverMinification: false,
     },
 };

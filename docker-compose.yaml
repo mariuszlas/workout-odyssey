@@ -2,14 +2,13 @@ version: '3.9'
 
 services:
     db:
-        image: mysql:8
+        image: postgis/postgis
         restart: unless-stopped
         ports:
-            - '3306:3306'
+            - '5432:5432'
         environment:
-            - MYSQL_ROOT_PASSWORD=password
-            - MYSQL_USER=mysql-user
-            - MYSQL_PASSWORD=mysql
-            - MYSQL_DATABASE=workouts
+            - POSTGRES_USER=mysql-user
+            - POSTGRES_PASSWORD=mysql
+            - POSTGRES_DB=workouts
         volumes:
             - './mocks/dbTestData:/docker-entrypoint-initdb.d/:ro'

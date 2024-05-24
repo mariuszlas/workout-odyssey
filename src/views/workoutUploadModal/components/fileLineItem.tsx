@@ -19,7 +19,7 @@ import { NotesInput } from './notesInput';
 interface Props extends WorkoutForm {
     isFormOpen: boolean;
     setIsFormOpen: Dispatch<SetStateAction<boolean>>;
-    setSelectedWorkoutId: Dispatch<SetStateAction<number | undefined>>;
+    setSelectedWorkoutId: Dispatch<SetStateAction<string | undefined>>;
 }
 
 export const FileLineItem: FC<Props> = ({

@@ -3,7 +3,7 @@
 import { Label } from '@/db/models';
 import { TLabel } from '@/interfaces';
 
-export const getAllLabels = async (user: number) =>
+export const getAllLabels = async (user: string) =>
     await Label.findAll({
         where: { userId: user },
         attributes: {
@@ -12,7 +12,7 @@ export const getAllLabels = async (user: number) =>
     });
 
 export const findOrCreateLabel = async (
-    userId: number,
+    userId: string,
     labelDto: TLabel | null
 ) => {
     if (!labelDto || !labelDto?.value || !labelDto?.color) {

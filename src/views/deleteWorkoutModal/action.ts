@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache';
 
 import { deleteWorkout } from '@/server/services';
 
-export const deleteWorkoutById = async (id: number) => {
+export const deleteWorkoutById = async (id: string) => {
     try {
         const response = await deleteWorkout(id);
 

@@ -13,6 +13,7 @@ import {
     Text,
     ThemeSwitch,
 } from '@/components';
+import { useIsBreakpoint } from '@/hooks';
 import { Link, usePathname } from '@/navigation';
 
 import { WorkoutUploadModal } from '../workoutUploadModal';
@@ -29,6 +30,7 @@ export const NavBar: FC<{ isProtected?: boolean }> = ({
     const [isWorkoutUploadModalOpen, setIsWorkoutUploadModalOpen] =
         useState(false);
     const t = useTranslations('Navbar');
+    const isMobile = useIsBreakpoint('md');
 
     const pathname = usePathname();
     const isLoginPage = pathname.startsWith('/login');
@@ -45,10 +47,7 @@ export const NavBar: FC<{ isProtected?: boolean }> = ({
             <header className="sticky top-0 z-50 w-full border-b border-b-base-content border-opacity-20 bg-base-100 bg-opacity-30 py-2 shadow-sm backdrop-blur-lg">
                 <nav className="mx-auto flex w-full max-w-8xl items-center px-4 sm:px-6">
                     <div className="navbar-start">
-                        <div className="hidden md:block">
-                            <Logo isProtected={isProtected} />
-                        </div>
-
+                        {!isMobile && <Logo isProtected={isProtected} />}
                         <div className="md:hidden">
                             <button
                                 onClick={() => setIsDrawerMenuOpen(true)}
@@ -62,10 +61,7 @@ export const NavBar: FC<{ isProtected?: boolean }> = ({
                     </div>
 
                     <div className="navbar-center">
-                        <div className="md:hidden">
-                            <Logo isProtected={isProtected} />
-                        </div>
-
+                        {isMobile && <Logo isProtected={isProtected} />}
                         {isProtected && (
                             <div className="hidden gap-4 md:flex">
                                 {isDashboardPage && <WorkoutSelector />}

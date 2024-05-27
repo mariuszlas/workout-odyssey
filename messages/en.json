@@ -391,7 +391,7 @@
         "dashboardLink": "Dashboard",
         "bestResultsLink": "Best Results",
         "accountSettingsLink": "Account Settings",
-        "aria": { "accountMenu": "Account menu" }
+        "aria": { "userMenu": "User menu" }
     },
     "Footer": {
         "copyright": "© 2024 Mariusz Las",

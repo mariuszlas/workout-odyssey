@@ -50,7 +50,7 @@ export const WorkoutSelector: FC<Props> = ({ onClose, isMobile }) => {
     }
 
     return (
-        <Menu as="div">
+        <Menu as="div" data-testid="workout-selector">
             {({ open }) => (
                 <>
                     <Menu.Button as={Fragment}>

@@ -1,108 +1,72 @@
 import { expect, test } from '@playwright/test';
-
-const email = 'bob@test.com';
-const password = 'Password1';
+import { LoginPage } from 'tests/pages/login.page';
+import { Navbar } from 'tests/pages/navbar.page';
+import { email, password } from 'tests/testData/user';
 
 test.describe('login page', () => {
+    let loginPage: LoginPage;
+
     test.beforeEach(async ({ page }) => {
-        await page.goto('/login');
+        loginPage = new LoginPage(page);
+        await loginPage.goTo();
     });
 
     test.describe('navbar', () => {
-        test('has a theme toggle that switches between light and dark themes ', async ({
-            page,
-            isMobile,
-        }) => {
-            if (isMobile) {
-                await page.getByLabel('Main menu').click();
-                const mainMenu = page.getByTestId('drawer-container');
-                const themeSwith = page
-                    .getByRole('menu')
-                    .getByLabel('theme switch');
+        let navbar: Navbar;
 
-                await expect(mainMenu).toBeVisible();
-                await expect(themeSwith).toBeVisible();
-            } else {
-                const themeSwith = page
-                    .getByRole('navigation')
-                    .getByLabel('theme switch');
-
-                await expect(themeSwith).toBeVisible();
-            }
+        test.beforeEach(async ({ page, isMobile }) => {
+            navbar = new Navbar(page, isMobile);
         });
 
-        test('has a create account link that navigates to sign up page ', async ({
-            page,
-            isMobile,
-        }) => {
-            if (isMobile) {
-                await page.getByLabel('Main menu').click();
-                const mainMenu = page.getByTestId('drawer-container');
+        test('has a logo link that navigates to home page', async () => {
+            await navbar.logo.click();
+            await navbar.expectPageToBeHome();
+        });
 
-                await expect(mainMenu).toBeVisible();
+        test('has a create account link that navigates to sign up page', async () => {
+            await navbar.signup();
+            await navbar.expectPageToBeSignup();
+        });
 
-                await mainMenu
-                    .getByRole('menuitem', { name: 'Create Account' })
-                    .click();
-
-                await expect(mainMenu).not.toBeVisible();
-                await expect(page).toHaveURL('/signup');
-            } else {
-                await page
-                    .getByRole('navigation')
-                    .getByRole('link', { name: 'Create Account' })
-                    .click();
-
-                await expect(page).toHaveURL('/signup');
-            }
+        test('has a theme switch', async () => {
+            await navbar.expectThemeToggleToBeVisible();
         });
     });
 
     test.describe('form', () => {
+        test('has a correct heading', async () => {
+            await expect(loginPage.heading).toHaveText('Sign In');
+        });
+
         test('has a sign up link and navigates to signup page on click', async ({
             page,
         }) => {
-            await page
-                .getByTestId('login-form')
-                .getByRole('link', { name: 'Sign up' })
-                .click();
+            await loginPage.signup();
             await expect(page).toHaveURL('/signup');
         });
 
         test('has a forgot password link and navigates to password recovery page on click', async ({
             page,
         }) => {
-            await page
-                .getByTestId('login-form')
-                .getByRole('link', { name: 'Forgot Password?' })
-                .click();
+            await loginPage.resetPassword();
             await expect(page).toHaveURL('/password-reset');
         });
 
-        test('password input toggles password visibility', async ({ page }) => {
-            const passwordInput = page.getByLabel('Password', { exact: true });
-            const togglePasswordBtn = page.getByLabel(
-                'toggle password visibility'
-            );
-
-            await passwordInput.fill(password);
-            await expect(passwordInput).toHaveAttribute('type', 'password');
-
-            await togglePasswordBtn.click();
-            await expect(passwordInput).toHaveAttribute('type', 'text');
-
-            await togglePasswordBtn.click();
-            await expect(passwordInput).toHaveAttribute('type', 'password');
+        test('password input toggles password visibility', async () => {
+            await loginPage.fillPassword(password);
+            await loginPage.expectPasswordHidden();
+            await loginPage.togglePasswordVisibility();
+            await loginPage.expectPasswordVisible();
+            await loginPage.togglePasswordVisibility();
+            await loginPage.expectPasswordHidden();
         });
 
         test('logs in the user and redirects to dashboard page', async ({
             page,
         }) => {
-            await page.getByLabel('Email').fill(email);
-            await page.getByLabel('Password', { exact: true }).fill(password);
-
-            await page.getByRole('button', { name: 'Sign In' }).click();
-
+            await loginPage.fillEmail(email);
+            await loginPage.fillPassword(password);
+            await loginPage.signIn();
             await expect(page).toHaveURL('/dashboard/running');
         });
     });

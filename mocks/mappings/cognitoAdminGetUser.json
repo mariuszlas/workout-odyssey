@@ -1,0 +1,37 @@
+{
+    "request": {
+        "method": "POST",
+        "url": "/",
+        "headers": {
+            "x-amz-target": {
+                "equalTo": "AWSCognitoIdentityProviderService.AdminGetUser"
+            }
+        }
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "$metadata": {
+                "httpStatusCode": 200,
+                "requestId": "b4265401-ee8f-48d1-bea6-7716ac3da891",
+                "extendedRequestId": null,
+                "cfId": null,
+                "attempts": 1,
+                "totalRetryDelay": 0
+            },
+            "Enabled": true,
+            "UserAttributes": [
+                {
+                    "Name": "sub",
+                    "Value": "9925dab2-565d-4aca-80ca-87796898de2b"
+                },
+                { "Name": "email_verified", "Value": "false" },
+                { "Name": "email", "Value": "jon@email.com" }
+            ],
+            "UserCreateDate": "2024-05-25T15:04:14.345Z",
+            "UserLastModifiedDate": "2024-05-25T15:04:14.345Z",
+            "UserStatus": "UNCONFIRMED",
+            "Username": "9925dab2-565d-4aca-80ca-87796898de2b"
+        }
+    }
+}

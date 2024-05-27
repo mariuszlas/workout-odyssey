@@ -25,6 +25,7 @@ export const MenuLink = forwardRef<HTMLAnchorElement, Props>(
                 },
                 className
             )}
+            role="menuitem"
             {...props}
         >
             {children}

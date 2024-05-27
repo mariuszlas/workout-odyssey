@@ -13,11 +13,9 @@ export default function NotFoundPage() {
                 <Heading value={t('header')} />
             </div>
             <Text as="p" value={t('description')} />
-            <Text as="p">
-                <Link className="btn btn-primary" href="/" replace>
-                    {t('cta')}
-                </Link>
-            </Text>
+            <Link className="btn btn-primary" href="/" replace>
+                {t('cta')}
+            </Link>
         </main>
     );
 }

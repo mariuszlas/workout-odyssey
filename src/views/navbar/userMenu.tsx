@@ -54,10 +54,7 @@ export const UserMenu = () => {
         <>
             <Popover as="div">
                 <Popover.Button as={Fragment}>
-                    <IconButton
-                        aria-label={t('aria.accountMenu')}
-                        ref={setRefEl}
-                    >
+                    <IconButton aria-label={t('aria.userMenu')} ref={setRefEl}>
                         <UserIcon />
                     </IconButton>
                 </Popover.Button>
@@ -75,13 +72,12 @@ export const UserMenu = () => {
                                     <Heading
                                         as="h2"
                                         className="overflow-hidden text-ellipsis px-4 text-2xl"
-                                        title="user name"
                                         value={name}
                                     />
                                     <Text
                                         className="overflow-hidden text-ellipsis px-4 text-sm"
-                                        title="user email"
                                         value={email}
+                                        data-testid="user-menu-email"
                                     />
                                 </div>
                                 <hr className="my-2 border-t border-t-base-content border-opacity-20 " />

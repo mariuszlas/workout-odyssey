@@ -1,0 +1,31 @@
+{
+    "request": {
+        "method": "POST",
+        "url": "/",
+        "headers": {
+            "x-amz-target": {
+                "equalTo": "AWSCognitoIdentityProviderService.SignUp"
+            }
+        }
+    },
+    "response": {
+        "status": 200,
+        "jsonBody": {
+            "$metadata": {
+                "httpStatusCode": 200,
+                "requestId": "8ba0ec64-4dfb-4209-adc7-50e0bb03ab35",
+                "extendedRequestId": null,
+                "cfId": null,
+                "attempts": 1,
+                "totalRetryDelay": 0
+            },
+            "CodeDeliveryDetails": {
+                "AttributeName": "email",
+                "DeliveryMedium": "EMAIL",
+                "Destination": "j***@e***"
+            },
+            "UserConfirmed": false,
+            "UserSub": "9925dab2-565d-4aca-80ca-87796898de2b"
+        }
+    }
+}

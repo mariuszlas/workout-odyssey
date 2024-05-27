@@ -32,6 +32,7 @@ export const MenuButton = forwardRef<HTMLButtonElement, MenuBtnProps>(
             <button
                 ref={ref}
                 type={type}
+                role="menuitem"
                 className={cn(
                     'flex w-full items-center gap-2 rounded-lg px-4 py-1.5 text-left hover:bg-base-200',
                     {

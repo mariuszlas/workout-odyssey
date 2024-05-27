@@ -26,7 +26,13 @@ export const VerifyForm: FC<{ email: string }> = ({ email }) => {
             <Text
                 as="p"
                 value={t.rich('Verify.description', {
-                    email: () => <Text className="font-bold" value={email} />,
+                    email: () => (
+                        <Text
+                            className="font-bold"
+                            data-testid="verification-email"
+                            value={email}
+                        />
+                    ),
                 })}
             />
             <div className="flex flex-wrap justify-end gap-4">

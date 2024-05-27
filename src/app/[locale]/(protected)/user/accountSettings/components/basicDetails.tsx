@@ -29,7 +29,11 @@ export const BasicDetails: FC<Props> = ({ data, isLoading }) => {
 
     return (
         <Container id={ID.BASIC_INFO} isLoading={isLoading} loadingClass="h-60">
-            <Heading className="px-6 pb-3 pt-6 text-lg" value={t('title')} />
+            <Heading
+                as="h3"
+                className="px-6 pb-3 pt-6 text-lg"
+                value={t('title')}
+            />
 
             {basicDetails.map(({ title, value }, idx) => (
                 <div

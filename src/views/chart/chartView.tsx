@@ -41,12 +41,7 @@ export const ChartView: FC<Dashboarad & Loading> = ({
     return (
         <ChartViewWrapper>
             <header className="flex items-center gap-6">
-                <Heading
-                    as="h2"
-                    title="chart-section-title"
-                    className="text-2xl"
-                    value={t('header')}
-                />
+                <Heading as="h2" className="text-2xl" value={t('header')} />
                 <YearSelector dashboard={dashboard} />
             </header>
             <BarChart dashboard={dashboard} />

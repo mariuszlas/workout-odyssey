@@ -53,11 +53,7 @@ export const WorkoutListHeader: FC<Props> = ({
     return (
         <header className="w-full">
             <div className="flex justify-between">
-                <Heading
-                    as="h2"
-                    className="text-2xl"
-                    title="workout-list-section-title"
-                >
+                <Heading as="h2" className="text-2xl">
                     {getWorkoutListHeading(
                         headerData,
                         isAll,

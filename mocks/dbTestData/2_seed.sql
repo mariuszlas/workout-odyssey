@@ -22,6 +22,15 @@ VALUES
         '2023-01-25 14:34:24'
     );
 
+SELECT
+    setval (
+        pg_get_serial_sequence ('users', 'id'),
+        coalesce(max(id) + 1, 1),
+        false
+    )
+FROM
+    users;
+
 INSERT INTO
     labels
 VALUES

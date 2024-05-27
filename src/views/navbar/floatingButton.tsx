@@ -46,6 +46,7 @@ export const FloatingNewWorkoutBtn: FC<Props> = ({ onClick }) => {
     return (
         <button
             aria-label={t('newWorkoutCta')}
+            data-testid="floating-new-workout-btn"
             className={cn(
                 { hidden: !isVisible },
                 'fixed bottom-3 right-3 z-10 rounded-full bg-secondary p-5 text-white drop-shadow-2xl sm:hidden'

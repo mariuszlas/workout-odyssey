@@ -51,7 +51,6 @@ export const StatsPanel: FC<Props> = ({
 
     const statType = isPrimary ? 'primary' : 'secondary';
     const testId = `${statType}-stats-section`;
-    const headingTitle = `${statType}-stats-section-title`;
 
     if (isLoading)
         return (
@@ -63,7 +62,7 @@ export const StatsPanel: FC<Props> = ({
     return (
         <StatsPanelWrapper testId={testId}>
             <header>
-                <Heading as="h2" title={headingTitle} className="text-2xl">
+                <Heading as="h2" className="text-2xl">
                     {getStatsPanelHeading(
                         isPrimary,
                         headerData,

@@ -1,3 +1,4 @@
+import { ClerkProvider } from '@clerk/nextjs';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Metadata } from 'next';
@@ -27,33 +28,35 @@ export default async function RootLayout({
     const theme = isValidTheme(themeCookie) ? themeCookie : Theme.LIGHT;
 
     return (
-        <ThemeProvider specifiedTheme={theme}>
-            <ConfigProvider appConfig={config}>
-                <html
-                    lang={locale}
-                    data-theme={theme}
-                    className="transition-colors duration-150"
-                >
-                    <body>
-                        <NextIntlClientProvider
-                            locale={locale}
-                            messages={messages}
-                        >
-                            <ToastProvider>
-                                <div
-                                    id="page-content"
-                                    className="flex min-h-screen flex-col"
-                                >
-                                    {children}
-                                </div>
-                            </ToastProvider>
-                        </NextIntlClientProvider>
-                        <GA4Script />
-                        <SpeedInsights />
-                        <Analytics />
-                    </body>
-                </html>
-            </ConfigProvider>
-        </ThemeProvider>
+        <ClerkProvider>
+            <ThemeProvider specifiedTheme={theme}>
+                <ConfigProvider appConfig={config}>
+                    <html
+                        lang={locale}
+                        data-theme={theme}
+                        className="transition-colors duration-150"
+                    >
+                        <body>
+                            <NextIntlClientProvider
+                                locale={locale}
+                                messages={messages}
+                            >
+                                <ToastProvider>
+                                    <div
+                                        id="page-content"
+                                        className="flex min-h-screen flex-col"
+                                    >
+                                        {children}
+                                    </div>
+                                </ToastProvider>
+                            </NextIntlClientProvider>
+                            <GA4Script />
+                            <SpeedInsights />
+                            <Analytics />
+                        </body>
+                    </html>
+                </ConfigProvider>
+            </ThemeProvider>
+        </ClerkProvider>
     );
 }

@@ -1,15 +1,7 @@
-export { getAllLabels } from './label';
-export {
-    createUser,
-    destroyUser,
-    getAllUserData,
-    getCurrentUserId,
-    getUserId,
-    reportUserLogin,
-    updateUserName,
-} from './user';
+export { deleteUserLabels, getAllLabels } from './label';
 export {
     createWorkout,
+    deleteUserWorkouts,
     deleteWorkout,
     getAllWorkouts,
     getBestResult,

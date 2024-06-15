@@ -52,14 +52,13 @@ const getAllKeys = (workoutType: WorkoutTypes, translations: Translations) => {
 
 export const BestResultsModal: FC<ModalProps> = ({ isOpen, onClose }) => {
     const pathname = usePathname();
+    const { userId, units } = useUI();
+    const t = useTranslations('Dashboard');
     const workoutType = getWorkoutTypeFromPathname(pathname);
 
     const { data, isLoading } = useSWR<TBestResults>(
-        `/api/best-results?workoutType=${workoutType}`
+        `/api/best-results?user=${userId}&workoutType=${workoutType}`
     );
-
-    const { units } = useUI();
-    const t = useTranslations('Dashboard');
 
     const translations = {
         halfMarathon: t('BestResults.halfMarathon'),

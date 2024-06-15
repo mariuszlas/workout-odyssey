@@ -1,13 +1,14 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 import { handleApiError } from '@/server/helpers';
-import { getAllLabels, getCurrentUserId } from '@/server/services';
+import { getAllLabels } from '@/server/services';
 
-export async function GET() {
-    const userId = await getCurrentUserId();
+export async function GET(request: NextRequest) {
+    const userId = request.nextUrl.searchParams.get('user');
 
     try {
-        return NextResponse.json(await getAllLabels(userId));
+        const response = userId ? await getAllLabels(userId) : [];
+        return NextResponse.json(response);
     } catch (_) {
         return handleApiError();
     }

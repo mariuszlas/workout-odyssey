@@ -47,10 +47,7 @@ Workout.init(
         speed: { type: DataTypes.FLOAT, allowNull: false },
         notes: { type: DataTypes.STRING },
         geometry: { type: DataTypes.GEOMETRY('LINESTRING'), allowNull: true },
-        userId: {
-            type: DataTypes.BIGINT,
-            references: { model: 'User', key: 'id' },
-        },
+        userId: { type: DataTypes.BIGINT, allowNull: false },
         labelId: {
             type: DataTypes.BIGINT,
             references: { model: 'Label', key: 'id' },

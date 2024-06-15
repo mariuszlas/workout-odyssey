@@ -2,25 +2,27 @@
 
 import type { FC } from 'react';
 import { useState } from 'react';
-import {} from 'next/navigation';
+import { SignInButton, SignUpButton, UserButton } from '@clerk/nextjs';
 import { useTranslations } from 'next-intl';
 
 import {
     BurgerMenuIcon,
     Button,
+    IconButton,
     Logo,
     PlusIcon,
     Text,
     ThemeSwitch,
+    UserIcon,
 } from '@/components';
 import { useIsBreakpoint } from '@/hooks';
-import { Link, usePathname } from '@/navigation';
+import { usePathname } from '@/navigation';
 
+import { BestResultsModal } from '../bestResultsModal';
 import { WorkoutUploadModal } from '../workoutUploadModal';
 
 import { DrawerMenu } from './drawerMenu';
 import { FloatingNewWorkoutBtn } from './floatingButton';
-import { UserMenu } from './userMenu';
 import { WorkoutSelector } from './workoutSelector';
 
 export const NavBar: FC<{ isProtected?: boolean }> = ({
@@ -29,6 +31,7 @@ export const NavBar: FC<{ isProtected?: boolean }> = ({
     const [isDrawerMenuOpen, setIsDrawerMenuOpen] = useState(false);
     const [isWorkoutUploadModalOpen, setIsWorkoutUploadModalOpen] =
         useState(false);
+    const [isBestResultsModalOpen, setIsBestResultsModalOpen] = useState(false);
     const t = useTranslations('Navbar');
     const isMobile = useIsBreakpoint('md');
 
@@ -37,7 +40,6 @@ export const NavBar: FC<{ isProtected?: boolean }> = ({
     const isSignupPage = pathname.startsWith('/signup');
     const isEmailVerificationPage = pathname.startsWith('/verify');
     const isDashboardPage = pathname.startsWith('/dashboard');
-    const isAccountSettingsPage = pathname.startsWith('/user');
 
     const showLoginBtn = !(isLoginPage || isEmailVerificationPage);
     const showSignupBtn = !isSignupPage;
@@ -66,15 +68,6 @@ export const NavBar: FC<{ isProtected?: boolean }> = ({
                             <div className="hidden gap-4 md:flex">
                                 {isDashboardPage && <WorkoutSelector />}
 
-                                {isAccountSettingsPage && (
-                                    <Link
-                                        href="/dashboard/running"
-                                        className="btn btn-outline btn-primary h-10 min-h-min text-base"
-                                    >
-                                        {t('dashboardLink')}
-                                    </Link>
-                                )}
-
                                 <Button
                                     className="btn btn-outline btn-primary h-10 min-h-min text-base"
                                     onClick={() =>
@@ -92,27 +85,35 @@ export const NavBar: FC<{ isProtected?: boolean }> = ({
                         <ThemeSwitch />
 
                         {isProtected ? (
-                            <UserMenu />
+                            <>
+                                <IconButton
+                                    aria-label={t('bestResults')}
+                                    onClick={() =>
+                                        setIsBestResultsModalOpen(true)
+                                    }
+                                >
+                                    <UserIcon />
+                                </IconButton>
+                                <UserButton />
+                            </>
                         ) : (
                             <>
                                 {showLoginBtn && (
-                                    <Link
-                                        className="btn btn-outline btn-primary hidden h-10 min-h-min text-base md:inline-flex"
-                                        href="/login"
-                                        color="primary"
+                                    <SignInButton
+                                        forceRedirectUrl={'/dashboard/running'}
                                     >
-                                        {t('loginCta')}
-                                    </Link>
+                                        <a className="btn btn-outline btn-primary hidden h-10 min-h-min text-base md:inline-flex">
+                                            {t('loginCta')}
+                                        </a>
+                                    </SignInButton>
                                 )}
 
                                 {showSignupBtn && (
-                                    <Link
-                                        className="btn btn-primary hidden h-10 min-h-min text-base md:inline-flex"
-                                        href="/signup"
-                                        color="primary"
-                                    >
-                                        {t('signupCta')}
-                                    </Link>
+                                    <SignUpButton>
+                                        <a className="btn btn-primary hidden h-10 min-h-min text-base md:inline-flex">
+                                            {t('signupCta')}
+                                        </a>
+                                    </SignUpButton>
                                 )}
                             </>
                         )}
@@ -127,7 +128,6 @@ export const NavBar: FC<{ isProtected?: boolean }> = ({
                 showLoginBtn={showLoginBtn}
                 showSignupBtn={showSignupBtn}
                 openWorkoutUploadModal={() => setIsWorkoutUploadModalOpen(true)}
-                isAccountSettingsPage={isAccountSettingsPage}
             />
 
             <WorkoutUploadModal
@@ -136,9 +136,16 @@ export const NavBar: FC<{ isProtected?: boolean }> = ({
             />
 
             {isProtected && (
-                <FloatingNewWorkoutBtn
-                    onClick={() => setIsWorkoutUploadModalOpen(true)}
-                />
+                <>
+                    <BestResultsModal
+                        isOpen={isBestResultsModalOpen}
+                        onClose={() => setIsBestResultsModalOpen(false)}
+                    />
+
+                    <FloatingNewWorkoutBtn
+                        onClick={() => setIsWorkoutUploadModalOpen(true)}
+                    />
+                </>
             )}
         </>
     );

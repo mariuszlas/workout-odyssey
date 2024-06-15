@@ -17,13 +17,15 @@ import {
 } from '@/components';
 import { usePopover } from '@/hooks';
 import type { TLabel } from '@/interfaces';
+import { useUI } from '@/providers';
 
 import { WorkoutForm } from '../intrefaces';
 
 import { getNewLabel, validateNewLabel } from './helpers';
 
 export const LabelSelector: FC<WorkoutForm> = ({ setWorkouts, workout }) => {
-    const { data, isLoading } = useSWR<TLabel[]>('/api/labels');
+    const { userId } = useUI();
+    const { data, isLoading } = useSWR<TLabel[]>(`/api/labels?user=${userId}`);
     const t = useTranslations('Dashboard.WorkoutUpload.Forms.labels');
     const [newLabelValue, setNewLabelValue] = useState<string>('');
     const [newLabels, setNewLabels] = useState<TLabel[]>([]);

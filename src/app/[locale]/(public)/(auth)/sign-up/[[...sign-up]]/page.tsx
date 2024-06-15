@@ -1,8 +1,7 @@
+import { SignUp } from '@clerk/nextjs';
 import { getTranslations } from 'next-intl/server';
 
 import { LocaleParam } from '@/interfaces';
-
-import { SignupForm } from './signupForm';
 
 export async function generateMetadata({ params: { locale } }: LocaleParam) {
     const t = await getTranslations({ locale, namespace: 'Metadata.Signup' });
@@ -10,6 +9,6 @@ export async function generateMetadata({ params: { locale } }: LocaleParam) {
     return { title: t('title'), description: t('description') };
 }
 
-export default function Signup() {
-    return <SignupForm />;
+export default function SignupPage() {
+    return <SignUp />;
 }

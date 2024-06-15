@@ -4,7 +4,6 @@ import { useTranslations } from 'next-intl';
 import {
     CloseButton,
     Drawer,
-    logoutUser,
     MenuButton,
     MenuLink,
     PlusIcon,
@@ -20,7 +19,6 @@ interface Props extends DrawerProps {
     openWorkoutUploadModal: () => void;
     showLoginBtn: boolean;
     showSignupBtn: boolean;
-    isAccountSettingsPage: boolean;
 }
 
 export const DrawerMenu: FC<Props> = ({
@@ -30,7 +28,6 @@ export const DrawerMenu: FC<Props> = ({
     onClose,
     showLoginBtn,
     showSignupBtn,
-    isAccountSettingsPage,
 }) => {
     const t = useTranslations('Navbar');
 
@@ -48,19 +45,6 @@ export const DrawerMenu: FC<Props> = ({
 
                 {isProtected && (
                     <>
-                        {isAccountSettingsPage && (
-                            <li>
-                                <MenuLink
-                                    role="menuitem"
-                                    href="/dashboard/running"
-                                    onClick={() => onClose()}
-                                    popover
-                                >
-                                    {t('dashboardLink')}
-                                </MenuLink>
-                            </li>
-                        )}
-
                         <li>
                             <MenuButton
                                 role="menuitem"
@@ -74,24 +58,8 @@ export const DrawerMenu: FC<Props> = ({
                             </MenuButton>
                         </li>
 
-                        {isAccountSettingsPage && (
-                            <form action={logoutUser}>
-                                <MenuButton
-                                    type="submit"
-                                    hoverRed
-                                    role="menuitem"
-                                >
-                                    {t('logoutCta')}
-                                </MenuButton>
-                            </form>
-                        )}
-
-                        {!isAccountSettingsPage && (
-                            <>
-                                <hr className="my-4 border-t border-t-base-content border-opacity-20 " />
-                                <WorkoutSelector isMobile onClose={onClose} />
-                            </>
-                        )}
+                        <hr className="my-4 border-t border-t-base-content border-opacity-20 " />
+                        <WorkoutSelector isMobile onClose={onClose} />
                     </>
                 )}
 

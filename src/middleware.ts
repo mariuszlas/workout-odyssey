@@ -1,29 +1,21 @@
-import { type NextRequest, NextResponse } from 'next/server';
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 import createIntlMiddleware from 'next-intl/middleware';
 
 import { defaultLocale, localePrefix, locales } from './i18n';
-import { Cookie } from './interfaces';
 
-export function middleware(request: NextRequest) {
-    const accessToken = request.cookies.get(Cookie.ACCESS_TOKEN)?.value;
-    const pathname = request.nextUrl.pathname;
+const isProtectedRoute = createRouteMatcher(['/dashboard(.*)']);
 
-    if (
-        !accessToken &&
-        (pathname.startsWith('/dashboard') || pathname.startsWith('/user'))
-    ) {
-        return NextResponse.redirect(new URL('/login', request.url));
-    }
+const intlMiddleware = createIntlMiddleware({
+    locales,
+    defaultLocale,
+    localePrefix,
+});
 
-    const handleI18nRouting = createIntlMiddleware({
-        locales,
-        defaultLocale,
-        localePrefix,
-    });
+export default clerkMiddleware((auth, req) => {
+    if (isProtectedRoute(req)) auth().protect();
 
-    const response = handleI18nRouting(request);
-    return response;
-}
+    return intlMiddleware(req);
+});
 
 export const config = {
     matcher: [

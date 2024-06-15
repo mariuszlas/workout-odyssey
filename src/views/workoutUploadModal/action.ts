@@ -1,21 +1,23 @@
 'use server';
 
+import { auth } from '@clerk/nextjs/server';
 import { revalidatePath } from 'next/cache';
 import { getTranslations } from 'next-intl/server';
 
 import { UploadWorkout, Workout as WorkoutT } from '@/interfaces';
 import {
     createWorkout,
-    getCurrentUserId,
     getWorkoutPreviewDb,
     updateWorkout,
 } from '@/server/services';
 
 export const getWorkoutsPreview = async (workouts: UploadWorkout[]) => {
-    const userId = await getCurrentUserId();
+    const { userId } = auth();
     const t = await getTranslations('Dashboard.WorkoutUpload.errors');
 
     try {
+        if (!userId) throw new Error();
+
         const existingWorkouts = await Promise.all(
             workouts.map(workout =>
                 getWorkoutPreviewDb(workout.type, userId, workout.timestamp)
@@ -38,10 +40,12 @@ export const addNewWorkouts = async (
     workouts: UploadWorkout[],
     isEdit: boolean
 ) => {
-    const userId = await getCurrentUserId();
+    const { userId } = auth();
     const t = await getTranslations('Dashboard.WorkoutUpload.errors');
 
     try {
+        if (!userId) throw new Error();
+
         if (isEdit) {
             await updateWorkout(workouts[0], userId);
         } else {

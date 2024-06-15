@@ -23,11 +23,7 @@ Label.init(
         id: { type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true },
         color: { type: DataTypes.STRING, allowNull: false },
         value: { type: DataTypes.STRING, allowNull: false },
-        userId: {
-            type: DataTypes.BIGINT,
-            allowNull: false,
-            references: { model: 'User', key: 'id' },
-        },
+        userId: { type: DataTypes.STRING, allowNull: false },
     },
     {
         sequelize,

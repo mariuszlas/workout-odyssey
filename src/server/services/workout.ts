@@ -44,7 +44,7 @@ export const getWorkoutById = async (id: string) =>
 
 export const updateWorkout = async (
     workoutDto: UploadWorkout,
-    userId: string
+    userId: string | undefined
 ) => {
     let labelId = null;
 
@@ -103,7 +103,7 @@ export const deleteWorkout = async (id: string) =>
 
 export const getWorkoutPreviewDb = async (
     type: WorkoutTypes,
-    user: string,
+    user: string | undefined,
     timestamp: string
 ) => {
     const ts = new Date(timestamp);
@@ -127,7 +127,12 @@ export const getWorkoutPreviewDb = async (
     });
 };
 
-export const getAllWorkouts = async (type: WorkoutTypes, user: string) => {
+export const getAllWorkouts = async (
+    type: WorkoutTypes,
+    user: string | null
+) => {
+    if (!user) return [];
+
     return JSON.parse(
         JSON.stringify(
             await Workout.findAll({
@@ -194,13 +199,13 @@ export const getBestResult = async (type: WorkoutTypes, user: string) => {
     return res as BestResults;
 };
 
-const query = (sql: string, type: WorkoutTypes, user: string) =>
+const query = (sql: string, type: WorkoutTypes, user: string | null) =>
     sequlize.query(sql, {
         type: QueryTypes.SELECT,
         replacements: { type, user },
     });
 
-export const getDashboard = async (type: WorkoutTypes, user: string) => {
+export const getDashboard = async (type: WorkoutTypes, user: string | null) => {
     const [total, years, months] = await Promise.all([
         query(sqlTotalBest, type, user),
         query(sqlYears, type, user),
@@ -209,5 +214,5 @@ export const getDashboard = async (type: WorkoutTypes, user: string) => {
     return { total: total.at(0), years, months } as WorkoutsDashboard;
 };
 
-export const getUserWorkoutCount = async (user: string) =>
-    await Workout.count({ where: { userId: user } });
+export const deleteUserWorkouts = async (user: string | undefined) =>
+    await Workout.destroy({ where: { userId: user } });

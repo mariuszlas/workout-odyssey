@@ -389,9 +389,7 @@
         "themeSwitchAriaLabel": "Theme switch",
         "mainMenu": "Main Menu",
         "dashboardLink": "Dashboard",
-        "bestResultsLink": "Best Results",
-        "accountSettingsLink": "Account Settings",
-        "aria": { "userMenu": "User menu" }
+        "bestResults": "Best Results"
     },
     "Footer": {
         "copyright": "© 2024 Mariusz Las",

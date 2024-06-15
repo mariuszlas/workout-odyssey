@@ -1,10 +1,9 @@
 import type { Dispatch, DragEvent, FC, SetStateAction } from 'react';
 import { useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import useSWR from 'swr';
 
 import { Alert, Button, FileUpladIcon, Text } from '@/components';
-import { NewWorkout, UserData } from '@/interfaces';
+import { NewWorkout } from '@/interfaces';
 import { getMsgFromError } from '@/utils/helpers';
 
 import { defaultNewWorkout } from '../helpers';
@@ -19,7 +18,6 @@ interface Props {
 const ACCEPTED_FILE_TYPE = '.tcx';
 
 export const FilePicker: FC<Props> = ({ setWorkouts }) => {
-    const { data: user } = useSWR<UserData>('/api/user');
     const t = useTranslations('Dashboard.WorkoutUpload.Forms.files');
     const [error, setError] = useState<string | null>(null);
     const ref = useRef<HTMLInputElement>(null);
@@ -27,7 +25,7 @@ export const FilePicker: FC<Props> = ({ setWorkouts }) => {
     const readFiles = async (fileList: FileList) => {
         try {
             const files = Array.from(fileList);
-            validateFileSize(files, user?.isDemo);
+            validateFileSize(files);
             const filesData = await readFilesAsync(files);
 
             const state = filesData.map((fileData, idx) => ({

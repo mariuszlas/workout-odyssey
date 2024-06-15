@@ -1,13 +1,10 @@
 import { FC, Suspense } from 'react';
+import { auth } from '@clerk/nextjs/server';
 import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 
 import { LocaleParam, WorkoutTypes } from '@/interfaces';
-import {
-    getAllWorkouts,
-    getCurrentUserId,
-    getDashboard,
-} from '@/server/services';
+import { getAllWorkouts, getDashboard } from '@/server/services';
 import { capitalize, isValidWorkoutType } from '@/utils/helpers';
 import { ChartView, StatisticsView, WorkoutListView } from '@/views';
 
@@ -26,7 +23,7 @@ export async function generateMetadata({
 
 interface Props {
     workoutType: WorkoutTypes;
-    userId: string;
+    userId: string | null;
 }
 
 const WorkoutListStream: FC<Props> = async ({ workoutType, userId }) => {
@@ -46,7 +43,8 @@ const ChartAndStatsStream: FC<Props> = async ({ workoutType, userId }) => {
 
 export default async function Dashboard({ params }: Params) {
     if (!isValidWorkoutType(params?.workoutType)) notFound();
-    const userId = await getCurrentUserId();
+
+    const { userId } = auth();
 
     return (
         <main className="mx-auto grid w-full max-w-8xl grid-cols-12 gap-6 p-4 sm:p-6">

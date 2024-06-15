@@ -12,7 +12,7 @@ export const getAllLabels = async (user: string) =>
     });
 
 export const findOrCreateLabel = async (
-    userId: string,
+    userId: string | undefined,
     labelDto: TLabel | null
 ) => {
     if (!labelDto || !labelDto?.value || !labelDto?.color) {
@@ -29,3 +29,6 @@ export const findOrCreateLabel = async (
 
     return label.id;
 };
+
+export const deleteUserLabels = async (user: string | undefined) =>
+    await Label.destroy({ where: { userId: user } });

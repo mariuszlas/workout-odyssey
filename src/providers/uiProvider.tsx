@@ -23,17 +23,19 @@ const getDefaultUI = (): UIContext => ({
 });
 
 interface UIContextType extends UIContext {
+    userId: string | null;
     setYear: (year: number) => void;
     setSecondaryStat: (secondaryStat: number) => void;
 }
 
 type Props = {
+    userId: string | null;
     children: ReactNode;
 };
 
 const UIContext = createContext<UIContextType | null>(null);
 
-export const UIProvider: FC<Props> = ({ children }) => {
+export const UIProvider: FC<Props> = ({ userId, children }) => {
     const [ui, setUI] = useState<UIContext>(getDefaultUI());
 
     const setSecondaryStat = (secondaryStat: number) => {
@@ -45,7 +47,9 @@ export const UIProvider: FC<Props> = ({ children }) => {
     };
 
     return (
-        <UIContext.Provider value={{ ...ui, setYear, setSecondaryStat }}>
+        <UIContext.Provider
+            value={{ ...ui, setYear, setSecondaryStat, userId }}
+        >
             {children}
         </UIContext.Provider>
     );

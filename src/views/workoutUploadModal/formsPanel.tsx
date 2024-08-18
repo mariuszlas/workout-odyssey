@@ -1,12 +1,11 @@
 'use client';
 
-import type { Dispatch, FC, ReactNode, SetStateAction } from 'react';
-import { Fragment, useState } from 'react';
-import { Tab } from '@headlessui/react';
+import type { Dispatch, FC, SetStateAction } from 'react';
+import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import type { WorkoutPreview } from '@/interfaces';
-import { cn } from '@/utils/helpers';
 
 import { ConfirmationModal } from './components';
 import { FilesUpload } from './filesUpload';
@@ -32,25 +31,25 @@ export const FormsPanel: FC<Props> = ({ setPreviewData }) => {
 
     return (
         <>
-            <Tab.Group selectedIndex={selectedIndex} onChange={onTabSelection}>
-                <div>
-                    <Tab.List className="tabs tabs-bordered">
-                        <CustomTab>{t('tabUploadFile')} </CustomTab>
-                        <CustomTab>{t('tabAddData')}</CustomTab>
-                    </Tab.List>
-                </div>
-                <Tab.Panels>
-                    <Tab.Panel>
-                        <FilesUpload
-                            setPreviewData={setPreviewData}
-                            setHasFilesSelected={setHasFilesSelected}
-                        />
-                    </Tab.Panel>
-                    <Tab.Panel>
-                        <ManualUpload setPreviewData={setPreviewData} />
-                    </Tab.Panel>
-                </Tab.Panels>
-            </Tab.Group>
+            <Tabs defaultValue="file">
+                <TabsList className="grid w-full grid-cols-2">
+                    <TabsTrigger value="file" onClick={onTabSelection}>
+                        {t('tabUploadFile')}
+                    </TabsTrigger>
+                    <TabsTrigger value="manual" onClick={onTabSelection}>
+                        {t('tabAddData')}
+                    </TabsTrigger>
+                </TabsList>
+                <TabsContent value="file">
+                    <FilesUpload
+                        setPreviewData={setPreviewData}
+                        setHasFilesSelected={setHasFilesSelected}
+                    />
+                </TabsContent>
+                <TabsContent value="manual">
+                    <ManualUpload setPreviewData={setPreviewData} />
+                </TabsContent>
+            </Tabs>
 
             <ConfirmationModal
                 isOpen={isOpen}
@@ -63,17 +62,3 @@ export const FormsPanel: FC<Props> = ({ setPreviewData }) => {
         </>
     );
 };
-
-const CustomTab: FC<{ children: ReactNode }> = ({ children }) => (
-    <Tab as={Fragment}>
-        {({ selected }) => (
-            <button
-                className={cn('tab h-full w-full p-2 text-base font-semibold', {
-                    'tab-active text-primary': selected,
-                })}
-            >
-                {children}
-            </button>
-        )}
-    </Tab>
-);

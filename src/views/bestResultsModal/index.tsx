@@ -2,7 +2,17 @@ import type { FC } from 'react';
 import { useTranslations } from 'next-intl';
 import useSWR from 'swr';
 
-import { Button, Modal, ModalHeader, ModalProps, Skeleton } from '@/components';
+import {
+    Button,
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    ModalProps,
+    Skeleton,
+} from '@/components';
 import { BestResults as TBestResults, WorkoutTypes } from '@/interfaces';
 import { usePathname } from '@/navigation';
 import { useUI } from '@/providers';
@@ -67,36 +77,37 @@ export const BestResultsModal: FC<ModalProps> = ({ isOpen, onClose }) => {
     const keys = getAllKeys(workoutType, translations);
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose} full>
-            <ModalHeader onClose={onClose}>
-                {`${t('BestResults.header')} ${t('workoutType', { workoutType })}`}
-            </ModalHeader>
-
-            <ul id="best-results" className="mt-6 flex w-full flex-col gap-4">
-                {isLoading
-                    ? keys.map(({ key, value }) => (
-                          <Skeleton
-                              key={key + value}
-                              h={14}
-                              className="block h-14 w-full"
-                          />
-                      ))
-                    : keys.map(({ key, value }, idx) => (
-                          <LineItem
-                              key={idx}
-                              data={data?.[key]}
-                              header={value}
-                              units={units}
-                              noDataText={t('BestResults.noData')}
-                          />
-                      ))}
-            </ul>
-
-            <footer className="mt-6 flex justify-end">
-                <Button className="btn-primary" onClick={onClose}>
-                    {t('BestResults.cta')}
-                </Button>
-            </footer>
-        </Modal>
+        <Dialog open={isOpen} onOpenChange={onClose}>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>
+                        {`${t('BestResults.header')} ${t('workoutType', { workoutType })}`}
+                    </DialogTitle>
+                </DialogHeader>
+                <ul
+                    id="best-results"
+                    className="mt-6 flex w-full flex-col gap-2"
+                >
+                    {isLoading
+                        ? keys.map(({ key, value }) => (
+                              <Skeleton key={key + value} h={14} />
+                          ))
+                        : keys.map(({ key, value }, idx) => (
+                              <LineItem
+                                  key={idx}
+                                  data={data?.[key]}
+                                  header={value}
+                                  units={units}
+                                  noDataText={t('BestResults.noData')}
+                              />
+                          ))}
+                </ul>
+                <DialogFooter>
+                    <DialogClose asChild>
+                        <Button>{t('BestResults.cta')}</Button>
+                    </DialogClose>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
     );
 };

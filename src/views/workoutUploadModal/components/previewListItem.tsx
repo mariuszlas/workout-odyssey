@@ -1,17 +1,17 @@
 'use client';
 
 import { type FC } from 'react';
+import { TrashIcon } from '@radix-ui/react-icons';
 import clsx from 'clsx';
 import { useTranslations } from 'next-intl';
 
 import {
+    Badge,
     DateEntry,
     Distance,
     Duration,
     IconButton,
-    Label,
-    Text,
-    TrashIcon,
+    TextS,
 } from '@/components';
 import type { UploadWorkout, Workout } from '@/interfaces';
 import { useUI } from '@/providers';
@@ -43,19 +43,19 @@ export const PreviewListItem: FC<Props> = ({
             className={clsx(
                 'flex w-full flex-col gap-4 rounded-lg border border-opacity-20 px-4 py-2',
                 existingData.length > 0
-                    ? 'border-2 border-warning'
+                    ? 'border-warning border-2'
                     : 'border-base-content'
             )}
         >
             <div className="flex justify-between gap-4">
                 <div className="overflow-hidden overflow-ellipsis">
                     <div className="flex items-center gap-4">
-                        <Text className="font-medium capitalize">
+                        <TextS className="font-medium capitalize">
                             {t('workoutType', {
                                 workoutType: data.type,
                             })}
-                        </Text>
-                        {data?.label && <Label label={data.label} small />}
+                        </TextS>
+                        {data?.label && <Badge label={data.label} />}
                     </div>
 
                     <div className="flex flex-wrap gap-x-4 sm:gap-x-6">
@@ -73,7 +73,7 @@ export const PreviewListItem: FC<Props> = ({
                     aria-label={t('WorkoutUpload.Preview.aria.remove')}
                     onClick={removeItem}
                 >
-                    <TrashIcon />
+                    <TrashIcon className="h-6 w-6" />
                 </IconButton>
             </div>
 

@@ -3,7 +3,7 @@ import type { FC } from 'react';
 import type { StatIconType, Units } from '@/interfaces';
 import { formatDuration, formatPace, getDateTimeTZ } from '@/utils/helpers';
 
-import { getStatIcon, Text } from '..';
+import { getStatIcon, TextP } from '..';
 
 interface DataEntryProps {
     value?: string | number;
@@ -13,7 +13,7 @@ interface DataEntryProps {
 
 const DataEntry: FC<DataEntryProps> = ({ value, unit = '', iconType }) => {
     const textContent = (
-        <Text className="text-nowrap">{`${value} ${unit}`}</Text>
+        <TextP className="text-nowrap">{`${value} ${unit}`}</TextP>
     );
 
     if (!iconType) return textContent;

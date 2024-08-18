@@ -1,13 +1,14 @@
 import type { FC } from 'react';
+import { SignInButton, SignUpButton } from '@clerk/nextjs';
+import { PlusIcon } from '@radix-ui/react-icons';
 import { useTranslations } from 'next-intl';
 
 import {
+    Button,
     CloseButton,
     Drawer,
-    MenuButton,
-    MenuLink,
-    PlusIcon,
-    Text,
+    Separator,
+    TextP,
     ThemeSwitch,
 } from '@/components';
 import { DrawerProps } from '@/components';
@@ -33,59 +34,62 @@ export const DrawerMenu: FC<Props> = ({
 
     return (
         <Drawer isOpen={isOpen} onClose={onClose} size="sm">
-            <div className="flex w-full items-center justify-between p-4">
-                <Text className="text-xl font-semibold" value={t('mainMenu')} />
+            <div className="flex w-full items-center justify-between p-4 pl-8">
+                <TextP
+                    className="text-xl font-semibold"
+                    value={t('mainMenu')}
+                />
                 <CloseButton onClick={onClose} />
             </div>
-
-            <hr className="border-t border-t-base-content border-opacity-20 " />
-
+            <Separator />
             <ul className="w-full p-4" role="menu">
                 <ThemeSwitch isMobile />
 
                 {isProtected && (
                     <>
                         <li>
-                            <MenuButton
+                            <Button
+                                variant="menuitem"
                                 role="menuitem"
                                 onClick={() => {
                                     onClose();
                                     openWorkoutUploadModal();
                                 }}
                             >
-                                <Text value={t('newWorkoutCta')} />
-                                <PlusIcon />
-                            </MenuButton>
+                                {t('newWorkoutCta')}
+                                <PlusIcon className="h-6 w-6" />
+                            </Button>
                         </li>
-
-                        <hr className="my-4 border-t border-t-base-content border-opacity-20 " />
+                        <Separator />
                         <WorkoutSelector isMobile onClose={onClose} />
                     </>
                 )}
 
                 {!isProtected && (
                     <>
-                        {showSignupBtn && (
-                            <li>
-                                <MenuLink
-                                    href="/signup"
-                                    role="menuitem"
-                                    onClick={onClose}
-                                >
-                                    {t('signupCta')}
-                                </MenuLink>
-                            </li>
-                        )}
                         {showLoginBtn && (
-                            <li>
-                                <MenuLink
-                                    href="/login"
+                            <SignInButton
+                                forceRedirectUrl={'/dashboard/running'}
+                            >
+                                <Button
+                                    variant="menuitem"
                                     role="menuitem"
                                     onClick={onClose}
                                 >
-                                    {t('loginCta')}
-                                </MenuLink>
-                            </li>
+                                    <a>{t('loginCta')}</a>
+                                </Button>
+                            </SignInButton>
+                        )}
+                        {showSignupBtn && (
+                            <SignUpButton>
+                                <Button
+                                    variant="menuitem"
+                                    role="menuitem"
+                                    onClick={onClose}
+                                >
+                                    <a>{t('signupCta')}</a>
+                                </Button>
+                            </SignUpButton>
                         )}
                     </>
                 )}

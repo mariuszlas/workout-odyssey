@@ -3,18 +3,10 @@
 import type { FC } from 'react';
 import { useState } from 'react';
 import { SignInButton, SignUpButton, UserButton } from '@clerk/nextjs';
+import { HamburgerMenuIcon, PlusIcon, StarIcon } from '@radix-ui/react-icons';
 import { useTranslations } from 'next-intl';
 
-import {
-    BurgerMenuIcon,
-    Button,
-    IconButton,
-    Logo,
-    PlusIcon,
-    Text,
-    ThemeSwitch,
-    UserIcon,
-} from '@/components';
+import { Button, IconButton, Logo, ThemeSwitch } from '@/components';
 import { useIsBreakpoint } from '@/hooks';
 import { usePathname } from '@/navigation';
 
@@ -46,42 +38,35 @@ export const NavBar: FC<{ isProtected?: boolean }> = ({
 
     return (
         <>
-            <header className="sticky top-0 z-50 w-full border-b border-b-base-content border-opacity-20 bg-base-100 bg-opacity-30 py-2 shadow-sm backdrop-blur-lg">
-                <nav className="mx-auto flex w-full max-w-8xl items-center px-4 sm:px-6">
-                    <div className="navbar-start">
+            <header className="border-b-base-content bg-base-100 sticky top-0 z-50 w-full border-b border-opacity-20 bg-opacity-30 py-2 shadow-sm backdrop-blur-lg">
+                <nav className="max-w-8xl mx-auto flex w-full items-center justify-between px-4 sm:px-6">
+                    <div className="flex items-center gap-2">
                         {!isMobile && <Logo isProtected={isProtected} />}
                         <div className="md:hidden">
-                            <button
+                            <IconButton
                                 onClick={() => setIsDrawerMenuOpen(true)}
-                                className="btn btn-ghost h-10 min-h-min"
-                                type="button"
                                 aria-label={t('mainMenu')}
                             >
-                                <BurgerMenuIcon />
-                            </button>
+                                <HamburgerMenuIcon className="h-6 w-6" />
+                            </IconButton>
                         </div>
+                        {isProtected && isDashboardPage && <WorkoutSelector />}
                     </div>
 
-                    <div className="navbar-center">
-                        {isMobile && <Logo isProtected={isProtected} />}
+                    <div>{isMobile && <Logo isProtected={isProtected} />}</div>
+
+                    <div className="flex items-center gap-3">
                         {isProtected && (
-                            <div className="hidden gap-4 md:flex">
-                                {isDashboardPage && <WorkoutSelector />}
-
-                                <Button
-                                    className="btn btn-outline btn-primary h-10 min-h-min text-base"
-                                    onClick={() =>
-                                        setIsWorkoutUploadModalOpen(true)
-                                    }
-                                >
-                                    <Text value={t('newWorkoutCta')} />
-                                    <PlusIcon />
-                                </Button>
-                            </div>
+                            <IconButton
+                                className="hidden md:flex"
+                                onClick={() =>
+                                    setIsWorkoutUploadModalOpen(true)
+                                }
+                            >
+                                <PlusIcon className="h-6 w-6" />
+                            </IconButton>
                         )}
-                    </div>
 
-                    <div className="navbar-end flex items-center gap-4">
                         <ThemeSwitch />
 
                         {isProtected ? (
@@ -92,7 +77,7 @@ export const NavBar: FC<{ isProtected?: boolean }> = ({
                                         setIsBestResultsModalOpen(true)
                                     }
                                 >
-                                    <UserIcon />
+                                    <StarIcon className="h-6 w-6" />
                                 </IconButton>
                                 <UserButton />
                             </>
@@ -102,17 +87,22 @@ export const NavBar: FC<{ isProtected?: boolean }> = ({
                                     <SignInButton
                                         forceRedirectUrl={'/dashboard/running'}
                                     >
-                                        <a className="btn btn-outline btn-primary hidden h-10 min-h-min text-base md:inline-flex">
-                                            {t('loginCta')}
-                                        </a>
+                                        <Button
+                                            asChild
+                                            className="hidden cursor-pointer md:inline-flex"
+                                        >
+                                            <a>{t('loginCta')}</a>
+                                        </Button>
                                     </SignInButton>
                                 )}
-
                                 {showSignupBtn && (
                                     <SignUpButton>
-                                        <a className="btn btn-primary hidden h-10 min-h-min text-base md:inline-flex">
-                                            {t('signupCta')}
-                                        </a>
+                                        <Button
+                                            asChild
+                                            className="hidden cursor-pointer md:inline-flex"
+                                        >
+                                            <a>{t('signupCta')}</a>
+                                        </Button>
                                     </SignUpButton>
                                 )}
                             </>
@@ -130,18 +120,16 @@ export const NavBar: FC<{ isProtected?: boolean }> = ({
                 openWorkoutUploadModal={() => setIsWorkoutUploadModalOpen(true)}
             />
 
-            <WorkoutUploadModal
-                isOpen={isWorkoutUploadModalOpen}
-                onClose={() => setIsWorkoutUploadModalOpen(false)}
-            />
-
             {isProtected && (
                 <>
+                    <WorkoutUploadModal
+                        isOpen={isWorkoutUploadModalOpen}
+                        onClose={() => setIsWorkoutUploadModalOpen(false)}
+                    />
                     <BestResultsModal
                         isOpen={isBestResultsModalOpen}
                         onClose={() => setIsBestResultsModalOpen(false)}
                     />
-
                     <FloatingNewWorkoutBtn
                         onClick={() => setIsWorkoutUploadModalOpen(true)}
                     />

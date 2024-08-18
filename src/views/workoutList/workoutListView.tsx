@@ -15,7 +15,7 @@ import { WorkoutList } from './workoutList';
 
 const WorkoutListWrapper: FC<Children> = ({ children }) => (
     <section
-        className="flex flex-col gap-2 border-base-content border-opacity-20 sm:gap-4 sm:rounded-xl sm:border sm:p-6 sm:shadow-lg lg:min-h-full"
+        className="border-base-content flex flex-col gap-2 border-opacity-20 sm:rounded-xl sm:border sm:p-6 sm:shadow-lg lg:min-h-full"
         data-testid="workout-list-section"
     >
         {children}
@@ -57,6 +57,7 @@ export const WorkoutListView: FC<{ data?: Workout[]; isLoading?: boolean }> = ({
             <WorkoutListHeader
                 headerData={headerData}
                 setSortBy={setSortBy}
+                sortBy={sortBy}
                 filterBy={filterBy}
                 setFilterBy={setFilterBy}
                 isAll={isAll}

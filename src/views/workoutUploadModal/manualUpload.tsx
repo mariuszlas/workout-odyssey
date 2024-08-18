@@ -44,20 +44,18 @@ export const ManualUpload: FC<Props> = ({
 
     return (
         <form action={action}>
-            <div className="flex flex-wrap justify-between gap-2 py-4">
+            <div className="flex flex-wrap justify-between gap-4 py-4">
                 <ActivitySelector {...props} />
                 <DistanceInput {...props} />
                 <DurationPicker {...props} />
                 <DatetimePicker {...props} />
                 <TimezoneSelector {...props} />
             </div>
-
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-4">
                 <LabelSelector {...props} />
                 <NotesInput {...props} />
             </div>
-
-            <Button className="btn-primary btn-block mt-6" type="submit">
+            <Button className="mt-6 w-full" type="submit">
                 {t('Forms.cta')}
             </Button>
         </form>

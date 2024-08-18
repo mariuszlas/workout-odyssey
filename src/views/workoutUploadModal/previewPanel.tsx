@@ -3,8 +3,9 @@
 import { Dispatch, type FC, SetStateAction, useEffect } from 'react';
 import { useFormState } from 'react-dom';
 import { useTranslations } from 'next-intl';
+import { toast } from 'sonner';
 
-import { Alert, Button, notify } from '@/components';
+import { Alert, AlertDescription, AlertTitle, Button } from '@/components';
 import type { WorkoutPreview } from '@/interfaces';
 
 import { addNewWorkouts } from './action';
@@ -50,15 +51,15 @@ export const PreviewPanel: FC<Props> = ({
     useEffect(() => {
         if (formState?.ok) {
             if (isEdit) {
-                notify.success(t('notify.updateSuccess'));
+                toast.success(t('notify.updateSuccess'));
             } else {
-                notify.success(t('notify.uploadSuccess'));
+                toast.success(t('notify.uploadSuccess'));
             }
             onClose();
         }
 
         if (formState?.error) {
-            notify.error(formState.error);
+            toast.error(formState.error);
             setPreviewData([]);
         }
     }, [formState]);
@@ -67,12 +68,10 @@ export const PreviewPanel: FC<Props> = ({
         <>
             <div className="flex flex-1 flex-col gap-4">
                 {isExistingData && (
-                    <Alert
-                        classes="m-0 p-2"
-                        status="warning"
-                        title={t('warningTitle')}
-                        content={t('warningAlert')}
-                    />
+                    <Alert variant="warning">
+                        <AlertTitle>{t('warningTitle')}</AlertTitle>
+                        <AlertDescription>{t('warningAlert')}</AlertDescription>
+                    </Alert>
                 )}
 
                 <ul className="flex max-h-96 flex-wrap gap-3 overflow-y-scroll">
@@ -95,17 +94,12 @@ export const PreviewPanel: FC<Props> = ({
             </div>
 
             <div className="mt-6 flex justify-end gap-4">
-                <Button
-                    className="btn-ghost"
-                    onClick={() => setPreviewData([])}
-                >
+                <Button variant="ghost" onClick={() => setPreviewData([])}>
                     {t('ctaSecondary')}
                 </Button>
 
                 <form action={action}>
-                    <Button className="btn-primary" type="submit">
-                        {t('cta')}
-                    </Button>
+                    <Button type="submit">{t('cta')}</Button>
                 </form>
             </div>
         </>

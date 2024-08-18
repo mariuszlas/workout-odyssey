@@ -6,9 +6,9 @@ import { cookies } from 'next/headers';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 
-import { GA4Script } from '@/components';
+import { GA4Script, Toaster } from '@/components';
 import { Children, Cookie, LocaleParam, Theme } from '@/interfaces';
-import { ConfigProvider, ThemeProvider, ToastProvider } from '@/providers';
+import { ConfigProvider, ThemeProvider } from '@/providers';
 import { getAppConfig } from '@/server/helpers';
 import { isValidTheme } from '@/utils/helpers';
 
@@ -41,14 +41,22 @@ export default async function RootLayout({
                                 locale={locale}
                                 messages={messages}
                             >
-                                <ToastProvider>
-                                    <div
-                                        id="page-content"
-                                        className="flex min-h-screen flex-col"
-                                    >
-                                        {children}
-                                    </div>
-                                </ToastProvider>
+                                <div
+                                    id="page-content"
+                                    className="flex min-h-screen flex-col"
+                                >
+                                    {children}
+                                </div>
+                                <Toaster
+                                    toastOptions={{
+                                        classNames: {
+                                            error: 'bg-red-400',
+                                            success: 'bg-green-400',
+                                            warning: 'bg-yellow-400',
+                                            info: 'bg-blue-400',
+                                        },
+                                    }}
+                                />
                             </NextIntlClientProvider>
                             <GA4Script />
                             <SpeedInsights />

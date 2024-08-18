@@ -5,7 +5,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import Chart from 'chart.js/auto';
 import { useLocale, useTranslations } from 'next-intl';
 
-import { Text } from '@/components';
+import { TextP } from '@/components';
 import { WorkoutsDashboard } from '@/interfaces';
 import { useTheme, useUI } from '@/providers';
 
@@ -73,7 +73,7 @@ export const BarChart: FC<{ dashboard: WorkoutsDashboard }> = ({
         updateChartTheme(chart, getChartThemeTokens(theme), locale, units);
     }, [theme]);
 
-    const fallbackContent = <Text as="p" value={t('chartFallbackContent')} />;
+    const fallbackContent = <TextP value={t('chartFallbackContent')} />;
 
     return (
         <canvas ref={ref} role="img" onClick={e => handleBarClick(e)}>

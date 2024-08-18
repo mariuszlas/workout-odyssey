@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import { useTranslations } from 'next-intl';
 
-import { ModalHeader } from '@/components';
+import { DialogHeader, DialogTitle } from '@/components';
 import type { Workout, WorkoutPreview } from '@/interfaces';
 
 import { FormsPanel } from './formsPanel';
@@ -19,13 +19,15 @@ export const WorkoutUpload: FC<Props> = ({ workout, onClose }) => {
 
     return (
         <>
-            <ModalHeader onClose={onClose}>
-                {previewData.length
-                    ? t('Preview.header')
-                    : workout
-                      ? t('Forms.editHeader')
-                      : t('Forms.uploadHeader')}
-            </ModalHeader>
+            <DialogHeader>
+                <DialogTitle>
+                    {previewData.length
+                        ? t('Preview.header')
+                        : workout
+                          ? t('Forms.editHeader')
+                          : t('Forms.uploadHeader')}
+                </DialogTitle>
+            </DialogHeader>
 
             {previewData.length ? (
                 <PreviewPanel

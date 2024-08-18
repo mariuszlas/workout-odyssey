@@ -1,6 +1,7 @@
+import { GitHubLogoIcon } from '@radix-ui/react-icons';
 import { useTranslations } from 'next-intl';
 
-import { GitlabIcon, Text } from '@/components';
+import { IconButton, TextP } from '@/components';
 
 export const Footer = () => {
     const t = useTranslations('Footer');
@@ -8,19 +9,20 @@ export const Footer = () => {
     return (
         <footer
             data-testid="footer"
-            className="border-t border-t-base-content border-opacity-20 py-3"
+            className="border-t-base-content border-t border-opacity-20 py-3"
         >
-            <div className="mx-auto flex w-full max-w-8xl items-center justify-between px-4 sm:px-6">
-                <Text data-testid="copyright-note" value={t('copyright')} />
-                <a
-                    className="btn btn-square btn-ghost btn-sm text-primary"
-                    href="https://gitlab.com/mariuszlas/workout-odyssey"
-                    target="_blank"
-                    rel="noreferrer"
-                    aria-label={t('ariaLabel')}
-                >
-                    <GitlabIcon className="h-8 w-8" />
-                </a>
+            <div className="max-w-8xl mx-auto flex w-full items-center justify-between px-4 sm:px-6">
+                <TextP data-testid="copyright-note" value={t('copyright')} />
+                <IconButton asChild>
+                    <a
+                        href="https://github.com/mariuszlas/workout-odyssey"
+                        target="_blank"
+                        rel="noreferrer"
+                        aria-label={t('ariaLabel')}
+                    >
+                        <GitHubLogoIcon className="h-6 w-6" />
+                    </a>
+                </IconButton>
             </div>
         </footer>
     );

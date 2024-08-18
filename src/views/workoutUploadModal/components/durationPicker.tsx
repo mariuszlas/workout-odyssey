@@ -1,39 +1,31 @@
-import type { FC, MutableRefObject } from 'react';
-import { Fragment, useEffect, useState } from 'react';
-import { Popover } from '@headlessui/react';
+import type { FC } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 import {
+    Button,
     CloseButton,
-    FormLabel,
-    Heading,
+    H3,
     Input,
-    InputButton,
-    MenuTransition,
+    Label,
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+    Separator,
 } from '@/components';
-import { usePopover } from '@/hooks';
 import dayjs from '@/utils/extended-dayjs';
-import { formatDuration } from '@/utils/helpers';
+import { cn, formatDuration } from '@/utils/helpers';
 
 import { WorkoutForm } from '../intrefaces';
 
-type PopoverOnClose = (
-    focusableElement?:
-        | HTMLElement
-        | MutableRefObject<HTMLElement | null>
-        | undefined
-) => void;
-
 export const DurationPicker: FC<WorkoutForm> = ({ workout, setWorkouts }) => {
+    const t = useTranslations('Dashboard.WorkoutUpload.Forms.duration');
     const { duration } = workout;
+
+    const [isOpen, setIsOpen] = useState(false);
     const [s, setS] = useState(dayjs.duration(duration, 's').seconds());
     const [m, setM] = useState(dayjs.duration(duration, 's').minutes());
     const [h, setH] = useState(dayjs.duration(duration, 's').hours());
-
-    const t = useTranslations('Dashboard.WorkoutUpload.Forms.duration');
-    const { setRefEl, setPopperElement, styles, attributes } = usePopover({
-        position: 'bottom-end',
-    });
 
     useEffect(() => {
         if (isNaN(h)) setH(0);
@@ -67,58 +59,51 @@ export const DurationPicker: FC<WorkoutForm> = ({ workout, setWorkouts }) => {
         },
     ];
 
-    const renderDurationFields = (onClose: PopoverOnClose) =>
-        durationFields.map(({ label, plcd, formatter, setD }, idx) => (
-            <div className="w-fit" key={idx}>
-                <FormLabel text={label} />
-                <Input
-                    placeholder={plcd}
-                    value={formatDuration(duration, formatter)}
-                    onChange={e => setD(Number(e.target.value))}
-                    className="w-20"
-                    onKeyDown={e => {
-                        if (e.key === 'Enter') {
-                            onClose();
-                            e.preventDefault();
-                        }
-                    }}
-                />
-            </div>
-        ));
-
     return (
-        <div className="w-fit">
-            <FormLabel text={t('label')} isRequired />
-            <Popover>
-                <Popover.Button as={Fragment}>
-                    <InputButton className="w-24" ref={setRefEl}>
-                        {formatDuration(duration)}
-                    </InputButton>
-                </Popover.Button>
-                <MenuTransition>
-                    <Popover.Panel
-                        className="max-w-md rounded-lg border border-base-content border-opacity-20 bg-base-100 bg-opacity-100 p-4 opacity-100 shadow-2xl focus:outline-none"
-                        ref={setPopperElement}
-                        style={styles.popper}
-                        {...attributes.popper}
+        <Popover open={isOpen} onOpenChange={setIsOpen}>
+            <div className="flex flex-col justify-center gap-1 pt-1">
+                <Label htmlFor="duration" isRequired>
+                    {t('label')}
+                </Label>
+                <PopoverTrigger asChild>
+                    <Button
+                        variant="outline"
+                        className={cn('justify-start text-left font-normal')}
+                        id="duration"
                     >
-                        {({ close }) => (
-                            <>
-                                <div className="flex items-center justify-between">
-                                    <Heading as="h3" className="text-xl">
-                                        {t('header')}
-                                    </Heading>
-                                    <CloseButton onClick={() => close()} />
-                                </div>
-                                <hr className="my-2 border-t border-t-base-content border-opacity-20 " />
-                                <div className="flex gap-4">
-                                    {renderDurationFields(close)}
-                                </div>
-                            </>
-                        )}
-                    </Popover.Panel>
-                </MenuTransition>
-            </Popover>
-        </div>
+                        {formatDuration(duration)}
+                    </Button>
+                </PopoverTrigger>
+            </div>
+
+            <PopoverContent className="w-auto">
+                <div className="flex items-center justify-between">
+                    <H3>{t('header')}</H3>
+                    <CloseButton onClick={() => setIsOpen(false)} />
+                </div>
+                <Separator className="my-2" />
+                <div className="flex gap-4">
+                    {durationFields.map(
+                        ({ label, plcd, formatter, setD }, idx) => (
+                            <div className="w-fit" key={idx}>
+                                <Label>{label}</Label>
+                                <Input
+                                    placeholder={plcd}
+                                    value={formatDuration(duration, formatter)}
+                                    onChange={e => setD(Number(e.target.value))}
+                                    className="w-16"
+                                    onKeyDown={e => {
+                                        if (e.key === 'Enter') {
+                                            setIsOpen(false);
+                                            e.preventDefault();
+                                        }
+                                    }}
+                                />
+                            </div>
+                        )
+                    )}
+                </div>
+            </PopoverContent>
+        </Popover>
     );
 };

@@ -1,14 +1,18 @@
 import { FC, useEffect } from 'react';
 import { useFormState } from 'react-dom';
 import { useTranslations } from 'next-intl';
+import { toast } from 'sonner';
 
 import {
     Button,
-    Modal,
-    ModalHeader,
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
     ModalProps,
-    notify,
-    Text,
+    TextP,
 } from '@/components';
 
 import { deleteWorkoutById } from './action';
@@ -27,27 +31,21 @@ const ModalCta: FC<Props> = ({ id, onClose }) => {
 
     useEffect(() => {
         if (formState?.ok) {
-            notify.success(t('notify.success'));
+            toast.success(t('notify.success'));
             onClose();
         }
 
         if (formState?.error) {
-            notify.error(formState.error);
+            toast.error(formState.error);
         }
     }, [formState]);
 
     return (
-        <div className="flex justify-end gap-4">
-            <Button onClick={onClose} className="btn-ghost">
-                {t('ctaSecondary')}
+        <form action={action}>
+            <Button type="submit" variant="destructive">
+                {t('cta')}
             </Button>
-
-            <form action={action}>
-                <Button type="submit" className="btn-error">
-                    {t('cta')}
-                </Button>
-            </form>
-        </div>
+        </form>
     );
 };
 
@@ -55,12 +53,19 @@ export const DeleteWorkoutModal: FC<Props> = ({ id, onClose, isOpen }) => {
     const t = useTranslations('Dashboard.WorkoutDeletion');
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose}>
-            <div className="flex flex-col gap-4">
-                <ModalHeader onClose={onClose}>{t('header')}</ModalHeader>
-                <Text as="p" value={t('description')} />
-                <ModalCta id={id} onClose={onClose} isOpen={isOpen} />
-            </div>
-        </Modal>
+        <Dialog open={isOpen} onOpenChange={onClose}>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>{t('header')}</DialogTitle>
+                </DialogHeader>
+                <TextP value={t('description')} />
+                <DialogFooter>
+                    <DialogClose asChild>
+                        <Button variant="ghost">{t('ctaSecondary')}</Button>
+                    </DialogClose>
+                    <ModalCta id={id} onClose={onClose} isOpen={isOpen} />
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
     );
 };

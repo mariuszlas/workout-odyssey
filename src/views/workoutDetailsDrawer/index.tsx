@@ -1,7 +1,8 @@
 import { FC } from 'react';
+import { Dialog } from '@headlessui/react';
 import { useTranslations } from 'next-intl';
 
-import { Drawer, DrawerProps, ModalHeader } from '@/components';
+import { CloseButton, Drawer, DrawerProps, Separator } from '@/components';
 import { Workout } from '@/interfaces';
 
 import { WorkoutDetailsPanel } from './details/workoutDetailsPanel';
@@ -21,12 +22,15 @@ export const WorkoutDetailsDrawer: FC<Props> = ({
     return (
         <Drawer isOpen={isOpen} onClose={onClose} size="lg" unmount={true}>
             <div className="flex h-full flex-col" id="workout-details">
-                <ModalHeader className="p-4" onClose={onClose}>
-                    {t('header')}
-                </ModalHeader>
-
-                <hr className="border-t border-t-base-content border-opacity-20 " />
-
+                <header
+                    className={'flex items-center justify-between px-4 py-2'}
+                >
+                    <Dialog.Title as="h2" className="text-lg font-medium">
+                        {t('header')}
+                    </Dialog.Title>
+                    <CloseButton onClick={onClose} />
+                </header>
+                <Separator />
                 <div className="flex-grow p-4">
                     <div className="flex h-full flex-col gap-4">
                         <WorkoutDetailsPanel data={workout} />

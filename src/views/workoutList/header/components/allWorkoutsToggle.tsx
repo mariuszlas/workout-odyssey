@@ -1,7 +1,8 @@
 import type { FC } from 'react';
 import { useTranslations } from 'next-intl';
 
-import { Text } from '@/components';
+import { Label } from '@/components';
+import { Switch } from '@/components/ui/switch';
 import { cn } from '@/utils/helpers';
 
 export interface AllWorkoutsToggleProps {
@@ -20,17 +21,16 @@ export const AllWorkoutsToggle: FC<AllWorkoutsToggleProps> = ({
     const t = useTranslations('Dashboard.WorkoutList.Header');
 
     return (
-        <label className={cn('label cursor-pointer gap-3', className)}>
-            <Text className="label-text w-max" value={t('allWorkoutsToggle')} />
-            <input
-                type="checkbox"
-                className="toggle toggle-primary"
-                onChange={() => {
+        <div className={cn('flex items-center gap-3', className)}>
+            <Label htmlFor="allWorkoutsToggle">{t('allWorkoutsToggle')}</Label>
+            <Switch
+                id="allWorkoutsToggle"
+                checked={isAll}
+                onCheckedChange={() => {
                     setIsAll(!isAll);
                     setPageNo(1);
                 }}
-                checked={isAll}
             />
-        </label>
+        </div>
     );
 };

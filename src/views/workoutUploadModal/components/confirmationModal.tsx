@@ -3,7 +3,17 @@
 import type { FC } from 'react';
 import { useTranslations } from 'next-intl';
 
-import { Button, Modal, ModalHeader, ModalProps, Text } from '@/components';
+import {
+    Button,
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    ModalProps,
+    TextP,
+} from '@/components';
 
 interface Props extends ModalProps {
     confirmAction: () => void;
@@ -17,18 +27,21 @@ export const ConfirmationModal: FC<Props> = ({
     const t = useTranslations('Dashboard.WorkoutUpload.Forms.confirmation');
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose} full>
-            <ModalHeader onClose={onClose}>{t('title')}</ModalHeader>
-            <Text as="p" className="py-4" value={t('description')} />
-
-            <footer className="flex justify-end gap-4">
-                <Button onClick={onClose} className="btn-ghost">
-                    {t('cancelCta')}
-                </Button>
-                <Button onClick={confirmAction} className="btn-error">
-                    {t('confirmCta')}
-                </Button>
-            </footer>
-        </Modal>
+        <Dialog open={isOpen} onOpenChange={onClose}>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>{t('title')}</DialogTitle>
+                </DialogHeader>
+                <TextP className="py-4" value={t('description')} />
+                <DialogFooter>
+                    <DialogClose asChild>
+                        <Button variant="ghost">{t('cancelCta')}</Button>
+                    </DialogClose>
+                    <Button onClick={confirmAction} variant="destructive">
+                        {t('confirmCta')}
+                    </Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
     );
 };

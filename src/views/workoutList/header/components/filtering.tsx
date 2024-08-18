@@ -1,7 +1,8 @@
 import type { FC } from 'react';
+import { TrashIcon } from '@radix-ui/react-icons';
 import { useTranslations } from 'next-intl';
 
-import { BrushIcon, IconButton, Input } from '@/components';
+import { IconButton, Input } from '@/components';
 
 export interface FilteringProps {
     setFilterBy: (filterBy: string) => void;
@@ -12,7 +13,7 @@ export const Filtering: FC<FilteringProps> = ({ setFilterBy, filterBy }) => {
     const t = useTranslations('Dashboard.WorkoutList.Header.filtering');
 
     return (
-        <div className="relative max-w-xs">
+        <div className="relative flex max-w-xs">
             <Input
                 type="text"
                 value={filterBy}
@@ -20,13 +21,12 @@ export const Filtering: FC<FilteringProps> = ({ setFilterBy, filterBy }) => {
                 onChange={e => setFilterBy(e.target.value)}
                 className="pr-10"
             />
-
             <IconButton
                 aria-label={t('ariaLabel')}
                 onClick={() => setFilterBy('')}
                 className="absolute right-0"
             >
-                <BrushIcon />
+                <TrashIcon className="h-6 w-6" />
             </IconButton>
         </div>
     );

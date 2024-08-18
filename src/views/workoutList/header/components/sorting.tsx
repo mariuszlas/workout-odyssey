@@ -1,7 +1,14 @@
 import type { FC } from 'react';
 import { useTranslations } from 'next-intl';
 
-import { Select } from '@/components';
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components';
 
 import { handleSort } from './helpers';
 
@@ -11,6 +18,7 @@ interface SortByObject {
 }
 
 export interface SortingProps {
+    sortBy: SortByObject;
     setSortBy: (sortBy: SortByObject) => void;
 }
 
@@ -25,31 +33,37 @@ export const enum SortOptions {
     PACE_REVERSE = 'pace-reverse',
 }
 
-export const Sorting: FC<SortingProps> = ({ setSortBy }) => {
+export const Sorting: FC<SortingProps> = ({ setSortBy, sortBy }) => {
     const t = useTranslations('Dashboard.WorkoutList.Header.sorting');
 
     const SortOptionsMap = [
-        { val: [SortOptions.DATE], text: t('dateDesc') },
-        { val: [SortOptions.DATE_REVERSE], text: t('dateAsc') },
-        { val: [SortOptions.DISTANCE], text: t('distanceDesc') },
-        { val: [SortOptions.DISTANCE_REVERSE], text: t('distanceAsc') },
-        { val: [SortOptions.DURATION], text: t('durationDesc') },
-        { val: [SortOptions.DURATION_REVERSE], text: t('durationAsc') },
-        { val: [SortOptions.PACE], text: t('paceDesc') },
-        { val: [SortOptions.PACE_REVERSE], text: t('paceAsc') },
+        { val: SortOptions.DATE, text: t('dateDesc') },
+        { val: SortOptions.DATE_REVERSE, text: t('dateAsc') },
+        { val: SortOptions.DISTANCE, text: t('distanceDesc') },
+        { val: SortOptions.DISTANCE_REVERSE, text: t('distanceAsc') },
+        { val: SortOptions.DURATION, text: t('durationDesc') },
+        { val: SortOptions.DURATION_REVERSE, text: t('durationAsc') },
+        { val: SortOptions.PACE, text: t('paceDesc') },
+        { val: SortOptions.PACE_REVERSE, text: t('paceAsc') },
     ];
 
     return (
         <Select
-            className="w-52"
-            onChange={e => handleSort(e, setSortBy)}
-            aria-label={t('ariaLabel')}
+            onValueChange={(e: SortOptions) => handleSort(e, setSortBy)}
+            value={sortBy.sort}
         >
-            {SortOptionsMap.map((option, idx) => (
-                <option key={idx} value={option.val}>
-                    {option.text}
-                </option>
-            ))}
+            <SelectTrigger className="w-52">
+                <SelectValue placeholder={sortBy.sort} />
+            </SelectTrigger>
+            <SelectContent>
+                <SelectGroup>
+                    {SortOptionsMap.map((option, idx) => (
+                        <SelectItem key={idx} value={option.val}>
+                            {option.text}
+                        </SelectItem>
+                    ))}
+                </SelectGroup>
+            </SelectContent>
         </Select>
     );
 };

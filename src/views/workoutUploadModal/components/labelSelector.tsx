@@ -1,23 +1,29 @@
 import type { FC } from 'react';
-import { Fragment, useState } from 'react';
-import { Popover } from '@headlessui/react';
+import { useState } from 'react';
+import { PlusIcon } from '@radix-ui/react-icons';
 import { useTranslations } from 'next-intl';
 import useSWR from 'swr';
 
 import {
+    Badge,
     Button,
     IconButton,
     Input,
-    Label,
-    MenuButton,
-    MenuTransition,
-    PlusIcon,
+    ScrollArea,
+    Separator,
     SkeletonList,
-    Text,
+    TextP,
 } from '@/components';
-import { usePopover } from '@/hooks';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuGroup,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import type { TLabel } from '@/interfaces';
 import { useUI } from '@/providers';
+import { cn } from '@/utils/helpers';
 
 import { WorkoutForm } from '../intrefaces';
 
@@ -30,7 +36,7 @@ export const LabelSelector: FC<WorkoutForm> = ({ setWorkouts, workout }) => {
     const [newLabelValue, setNewLabelValue] = useState<string>('');
     const [newLabels, setNewLabels] = useState<TLabel[]>([]);
     const [error, setError] = useState<string | null>(null);
-    const { setRefEl, setPopperElement, styles, attributes } = usePopover();
+    const [isOpen, setIsOpen] = useState(false);
 
     const labels = data ?? [];
     const isNoLabels = labels?.length + newLabels.length === 0 && !isLoading;
@@ -49,109 +55,102 @@ export const LabelSelector: FC<WorkoutForm> = ({ setWorkouts, workout }) => {
         }
     };
 
-    const renderLabelsList = (labels: TLabel[], close: () => void) =>
+    const onRemoveLabel = () => {
+        setWorkouts(prev =>
+            prev.map(wk => (wk.id === workout.id ? { ...wk, label: null } : wk))
+        );
+    };
+
+    const renderLabelsList = (labels: TLabel[]) =>
         labels?.map(label => (
-            <MenuButton
+            <DropdownMenuItem
                 key={label.color + label.value}
-                hoverNoColor
                 onClick={() => {
                     setWorkouts(prev =>
                         prev.map(wk =>
                             wk.id === workout.id ? { ...wk, label } : wk
                         )
                     );
-                    close();
+                    setIsOpen(false);
                 }}
             >
                 <div
-                    className="h-4 w-6 rounded-full"
+                    className="mr-2 h-4 w-6 rounded-full"
                     style={{ background: `${label.color}` }}
                 />
-                <Text value={label.value} />
-            </MenuButton>
+                {label.value}
+            </DropdownMenuItem>
         ));
 
     return (
         <div className="flex flex-wrap items-center justify-between gap-4">
-            <Popover>
-                <Popover.Button as={Fragment}>
-                    <Button className="btn-outline btn-primary" ref={setRefEl}>
+            <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
+                <DropdownMenuTrigger asChild>
+                    <Button
+                        variant="outline"
+                        className={cn('justify-start text-left font-normal')}
+                        id="dateTimeTrigger"
+                    >
                         {t('cta')}
                     </Button>
-                </Popover.Button>
-
-                <MenuTransition>
-                    <Popover.Panel
-                        className="w-72 rounded-lg border border-base-content border-opacity-20 bg-base-100 p-2 shadow-2xl focus:outline-none"
-                        ref={setPopperElement}
-                        style={styles.popper}
-                        {...attributes.popper}
-                    >
-                        {({ close }) => (
-                            <>
-                                <div className="w-full">
-                                    <Input
-                                        type="text"
-                                        value={newLabelValue}
-                                        onChange={e =>
-                                            setNewLabelValue(e.target.value)
-                                        }
-                                        placeholder={t('placeholder')}
-                                        className="pr-10"
-                                        error={error}
-                                    >
-                                        <IconButton
-                                            onClick={handleAddNewLabel}
-                                            className="absolute right-0"
-                                            aria-label={t('placeholder')}
-                                        >
-                                            <PlusIcon />
-                                        </IconButton>
-                                    </Input>
-                                </div>
-                                {labels?.length + newLabels?.length > 0 && (
-                                    <hr className="mb-2 mt-4 border-t border-t-base-content border-opacity-20 " />
-                                )}
-                                <div className="max-h-44 overflow-y-scroll">
-                                    {isLoading && (
-                                        <div className="flex flex-col items-stretch gap-3 p-3">
-                                            <SkeletonList length={6} />
-                                        </div>
-                                    )}
-                                    {isNoLabels && (
-                                        <div className="flex justify-center p-3">
-                                            <Text value={t('noLabels')} />
-                                        </div>
-                                    )}
-                                    {isLabelsList && (
-                                        <>
-                                            {renderLabelsList(
-                                                newLabels,
-                                                close
-                                            )?.reverse()}
-                                            {renderLabelsList(labels, close)}
-                                        </>
-                                    )}
-                                </div>
-                            </>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-64 p-3">
+                    <div>
+                        <div className="relative flex w-full">
+                            <Input
+                                type="text"
+                                value={newLabelValue}
+                                onChange={e => setNewLabelValue(e.target.value)}
+                                placeholder={t('placeholder')}
+                                className="pr-10"
+                                error={error}
+                            />
+                            <IconButton
+                                onClick={handleAddNewLabel}
+                                className="absolute right-0"
+                                aria-label={t('placeholder')}
+                            >
+                                <PlusIcon className="h-6 w-6" />
+                            </IconButton>
+                        </div>
+                        {error && (
+                            <label className="">
+                                <span className="text-xs font-medium leading-3 text-red-600">
+                                    {error}
+                                </span>
+                            </label>
                         )}
-                    </Popover.Panel>
-                </MenuTransition>
-            </Popover>
+                    </div>
+                    {labels?.length + newLabels?.length > 0 && (
+                        <Separator
+                            className={cn('mb-2', error ? 'mt-2' : 'mt-4')}
+                        />
+                    )}
+                    {isLoading && (
+                        <div className="flex flex-col items-stretch gap-3 p-3">
+                            <SkeletonList length={6} />
+                        </div>
+                    )}
+                    {isNoLabels && (
+                        <div className="flex justify-center p-3">
+                            <TextP value={t('noLabels')} />
+                        </div>
+                    )}
+                    <ScrollArea>
+                        <DropdownMenuGroup className="max-h-40">
+                            {isLabelsList && (
+                                <>
+                                    {renderLabelsList(newLabels)?.reverse()}
+                                    {renderLabelsList(labels)}
+                                </>
+                            )}
+                        </DropdownMenuGroup>
+                    </ScrollArea>
+                </DropdownMenuContent>
+            </DropdownMenu>
 
             {workout?.label && (
-                <Label
-                    label={workout.label}
-                    onClose={() =>
-                        setWorkouts(prev =>
-                            prev.map(wk =>
-                                wk.id === workout.id
-                                    ? { ...wk, label: null }
-                                    : wk
-                            )
-                        )
-                    }
-                />
+                <Badge label={workout.label} onRemoveLabel={onRemoveLabel} />
             )}
         </div>
     );

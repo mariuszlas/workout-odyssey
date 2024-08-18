@@ -2,7 +2,14 @@ import type { Dispatch, DragEvent, FC, SetStateAction } from 'react';
 import { useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 
-import { Alert, Button, FileUpladIcon, Text } from '@/components';
+import {
+    Alert,
+    AlertDescription,
+    AlertTitle,
+    Button,
+    FileUpladIcon,
+    TextS,
+} from '@/components';
 import { NewWorkout } from '@/interfaces';
 import { getMsgFromError } from '@/utils/helpers';
 
@@ -73,22 +80,25 @@ export const FilePicker: FC<Props> = ({ setWorkouts }) => {
 
     return (
         <>
-            {error && <Alert status="error" classes="m-0" content={error} />}
-            <Alert
-                classes="m-0 p-2"
-                status="info"
-                title={t('fileTypeTitle')}
-                content={t('fileTypeInfo')}
-            />
+            {error && (
+                <Alert variant="error">
+                    <AlertTitle>Something went wrong</AlertTitle>
+                    <AlertDescription>{error}</AlertDescription>
+                </Alert>
+            )}
+            <Alert variant="info">
+                <AlertTitle>{t('fileTypeTitle')}</AlertTitle>
+                <AlertDescription>{t('fileTypeInfo')}</AlertDescription>
+            </Alert>
             <div
-                className="flex flex-col items-center gap-4 rounded-lg border border-teal-500 bg-teal-50 p-4"
+                className="flex flex-col items-center gap-4 rounded-lg border border-primary bg-teal-50 p-4"
                 onDrop={handleFileDrop}
                 onDragOver={e => {
                     e.preventDefault();
                 }}
             >
                 <FileUpladIcon className="h-8 w-8 text-primary" />
-                <Text> {t('description')}</Text>
+                <TextS>{t('description')}</TextS>
                 <Button onClick={handleBrowseFilesBtn}>{t('cta')}</Button>
                 <input
                     type="file"

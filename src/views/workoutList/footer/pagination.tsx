@@ -1,13 +1,7 @@
 import type { FC } from 'react';
+import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 
-import {
-    Button,
-    ChevronLeftIcon,
-    ChevronRightIcon,
-    IconButton,
-    Text,
-} from '@/components';
-import { cn } from '@/utils/helpers';
+import { Button, TextS } from '@/components';
 
 export interface PageProps {
     pageNo: number;
@@ -29,14 +23,13 @@ export const Pagination: FC<OwnProps & PageProps> = ({
         return null;
     }
 
-    const Empty = () => <Text className="p-1" value="..." />;
+    const Ellipsis = () => <TextS className="p-1" value="..." />;
 
     const renderButtons = (totalPages: number) =>
         [...Array(totalPages).keys()].map(num => (
             <Button
-                className={cn('btn-primary h-8 w-8 ', {
-                    'btn-outline': num + 1 !== pageNo,
-                })}
+                size="xs"
+                variant={num + 1 !== pageNo ? 'outline' : 'default'}
                 key={num}
                 onClick={() => setPageNo(num + 1)}
             >
@@ -51,57 +44,64 @@ export const Pagination: FC<OwnProps & PageProps> = ({
                     renderButtons(totalPages)
                 ) : (
                     <>
-                        <IconButton
+                        <Button
                             aria-label={t.previousPage}
-                            className="btn-outline btn-primary h-8 w-8"
+                            size="xs"
+                            variant="outline"
                             onClick={() =>
                                 setPageNo(pageNo === 1 ? 1 : pageNo - 1)
                             }
                         >
-                            <ChevronLeftIcon />
-                        </IconButton>
+                            <ChevronLeftIcon className="h-5 w-5" />
+                        </Button>
 
                         {pageNo <= 4 && (
                             <>
                                 {renderButtons(5)}
-                                <Empty />
+                                <Ellipsis />
                             </>
                         )}
 
                         {pageNo > 4 && pageNo <= totalPages - 4 && (
                             <>
                                 <Button
-                                    className="btn-primary h-8 w-8"
+                                    size="xs"
+                                    variant="outline"
                                     onClick={() => setPageNo(1)}
                                 >
                                     {1}
                                 </Button>
-                                <Empty />
+                                <Ellipsis />
 
                                 <Button
-                                    className="btn-outline btn-primary h-8 w-8"
+                                    variant="outline"
+                                    size="xs"
                                     onClick={() => setPageNo(pageNo - 1)}
                                 >
                                     {pageNo - 1}
                                 </Button>
                                 <Button
-                                    className="btn-primary h-8 w-8"
+                                    size="xs"
                                     onClick={() => setPageNo(pageNo)}
                                 >
                                     {pageNo}
                                 </Button>
                                 <Button
-                                    className="btn-outline btn-primary h-8 w-8"
+                                    variant="outline"
+                                    size="xs"
                                     onClick={() => setPageNo(pageNo + 1)}
                                 >
                                     {pageNo + 1}
                                 </Button>
 
-                                <Empty />
+                                <Ellipsis />
                                 <Button
-                                    className={cn('btn-primary h-8 w-8', {
-                                        'btn-outline': totalPages !== pageNo,
-                                    })}
+                                    size="xs"
+                                    variant={
+                                        totalPages !== pageNo
+                                            ? 'outline'
+                                            : 'default'
+                                    }
                                     onClick={() => setPageNo(totalPages)}
                                 >
                                     {totalPages}
@@ -111,16 +111,17 @@ export const Pagination: FC<OwnProps & PageProps> = ({
 
                         {pageNo > totalPages - 4 && (
                             <>
-                                <Empty />
+                                <Ellipsis />
                                 {renderButtons(totalPages).slice(
                                     totalPages - 5
                                 )}
                             </>
                         )}
 
-                        <IconButton
+                        <Button
                             aria-label={t.nextPage}
-                            className="btn-outline btn-primary h-8 w-8"
+                            size="xs"
+                            variant="outline"
                             onClick={() =>
                                 setPageNo(
                                     pageNo === totalPages
@@ -129,8 +130,8 @@ export const Pagination: FC<OwnProps & PageProps> = ({
                                 )
                             }
                         >
-                            <ChevronRightIcon />
-                        </IconButton>
+                            <ChevronRightIcon className="h-5 w-5" />
+                        </Button>
                     </>
                 )}
             </div>

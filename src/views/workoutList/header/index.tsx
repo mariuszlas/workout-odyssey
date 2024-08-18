@@ -1,14 +1,10 @@
 import type { FC } from 'react';
 import { useState } from 'react';
+import { CollapsibleContent } from '@radix-ui/react-collapsible';
+import { ChevronDownIcon } from '@radix-ui/react-icons';
 import { useLocale, useTranslations } from 'next-intl';
 
-import {
-    Button,
-    ChevronDownIcon,
-    Collapsible,
-    Heading,
-    Text,
-} from '@/components';
+import { Button, Collapsible, H2 } from '@/components';
 import { useIsBreakpoint } from '@/hooks';
 import type { HeaderData } from '@/interfaces';
 import { cn } from '@/utils/helpers';
@@ -32,6 +28,7 @@ export const WorkoutListHeader: FC<Props> = ({
     setIsAll,
     filterBy,
     setFilterBy,
+    sortBy,
     setSortBy,
     headerData,
     setPageNo,
@@ -53,7 +50,7 @@ export const WorkoutListHeader: FC<Props> = ({
     return (
         <header className="w-full">
             <div className="flex justify-between">
-                <Heading as="h2" className="text-2xl">
+                <H2 className="text-lg">
                     {getWorkoutListHeading(
                         headerData,
                         isAll,
@@ -61,21 +58,19 @@ export const WorkoutListHeader: FC<Props> = ({
                         locale,
                         isMobileOrTabled
                     )}
-                </Heading>
-
+                </H2>
                 <Button
                     onClick={() => setIsOpen(prev => !prev)}
-                    className="btn-primary sm:hidden"
+                    className="sm:hidden"
                 >
-                    <Text value={t('filtering.cta')} />
+                    {t('filtering.cta')}
                     <ChevronDownIcon
                         className={cn(
-                            'transform duration-300 ease-in-out',
+                            'ml-2 h-6 w-6 transform duration-300 ease-in-out',
                             isOpen ? 'rotate-180' : 'rotate-0'
                         )}
                     />
                 </Button>
-
                 <AllWorkoutsToggle
                     {...toggleProps}
                     className="hidden sm:flex"
@@ -84,11 +79,11 @@ export const WorkoutListHeader: FC<Props> = ({
 
             <div className="mt-4 hidden justify-between gap-6 sm:flex">
                 <Filtering {...filterProps} />
-                <Sorting setSortBy={setSortBy} />
+                <Sorting setSortBy={setSortBy} sortBy={sortBy} />
             </div>
 
-            <Collapsible isOpen={isOpen} setIsOpen={setIsOpen}>
-                <div className="mt-3 flex flex-col items-start gap-3 sm:hidden">
+            <Collapsible open={isOpen} onOpenChange={setIsOpen}>
+                <CollapsibleContent className="mt-3 flex flex-col items-start gap-3 sm:hidden">
                     <div className="flex w-full justify-between gap-6">
                         <Filtering {...filterProps} />
                         <AllWorkoutsToggle
@@ -96,8 +91,8 @@ export const WorkoutListHeader: FC<Props> = ({
                             className="sm:hidden"
                         />
                     </div>
-                    <Sorting setSortBy={setSortBy} />
-                </div>
+                    <Sorting setSortBy={setSortBy} sortBy={sortBy} />
+                </CollapsibleContent>
             </Collapsible>
         </header>
     );

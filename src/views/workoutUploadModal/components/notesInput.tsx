@@ -1,7 +1,8 @@
 import type { FC } from 'react';
 import { useTranslations } from 'next-intl';
 
-import { FormLabel } from '@/components';
+import { Label } from '@/components';
+import { Textarea } from '@/components/ui/textarea';
 
 import { WorkoutForm } from '../intrefaces';
 
@@ -9,11 +10,12 @@ export const NotesInput: FC<WorkoutForm> = ({ setWorkouts, workout }) => {
     const t = useTranslations('Dashboard.WorkoutUpload.Forms.notes');
 
     return (
-        <div className="form-control">
-            <FormLabel text={t('label')} />
-            <textarea
-                className="textarea textarea-bordered h-20 hover:border-opacity-40 focus:border-primary focus:outline-1 focus:outline-offset-0 focus:outline-primary"
+        <div className="">
+            <Label htmlFor="notesInput">{t('label')}</Label>
+            <Textarea
+                id="notesInput"
                 value={workout?.notes ?? ''}
+                placeholder="Add additional notes"
                 onChange={e =>
                     setWorkouts(prev =>
                         prev.map(wk =>

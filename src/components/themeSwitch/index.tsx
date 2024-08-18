@@ -1,5 +1,4 @@
 import type { FC } from 'react';
-import { useTranslations } from 'next-intl';
 
 import { Theme } from '@/interfaces';
 import { useTheme } from '@/providers';
@@ -9,8 +8,6 @@ import { Button, IconButton } from '..';
 
 export const ThemeSwitch: FC<{ isMobile?: boolean }> = ({ isMobile }) => {
     const [theme, setTheme] = useTheme();
-    const t = useTranslations('Navbar');
-
     const isDark = (theme: Theme | null) => theme === Theme.DARK;
 
     const toggleTheme = () => {
@@ -26,9 +23,9 @@ export const ThemeSwitch: FC<{ isMobile?: boolean }> = ({ isMobile }) => {
                     variant="menuitem"
                     role="menuitem"
                     onClick={toggleTheme}
-                    aria-label={t('themeSwitchAriaLabel')}
+                    aria-label="Theme switch"
                 >
-                    {isDark(theme) ? t('toggleLightMode') : t('toggleDarkMode')}
+                    {isDark(theme) ? 'Toggle Light Mode' : 'Toggle Dark Mode'}
                     {isDark(theme) ? <SunIcon /> : <MoonIcon />}
                 </Button>
             </li>
@@ -38,7 +35,7 @@ export const ThemeSwitch: FC<{ isMobile?: boolean }> = ({ isMobile }) => {
     return (
         <IconButton
             className="hidden md:inline-flex"
-            aria-label={t('themeSwitchAriaLabel')}
+            aria-label="Theme switch"
             onClick={toggleTheme}
         >
             {isDark(theme) ? <SunIcon /> : <MoonIcon />}

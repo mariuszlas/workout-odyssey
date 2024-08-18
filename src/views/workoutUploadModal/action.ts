@@ -2,7 +2,6 @@
 
 import { auth } from '@clerk/nextjs/server';
 import { revalidatePath } from 'next/cache';
-import { getTranslations } from 'next-intl/server';
 
 import { UploadWorkout, Workout as WorkoutT } from '@/interfaces';
 import {
@@ -13,7 +12,6 @@ import {
 
 export const getWorkoutsPreview = async (workouts: UploadWorkout[]) => {
     const { userId } = auth();
-    const t = await getTranslations('Dashboard.WorkoutUpload.errors');
 
     try {
         if (!userId) throw new Error();
@@ -32,7 +30,11 @@ export const getWorkoutsPreview = async (workouts: UploadWorkout[]) => {
             })),
         };
     } catch (_) {
-        return { ok: false, preview: null, error: t('generic') };
+        return {
+            ok: false,
+            preview: null,
+            error: 'Failed to upload the workout data',
+        };
     }
 };
 
@@ -41,7 +43,6 @@ export const addNewWorkouts = async (
     isEdit: boolean
 ) => {
     const { userId } = auth();
-    const t = await getTranslations('Dashboard.WorkoutUpload.errors');
 
     try {
         if (!userId) throw new Error();
@@ -58,6 +59,6 @@ export const addNewWorkouts = async (
 
         return { ok: true, error: null };
     } catch (_) {
-        return { ok: false, error: t('generic') };
+        return { ok: false, error: 'Failed to upload the workout data' };
     }
 };

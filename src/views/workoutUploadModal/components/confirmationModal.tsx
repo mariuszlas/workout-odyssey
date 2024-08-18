@@ -1,7 +1,6 @@
 'use client';
 
 import type { FC } from 'react';
-import { useTranslations } from 'next-intl';
 
 import {
     Button,
@@ -23,25 +22,24 @@ export const ConfirmationModal: FC<Props> = ({
     isOpen,
     onClose,
     confirmAction,
-}) => {
-    const t = useTranslations('Dashboard.WorkoutUpload.Forms.confirmation');
-
-    return (
-        <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent>
-                <DialogHeader>
-                    <DialogTitle>{t('title')}</DialogTitle>
-                </DialogHeader>
-                <TextP className="py-4" value={t('description')} />
-                <DialogFooter>
-                    <DialogClose asChild>
-                        <Button variant="ghost">{t('cancelCta')}</Button>
-                    </DialogClose>
-                    <Button onClick={confirmAction} variant="destructive">
-                        {t('confirmCta')}
-                    </Button>
-                </DialogFooter>
-            </DialogContent>
-        </Dialog>
-    );
-};
+}) => (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+        <DialogContent>
+            <DialogHeader>
+                <DialogTitle>Discard Files</DialogTitle>
+            </DialogHeader>
+            <TextP className="py-4">
+                Are you sure you want to switch to manual upload? The currently
+                selected files will be discarded.
+            </TextP>
+            <DialogFooter>
+                <DialogClose asChild>
+                    <Button variant="ghost">Cancel</Button>
+                </DialogClose>
+                <Button onClick={confirmAction} variant="destructive">
+                    Discard
+                </Button>
+            </DialogFooter>
+        </DialogContent>
+    </Dialog>
+);

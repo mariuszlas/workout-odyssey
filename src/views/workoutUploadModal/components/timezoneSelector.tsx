@@ -1,6 +1,5 @@
 import { type FC, useState } from 'react';
 import { CheckIcon } from '@radix-ui/react-icons';
-import { useTranslations } from 'next-intl';
 
 import {
     Button,
@@ -23,7 +22,6 @@ import { WorkoutForm } from '../intrefaces';
 
 export const TimezoneSelector: FC<WorkoutForm> = ({ workout, setWorkouts }) => {
     const isMobile = useIsBreakpoint('sm');
-    const t = useTranslations('Dashboard.WorkoutUpload.Forms.timezone');
     const [open, setOpen] = useState(false);
 
     const timezones = Intl.supportedValuesOf('timeZone').map(tz => ({
@@ -43,7 +41,7 @@ export const TimezoneSelector: FC<WorkoutForm> = ({ workout, setWorkouts }) => {
     return (
         <Popover open={open} onOpenChange={setOpen} modal={true}>
             <div className="flex flex-col gap-1">
-                <Label htmlFor="timezone">{t('label')}</Label>
+                <Label htmlFor="timezone">Timezone</Label>
                 <PopoverTrigger
                     asChild
                     className="min-w-64 justify-start text-left font-normal"

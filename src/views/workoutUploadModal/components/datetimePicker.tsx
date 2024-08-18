@@ -1,5 +1,4 @@
 import { type FC, useEffect } from 'react';
-import { useTranslations } from 'next-intl';
 
 import {
     Button,
@@ -24,8 +23,6 @@ import { zeroPad } from './helpers';
 export const DatetimePicker: FC<WorkoutForm> = ({ workout, setWorkouts }) => {
     const { timestamp } = workout;
     const date = timestamp ? new Date(timestamp) : new Date();
-
-    const t = useTranslations('Dashboard.WorkoutUpload.Forms.dateAndTime');
 
     const setTimestamp = (date: Date | undefined) => {
         if (!date) return;
@@ -69,7 +66,7 @@ export const DatetimePicker: FC<WorkoutForm> = ({ workout, setWorkouts }) => {
     return (
         <Popover>
             <div className="flex flex-col gap-1">
-                <Label htmlFor="dateTimeTrigger">{t('label')}</Label>
+                <Label htmlFor="dateTimeTrigger">Date and Time</Label>
                 <PopoverTrigger asChild>
                     <Button
                         variant="outline"
@@ -92,7 +89,7 @@ export const DatetimePicker: FC<WorkoutForm> = ({ workout, setWorkouts }) => {
                 />
 
                 <div className="flex items-center justify-center gap-2 p-3">
-                    <Label>{t('timeLabel')}</Label>
+                    <Label>Time</Label>
                     <div className="flex items-center gap-1">
                         <Select
                             value={getTimeFromDate('h')}

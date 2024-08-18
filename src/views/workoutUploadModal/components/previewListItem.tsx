@@ -3,7 +3,6 @@
 import { type FC } from 'react';
 import { TrashIcon } from '@radix-ui/react-icons';
 import clsx from 'clsx';
-import { useTranslations } from 'next-intl';
 
 import {
     Badge,
@@ -32,7 +31,6 @@ export const PreviewListItem: FC<Props> = ({
     removeItem,
 }) => {
     const { units } = useUI();
-    const t = useTranslations('Dashboard');
 
     const existingData = isEdit
         ? foundData.filter(workout => workout.id !== data.id)
@@ -51,9 +49,7 @@ export const PreviewListItem: FC<Props> = ({
                 <div className="overflow-hidden overflow-ellipsis">
                     <div className="flex items-center gap-4">
                         <TextS className="font-medium capitalize">
-                            {t('workoutType', {
-                                workoutType: data.type,
-                            })}
+                            {data.type}
                         </TextS>
                         {data?.label && <Badge label={data.label} />}
                     </div>
@@ -70,7 +66,7 @@ export const PreviewListItem: FC<Props> = ({
                 </div>
 
                 <IconButton
-                    aria-label={t('WorkoutUpload.Preview.aria.remove')}
+                    aria-label="Remove this workout from the list"
                     onClick={removeItem}
                 >
                     <TrashIcon className="h-6 w-6" />

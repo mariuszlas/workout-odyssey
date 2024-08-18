@@ -1,7 +1,7 @@
 import type { FC } from 'react';
+import Link from 'next/link';
 
 import { Theme } from '@/interfaces';
-import { Link } from '@/navigation';
 import { useTheme } from '@/providers';
 import { cn } from '@/utils/helpers';
 

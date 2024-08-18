@@ -1,7 +1,6 @@
 import type { FC } from 'react';
 import { useState } from 'react';
 import { PlusIcon } from '@radix-ui/react-icons';
-import { useTranslations } from 'next-intl';
 import useSWR from 'swr';
 
 import {
@@ -32,7 +31,6 @@ import { getNewLabel, validateNewLabel } from './helpers';
 export const LabelSelector: FC<WorkoutForm> = ({ setWorkouts, workout }) => {
     const { userId } = useUI();
     const { data, isLoading } = useSWR<TLabel[]>(`/api/labels?user=${userId}`);
-    const t = useTranslations('Dashboard.WorkoutUpload.Forms.labels');
     const [newLabelValue, setNewLabelValue] = useState<string>('');
     const [newLabels, setNewLabels] = useState<TLabel[]>([]);
     const [error, setError] = useState<string | null>(null);
@@ -51,7 +49,7 @@ export const LabelSelector: FC<WorkoutForm> = ({ setWorkouts, workout }) => {
             setNewLabels(state => [...state, newLabel]);
             setNewLabelValue('');
         } catch (_) {
-            setError(t('error'));
+            setError('Incorrect data input');
         }
     };
 
@@ -91,7 +89,7 @@ export const LabelSelector: FC<WorkoutForm> = ({ setWorkouts, workout }) => {
                         className={cn('justify-start text-left font-normal')}
                         id="dateTimeTrigger"
                     >
-                        {t('cta')}
+                        Select Label
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-64 p-3">
@@ -101,20 +99,20 @@ export const LabelSelector: FC<WorkoutForm> = ({ setWorkouts, workout }) => {
                                 type="text"
                                 value={newLabelValue}
                                 onChange={e => setNewLabelValue(e.target.value)}
-                                placeholder={t('placeholder')}
+                                placeholder="Add a new label"
                                 className="pr-10"
                                 error={error}
                             />
                             <IconButton
                                 onClick={handleAddNewLabel}
                                 className="absolute right-0"
-                                aria-label={t('placeholder')}
+                                aria-label="Add a new label"
                             >
                                 <PlusIcon className="h-6 w-6" />
                             </IconButton>
                         </div>
                         {error && (
-                            <label className="">
+                            <label>
                                 <span className="text-xs font-medium leading-3 text-red-600">
                                     {error}
                                 </span>
@@ -133,7 +131,7 @@ export const LabelSelector: FC<WorkoutForm> = ({ setWorkouts, workout }) => {
                     )}
                     {isNoLabels && (
                         <div className="flex justify-center p-3">
-                            <TextP value={t('noLabels')} />
+                            <TextP>No labels</TextP>
                         </div>
                     )}
                     <ScrollArea>

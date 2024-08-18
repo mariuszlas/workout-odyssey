@@ -3,7 +3,6 @@
 import type { FC, MouseEvent } from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Chart from 'chart.js/auto';
-import { useLocale, useTranslations } from 'next-intl';
 
 import { TextP } from '@/components';
 import { WorkoutsDashboard } from '@/interfaces';
@@ -26,9 +25,6 @@ export type BarChartT = Chart<ChartType, BarChartData, string[]>;
 export const BarChart: FC<{ dashboard: WorkoutsDashboard }> = ({
     dashboard,
 }) => {
-    const t = useTranslations('Dashboard.Chart');
-    const locale = useLocale();
-
     const { setSecondaryStat, units, year } = useUI();
     const [theme] = useTheme();
 
@@ -36,7 +32,7 @@ export const BarChart: FC<{ dashboard: WorkoutsDashboard }> = ({
     const [chart, setChart] = useState<BarChartT>();
 
     const chartData = useMemo(
-        () => selectChartData(dashboard, year, locale),
+        () => selectChartData(dashboard, year),
         [dashboard, year]
     );
 
@@ -60,7 +56,6 @@ export const BarChart: FC<{ dashboard: WorkoutsDashboard }> = ({
         const chartConfig = getChartConfig(
             chartData,
             getChartThemeTokens(theme),
-            locale,
             units
         );
         const newChart = new Chart(ref.current, chartConfig);
@@ -70,10 +65,10 @@ export const BarChart: FC<{ dashboard: WorkoutsDashboard }> = ({
     }, []);
 
     useEffect(() => {
-        updateChartTheme(chart, getChartThemeTokens(theme), locale, units);
+        updateChartTheme(chart, getChartThemeTokens(theme), units);
     }, [theme]);
 
-    const fallbackContent = <TextP value={t('chartFallbackContent')} />;
+    const fallbackContent = <TextP>Workouts chart</TextP>;
 
     return (
         <canvas ref={ref} role="img" onClick={e => handleBarClick(e)}>

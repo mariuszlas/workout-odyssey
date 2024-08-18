@@ -10,14 +10,12 @@ export interface PageProps {
 
 interface OwnProps {
     totalPages: number | undefined;
-    t: { nextPage: string; previousPage: string };
 }
 
 export const Pagination: FC<OwnProps & PageProps> = ({
     pageNo,
     setPageNo,
     totalPages,
-    t,
 }) => {
     if (!totalPages || totalPages === 1) {
         return null;
@@ -45,7 +43,7 @@ export const Pagination: FC<OwnProps & PageProps> = ({
                 ) : (
                     <>
                         <Button
-                            aria-label={t.previousPage}
+                            aria-label="Previous page"
                             size="xs"
                             variant="outline"
                             onClick={() =>
@@ -119,7 +117,7 @@ export const Pagination: FC<OwnProps & PageProps> = ({
                         )}
 
                         <Button
-                            aria-label={t.nextPage}
+                            aria-label="Next page"
                             size="xs"
                             variant="outline"
                             onClick={() =>

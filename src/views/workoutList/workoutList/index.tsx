@@ -1,5 +1,4 @@
 import type { FC } from 'react';
-import { useTranslations } from 'next-intl';
 
 import { TextP } from '@/components/';
 import type { Workout } from '@/interfaces';
@@ -32,12 +31,11 @@ export const WorkoutList: FC<WorkoutListProps> = ({
     isError,
 }) => {
     const { units } = useUI();
-    const t = useTranslations('Dashboard.WorkoutList');
 
     if (isError) {
         return (
             <div className="my-6 flex w-full justify-center rounded-lg">
-                <TextP value={t('Body.error')} />
+                <TextP>Failed to fetch data</TextP>
             </div>
         );
     }
@@ -45,10 +43,7 @@ export const WorkoutList: FC<WorkoutListProps> = ({
     if (!workouts?.length) {
         return (
             <div className="flex w-full justify-center p-4">
-                <TextP
-                    data-testid="no-workouts-message"
-                    value={t('Body.noWorkouts')}
-                />
+                <TextP data-testid="no-workouts-message">No workouts</TextP>
             </div>
         );
     }
@@ -68,10 +63,6 @@ export const WorkoutList: FC<WorkoutListProps> = ({
                 pageNo={pageNo}
                 setPageNo={setPageNo}
                 totalPages={getTotalPageNum(sortedWorkouts, PAGE_SIZE)}
-                t={{
-                    nextPage: t('Pagination.aria.nextPage'),
-                    previousPage: t('Pagination.aria.previousPage'),
-                }}
             />
         </>
     );

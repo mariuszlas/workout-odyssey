@@ -1,10 +1,9 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 
 import { Button, H1, TextP } from '@/components';
-import { Link } from '@/navigation';
 
 interface Props {
     error: Error & { digest?: string };
@@ -12,20 +11,18 @@ interface Props {
 }
 
 export default function Error({ error, reset }: Props) {
-    const t = useTranslations('Error');
-
     useEffect(() => {
         console.error(error);
     }, [error]);
 
     return (
         <main className="flex h-[50vh] flex-col items-center justify-center gap-4 p-4">
-            <H1 value={t('header')} />
-            <TextP value={t('description')} />
-            <Button onClick={() => reset()}>{t('ctaSecondary')}</Button>
+            <H1 value="Something went wrong!" />
+            <TextP value="Something went wrong on our side and we could not load the page" />
+            <Button onClick={() => reset()}>Try Again</Button>
             <Button asChild variant="link">
                 <Link href="/" replace>
-                    {t('cta')}
+                    Back to Home
                 </Link>
             </Button>
         </main>

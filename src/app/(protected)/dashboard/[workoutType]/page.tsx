@@ -1,23 +1,18 @@
 import { FC, Suspense } from 'react';
 import { auth } from '@clerk/nextjs/server';
 import { notFound } from 'next/navigation';
-import { getTranslations } from 'next-intl/server';
 
-import { LocaleParam, WorkoutTypes } from '@/interfaces';
+import { WorkoutTypes } from '@/interfaces';
 import { getAllWorkouts, getDashboard } from '@/server/services';
 import { capitalize, isValidWorkoutType } from '@/utils/helpers';
 import { ChartView, StatisticsView, WorkoutListView } from '@/views';
 
 type Params = { params: { workoutType: string } };
 
-export async function generateMetadata({
-    params: { locale, workoutType },
-}: LocaleParam & Params) {
-    const t = await getTranslations({ locale });
-
+export async function generateMetadata({ params: { workoutType } }: Params) {
     return {
-        title: `${t('Metadata.Dashboard.title')} | ${capitalize(t('Dashboard.workoutType', { workoutType }))}`,
-        description: t('Metadata.Dashboard.description'),
+        title: `Dashboard | ${capitalize(workoutType)}`,
+        description: 'View your workouts data',
     };
 }
 

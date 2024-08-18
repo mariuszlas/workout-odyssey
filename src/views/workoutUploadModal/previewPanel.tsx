@@ -2,7 +2,6 @@
 
 import { Dispatch, type FC, SetStateAction, useEffect } from 'react';
 import { useFormState } from 'react-dom';
-import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
 import { Alert, AlertDescription, AlertTitle, Button } from '@/components';
@@ -24,8 +23,6 @@ export const PreviewPanel: FC<Props> = ({
     isEdit,
     onClose,
 }) => {
-    const t = useTranslations('Dashboard.WorkoutUpload.Preview');
-
     const [formState, action] = useFormState(
         () =>
             addNewWorkouts(
@@ -50,11 +47,11 @@ export const PreviewPanel: FC<Props> = ({
 
     useEffect(() => {
         if (formState?.ok) {
-            if (isEdit) {
-                toast.success(t('notify.updateSuccess'));
-            } else {
-                toast.success(t('notify.uploadSuccess'));
-            }
+            toast.success(
+                isEdit
+                    ? 'Workout was successfully updated'
+                    : 'Workout was successfully uploaded'
+            );
             onClose();
         }
 
@@ -69,11 +66,15 @@ export const PreviewPanel: FC<Props> = ({
             <div className="flex flex-1 flex-col gap-4">
                 {isExistingData && (
                     <Alert variant="warning">
-                        <AlertTitle>{t('warningTitle')}</AlertTitle>
-                        <AlertDescription>{t('warningAlert')}</AlertDescription>
+                        <AlertTitle>Similar existing data found</AlertTitle>
+                        <AlertDescription>
+                            For some of the workouts there are already records
+                            for the same date and activity type. Check the
+                            details below. You may remove those workouts or
+                            ignore this warning and proceed with upload.
+                        </AlertDescription>
                     </Alert>
                 )}
-
                 <ul className="flex max-h-96 flex-wrap gap-3 overflow-y-scroll">
                     {workoutPreview.map((item, idx) => (
                         <PreviewListItem
@@ -92,14 +93,12 @@ export const PreviewPanel: FC<Props> = ({
                     ))}
                 </ul>
             </div>
-
             <div className="mt-6 flex justify-end gap-4">
                 <Button variant="ghost" onClick={() => setPreviewData([])}>
-                    {t('ctaSecondary')}
+                    Cancel
                 </Button>
-
                 <form action={action}>
-                    <Button type="submit">{t('cta')}</Button>
+                    <Button type="submit">Upload</Button>
                 </form>
             </div>
         </>

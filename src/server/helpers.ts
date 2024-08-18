@@ -1,6 +1,5 @@
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
-import { getTranslations } from 'next-intl/server';
 import { ZodError } from 'zod';
 
 import { Cookie, ToggleState } from '@/interfaces';
@@ -39,14 +38,12 @@ export const setCookie = async (
 };
 
 export const handleError = async (e: unknown) => {
-    const t = await getTranslations('AccountSettings.errors');
-
     if (e instanceof ZodError) {
         return formatZodError(e);
     }
 
     console.error(getMsgFromError(e));
-    return formatOtherError(t('unexpected'));
+    return formatOtherError('Unexpected error occured');
 };
 
 export const handleApiError = (

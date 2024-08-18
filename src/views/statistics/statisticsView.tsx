@@ -2,10 +2,10 @@
 
 import type { FC } from 'react';
 import clsx from 'clsx';
+import { usePathname } from 'next/navigation';
 
 import { useIsBreakpoint } from '@/hooks';
 import type { Dashboarad, Loading } from '@/interfaces';
-import { usePathname } from '@/navigation';
 import { useUI } from '@/providers';
 import { getWorkoutTypeFromPathname } from '@/utils/helpers';
 

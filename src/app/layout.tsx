@@ -1,8 +1,59 @@
-import { Children } from '@/interfaces';
+import { ClerkProvider } from '@clerk/nextjs';
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
+import { Metadata } from 'next';
+import { cookies } from 'next/headers';
 
-/**
- * Layout required to render app/not-found.tsx page
- */
-export default function RootLayout({ children }: Children) {
-    return children;
+import { GA4Script, Toaster } from '@/components';
+import { Children, Cookie, Theme } from '@/interfaces';
+import { ConfigProvider, ThemeProvider } from '@/providers';
+import { getAppConfig } from '@/server/helpers';
+import { isValidTheme } from '@/utils/helpers';
+
+import './globals.css';
+
+export const metadata: Metadata = {
+    metadataBase: new URL('https://workoutodyssey.com'),
+};
+
+export default async function RootLayout({ children }: Children) {
+    const config = await getAppConfig();
+    const themeCookie = cookies().get(Cookie.THEME)?.value;
+    const theme = isValidTheme(themeCookie) ? themeCookie : Theme.LIGHT;
+
+    return (
+        <ClerkProvider>
+            <ThemeProvider specifiedTheme={theme}>
+                <ConfigProvider appConfig={config}>
+                    <html
+                        lang="en-GB"
+                        data-theme={theme}
+                        className="transition-colors duration-150"
+                    >
+                        <body>
+                            <div
+                                id="page-content"
+                                className="flex min-h-screen flex-col"
+                            >
+                                {children}
+                            </div>
+                            <Toaster
+                                toastOptions={{
+                                    classNames: {
+                                        error: 'bg-red-400',
+                                        success: 'bg-green-400',
+                                        warning: 'bg-yellow-400',
+                                        info: 'bg-blue-400',
+                                    },
+                                }}
+                            />
+                            <GA4Script />
+                            <SpeedInsights />
+                            <Analytics />
+                        </body>
+                    </html>
+                </ConfigProvider>
+            </ThemeProvider>
+        </ClerkProvider>
+    );
 }

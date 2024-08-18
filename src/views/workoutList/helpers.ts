@@ -40,24 +40,19 @@ export const filterWorkouts = (
 export const getWorkoutListHeading = (
     { year, secStats }: HeaderData,
     isAll: boolean,
-    headers: Record<string, string>,
-    locale: string,
     isShortMonth?: boolean
 ) => {
-    if (isAll) return headers['allWorkouts'];
+    if (isAll) return 'All Training Records';
 
     const date = new Date();
     const isCurrentMonth =
         date.getFullYear() === year && date.getMonth() + 1 === secStats;
 
-    if (year === 0 || isCurrentMonth) return headers['currentMonthWorkouts'];
+    if (year === 0 || isCurrentMonth) return 'Workouts This Month';
 
-    return `${headers['generic']} ${getFormattedMonthAndYear(
-        year,
-        secStats,
-        locale,
-        isShortMonth
-    )}`;
+    return `Workouts in ${getFormattedMonthAndYear(year, secStats, {
+        isShortMonth,
+    })}`;
 };
 
 export const getTotalPageNum = (sortedWorkouts: Workout[], pageSize: number) =>

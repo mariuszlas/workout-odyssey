@@ -3,7 +3,6 @@
 import type { Dispatch, FC, SetStateAction } from 'react';
 import { useEffect, useState } from 'react';
 import { useFormState } from 'react-dom';
-import { useTranslations } from 'next-intl';
 
 import { Button } from '@/components';
 import type { NewWorkout, WorkoutPreview } from '@/interfaces';
@@ -22,7 +21,6 @@ export const FilesUpload: FC<Props> = ({
     setHasFilesSelected,
 }) => {
     const [workouts, setWorkouts] = useState<NewWorkout[]>([]);
-    const t = useTranslations('Dashboard.WorkoutUpload.Forms');
 
     const [formState, action] = useFormState(() => {
         if (!workouts.length) return;
@@ -44,7 +42,7 @@ export const FilesUpload: FC<Props> = ({
                 <FileList setWorkouts={setWorkouts} workouts={workouts} />
             </div>
             <Button className="mt-6 w-full" type="submit">
-                {t('cta')}
+                Upload
             </Button>
         </form>
     );

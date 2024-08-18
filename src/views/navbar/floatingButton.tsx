@@ -1,7 +1,6 @@
 import type { FC } from 'react';
 import { useCallback, useEffect, useState } from 'react';
 import { PlusIcon } from '@radix-ui/react-icons';
-import { useTranslations } from 'next-intl';
 
 import { Button } from '@/components';
 import { cn } from '@/utils/helpers';
@@ -11,8 +10,6 @@ interface Props {
 }
 
 export const FloatingNewWorkoutBtn: FC<Props> = ({ onClick }) => {
-    const t = useTranslations('Navbar');
-
     const [y, setY] = useState(0);
     const [isVisible, setIsVisible] = useState(true);
 
@@ -46,7 +43,7 @@ export const FloatingNewWorkoutBtn: FC<Props> = ({ onClick }) => {
 
     return (
         <Button
-            aria-label={t('newWorkoutCta')}
+            aria-label="Add Workout"
             data-testid="floating-new-workout-btn"
             className={cn(
                 { hidden: !isVisible },

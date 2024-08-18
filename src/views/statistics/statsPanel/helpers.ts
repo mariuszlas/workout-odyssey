@@ -5,22 +5,14 @@ import { getFormattedMonthAndYear } from '@/utils/helpers';
 export const getStatsPanelHeading = (
     isPrimary: boolean,
     { year, secStats }: HeaderData,
-    locale: string,
-    { yearT, totalT }: { yearT: string; totalT: string },
     isShortMonth?: boolean
 ): string => {
     if (isPrimary) {
-        if (year === 0) return totalT;
-        else return `${yearT} ${year}`;
+        if (year === 0) return 'Total';
+        else return `Year ${year}`;
     } else {
-        if (year === 0) return `${yearT} ${secStats}`;
-        else
-            return getFormattedMonthAndYear(
-                year,
-                secStats,
-                locale,
-                isShortMonth
-            );
+        if (year === 0) return `Year ${secStats}`;
+        else return getFormattedMonthAndYear(year, secStats, { isShortMonth });
     }
 };
 

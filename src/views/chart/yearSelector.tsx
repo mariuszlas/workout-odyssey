@@ -2,7 +2,7 @@
 
 import { FC, useEffect, useMemo } from 'react';
 import { TriangleLeftIcon, TriangleRightIcon } from '@radix-ui/react-icons';
-import { useTranslations } from 'next-intl';
+import { usePathname } from 'next/navigation';
 
 import {
     IconButton,
@@ -14,7 +14,6 @@ import {
     SelectValue,
 } from '@/components';
 import type { BestMonths, WorkoutsDashboard } from '@/interfaces';
-import { usePathname } from '@/navigation';
 import { useUI } from '@/providers';
 import { getWorkoutTypeFromPathname } from '@/utils/helpers';
 
@@ -39,8 +38,6 @@ export const YearSelector: FC<Props> = ({ dashboard }) => {
     const { year, setYear, setSecondaryStat } = useUI();
     const pathname = usePathname();
     const workoutType = getWorkoutTypeFromPathname(pathname);
-
-    const t = useTranslations('Dashboard.Chart');
 
     const availableYears = useMemo(
         () => getAvailableYears(dashboard),
@@ -97,8 +94,8 @@ export const YearSelector: FC<Props> = ({ dashboard }) => {
             </SelectItem>
         ));
         options.unshift(
-            <SelectItem key={0} value={'0'}>
-                {t('yearTotal')}
+            <SelectItem key={0} value="0">
+                Total
             </SelectItem>
         );
         return options;
@@ -107,7 +104,7 @@ export const YearSelector: FC<Props> = ({ dashboard }) => {
     return (
         <div className="flex items-center gap-2" data-testid="year-selector">
             <IconButton
-                aria-label={t('aria.nextYear')}
+                aria-label="Select next year"
                 onClick={() => onChangeYear(NEXT)}
                 className="text-primary"
             >
@@ -124,7 +121,7 @@ export const YearSelector: FC<Props> = ({ dashboard }) => {
             </Select>
 
             <IconButton
-                aria-label={t('aria.previousYear')}
+                aria-label="Select previous year"
                 onClick={() => onChangeYear(PREV)}
                 className="text-primary"
             >

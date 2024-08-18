@@ -1,6 +1,5 @@
 import type { FC } from 'react';
 import clsx from 'clsx';
-import { useTranslations } from 'next-intl';
 
 import { H2, Skeleton } from '@/components';
 import type {
@@ -29,8 +28,6 @@ export const ChartView: FC<Dashboarad & Loading> = ({
     dashboard = {} as WorkoutsDashboard,
     isLoading,
 }) => {
-    const t = useTranslations('Dashboard.Chart');
-
     if (isLoading)
         return (
             <ChartViewWrapper isLoading>
@@ -41,7 +38,7 @@ export const ChartView: FC<Dashboarad & Loading> = ({
     return (
         <ChartViewWrapper>
             <header className="flex items-center gap-4">
-                <H2 className="text-lg" value={t('header')} />
+                <H2 className="text-lg">Overview</H2>
                 <YearSelector dashboard={dashboard} />
             </header>
             <BarChart dashboard={dashboard} />

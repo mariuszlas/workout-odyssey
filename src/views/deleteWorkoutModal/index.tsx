@@ -7,11 +7,11 @@ import {
     Dialog,
     DialogClose,
     DialogContent,
+    DialogDescription,
     DialogFooter,
     DialogHeader,
     DialogTitle,
     ModalProps,
-    TextP,
 } from '@/components';
 
 import { deleteWorkoutById } from './action';
@@ -52,7 +52,9 @@ export const DeleteWorkoutModal: FC<Props> = ({ id, onClose, isOpen }) => (
             <DialogHeader>
                 <DialogTitle>Workout Deletion</DialogTitle>
             </DialogHeader>
-            <TextP>Are you sure you want to delete this workout?</TextP>
+            <DialogDescription>
+                Are you sure you want to delete this workout?
+            </DialogDescription>
             <DialogFooter>
                 <DialogClose asChild>
                     <Button variant="ghost">Cancel</Button>

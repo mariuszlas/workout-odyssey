@@ -7,11 +7,11 @@ import {
     Dialog,
     DialogClose,
     DialogContent,
+    DialogDescription,
     DialogFooter,
     DialogHeader,
     DialogTitle,
     ModalProps,
-    TextP,
 } from '@/components';
 
 interface Props extends ModalProps {
@@ -28,10 +28,10 @@ export const ConfirmationModal: FC<Props> = ({
             <DialogHeader>
                 <DialogTitle>Discard Files</DialogTitle>
             </DialogHeader>
-            <TextP className="py-4">
+            <DialogDescription>
                 Are you sure you want to switch to manual upload? The currently
                 selected files will be discarded.
-            </TextP>
+            </DialogDescription>
             <DialogFooter>
                 <DialogClose asChild>
                     <Button variant="ghost">Cancel</Button>

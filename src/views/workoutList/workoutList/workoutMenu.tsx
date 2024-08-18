@@ -1,22 +1,25 @@
 'use client';
 
 import type { FC } from 'react';
-import { Fragment, useState } from 'react';
-import { Menu } from '@headlessui/react';
+import { useState } from 'react';
+import {
+    DotsVerticalIcon,
+    InfoCircledIcon,
+    Pencil2Icon,
+    TrashIcon,
+} from '@radix-ui/react-icons';
 import { useTranslations } from 'next-intl';
 
+import { IconButton } from '@/components';
 import {
-    EditIcon,
-    IconButton,
-    InformationIcon,
-    MenuButton,
-    MenuTransition,
-    MoreVerticalIcon,
-    Text,
-    TrashIcon,
-} from '@/components';
-import { usePopover } from '@/hooks';
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuGroup,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { Workout } from '@/interfaces';
+import { cn } from '@/utils/helpers';
 
 import { DeleteWorkoutModal } from '../../deleteWorkoutModal';
 import { WorkoutDetailsDrawer } from '../../workoutDetailsDrawer';
@@ -24,9 +27,6 @@ import { WorkoutUploadModal } from '../../workoutUploadModal';
 
 export const WorkoutMenu: FC<{ data: Workout }> = ({ data }) => {
     const t = useTranslations('Dashboard.WorkoutList.WorkoutMenu');
-    const { setRefEl, setPopperElement, styles, attributes } = usePopover({
-        position: 'bottom-end',
-    });
 
     const [isWorkoutUploadModalOpen, setIsWorkoutUploadModalOpen] =
         useState(false);
@@ -39,56 +39,47 @@ export const WorkoutMenu: FC<{ data: Workout }> = ({ data }) => {
         {
             onClick: () => setWorkoutDetailsDrawerOpen(true),
             text: t('details'),
-            icon: <InformationIcon />,
+            icon: <InfoCircledIcon className="h-5 w-5" />,
         },
         {
             onClick: () => setIsWorkoutUploadModalOpen(true),
             text: t('edit'),
-            icon: <EditIcon />,
+            icon: <Pencil2Icon className="h-5 w-5" />,
         },
         {
             onClick: () => setDeleteWorkoutModalOpen(true),
             text: t('delete'),
-            icon: <TrashIcon />,
+            icon: <TrashIcon className="h-5 w-5" />,
             hoverRed: true,
         },
     ];
 
     return (
         <>
-            <Menu as="div">
-                <Menu.Button as={Fragment}>
-                    <IconButton
-                        ref={setRefEl}
-                        aria-label={t('ariaLabel', { id: data.id })}
-                    >
-                        <MoreVerticalIcon />
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <IconButton aria-label={t('ariaLabel', { id: data.id })}>
+                        <DotsVerticalIcon className="h-5 w-5" />
                     </IconButton>
-                </Menu.Button>
-                <MenuTransition>
-                    <Menu.Items
-                        className="w-52 rounded-lg border border-base-content border-opacity-20 bg-base-100 p-2 shadow-2xl focus:outline-none"
-                        ref={setPopperElement}
-                        style={styles.popper}
-                        {...attributes.popper}
-                    >
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-52">
+                    <DropdownMenuGroup>
                         {items.map(({ onClick, text, icon, hoverRed }) => (
-                            <Menu.Item key={text}>
-                                {({ active }) => (
-                                    <MenuButton
-                                        active={active}
-                                        hoverRed={hoverRed}
-                                        onClick={onClick}
-                                    >
-                                        {icon}
-                                        <Text value={text} />
-                                    </MenuButton>
+                            <DropdownMenuItem
+                                key={text}
+                                onClick={onClick}
+                                className={cn(
+                                    'gap-2',
+                                    hoverRed && 'hover:!text-red-500 '
                                 )}
-                            </Menu.Item>
+                            >
+                                {icon}
+                                {text}
+                            </DropdownMenuItem>
                         ))}
-                    </Menu.Items>
-                </MenuTransition>
-            </Menu>
+                    </DropdownMenuGroup>
+                </DropdownMenuContent>
+            </DropdownMenu>
 
             <WorkoutUploadModal
                 isOpen={isWorkoutUploadModalOpen}

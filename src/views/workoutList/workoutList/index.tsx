@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import { useTranslations } from 'next-intl';
 
-import { Text } from '@/components/';
+import { TextP } from '@/components/';
 import type { Workout } from '@/interfaces';
 import { useUI } from '@/providers';
 
@@ -11,7 +11,7 @@ import { getPagedWorkouts, getTotalPageNum, sortWorkouts } from '../helpers';
 
 import { WorkoutLineItem } from './workoutLineItem';
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 11;
 
 export interface SortByObject {
     reverse: boolean;
@@ -37,7 +37,7 @@ export const WorkoutList: FC<WorkoutListProps> = ({
     if (isError) {
         return (
             <div className="my-6 flex w-full justify-center rounded-lg">
-                <Text value={t('Body.error')} />
+                <TextP value={t('Body.error')} />
             </div>
         );
     }
@@ -45,7 +45,7 @@ export const WorkoutList: FC<WorkoutListProps> = ({
     if (!workouts?.length) {
         return (
             <div className="flex w-full justify-center p-4">
-                <Text
+                <TextP
                     data-testid="no-workouts-message"
                     value={t('Body.noWorkouts')}
                 />

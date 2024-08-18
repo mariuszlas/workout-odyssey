@@ -63,7 +63,7 @@ export const Drawer: FC<DrawerProps> = ({
                     <Dialog.Panel
                         as="section"
                         className={cn(
-                            'h-full w-full bg-base-100',
+                            'h-full w-full bg-white',
                             sizeMapping(size)
                         )}
                     >

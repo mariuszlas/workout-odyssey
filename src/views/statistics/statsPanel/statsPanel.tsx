@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 
-import { Heading, Skeleton } from '@/components';
+import { H2, Skeleton } from '@/components';
 import {
     Children,
     MonthStats,
@@ -30,7 +30,7 @@ const StatsPanelWrapper: FC<Children & { testId: string }> = ({
     testId,
 }) => (
     <section
-        className="flex flex-col items-start gap-2 border-base-content border-opacity-20 sm:gap-4 sm:rounded-xl sm:border sm:p-6 sm:shadow-lg"
+        className="border-base-content flex flex-col items-start gap-2 border-opacity-20 sm:rounded-xl sm:border sm:p-6 sm:shadow-lg"
         data-testid={testId}
     >
         {children}
@@ -55,14 +55,14 @@ export const StatsPanel: FC<Props> = ({
     if (isLoading)
         return (
             <StatsPanelWrapper testId={testId}>
-                <Skeleton h={'full'} />
+                <Skeleton />
             </StatsPanelWrapper>
         );
 
     return (
         <StatsPanelWrapper testId={testId}>
             <header>
-                <Heading as="h2" className="text-2xl">
+                <H2 className="text-lg">
                     {getStatsPanelHeading(
                         isPrimary,
                         headerData,
@@ -70,9 +70,9 @@ export const StatsPanel: FC<Props> = ({
                         { yearT: t('year'), totalT: t('total') },
                         isMobile
                     )}
-                </Heading>
+                </H2>
             </header>
-            <div className="flex w-full flex-col gap-3">
+            <div className="flex w-full flex-col gap-2">
                 <StatsPanelEntry
                     data={data?.distance?.toFixed(1) ?? 0}
                     field={t('distance')}

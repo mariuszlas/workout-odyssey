@@ -2,7 +2,13 @@ import { FC } from 'react';
 import { useTranslations } from 'next-intl';
 import useSWR from 'swr';
 
-import { Alert, Skeleton, Text } from '@/components';
+import {
+    Alert,
+    AlertDescription,
+    AlertTitle,
+    Skeleton,
+    TextP,
+} from '@/components';
 import { Trajectory, Workout } from '@/interfaces';
 
 import { Map } from './map';
@@ -12,24 +18,23 @@ export const MapPanel: FC<{ id: string }> = ({ id }) => {
     const t = useTranslations('Dashboard.WorkoutDetails');
 
     if (isLoading) {
-        return <Skeleton h="full" />;
+        return <Skeleton />;
     }
 
     if (!data?.geometry) {
         return (
             <div className="flex h-full items-center justify-center">
-                <Text value={t('noGeolocation')} />
+                <TextP value={t('noGeolocation')} />
             </div>
         );
     }
 
     if (error) {
         return (
-            <Alert
-                status="error"
-                classes="mb-0"
-                content={t('errorGeolocation')}
-            />
+            <Alert variant="error">
+                <AlertTitle>Something went wrong</AlertTitle>
+                <AlertDescription>{t('errorGeolocation')}</AlertDescription>
+            </Alert>
         );
     }
 

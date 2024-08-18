@@ -1,8 +1,9 @@
 import type { FC } from 'react';
 import { useCallback, useEffect, useState } from 'react';
+import { PlusIcon } from '@radix-ui/react-icons';
 import { useTranslations } from 'next-intl';
 
-import { PlusIcon } from '@/components';
+import { Button } from '@/components';
 import { cn } from '@/utils/helpers';
 
 interface Props {
@@ -44,16 +45,16 @@ export const FloatingNewWorkoutBtn: FC<Props> = ({ onClick }) => {
     }, [handleScroll]);
 
     return (
-        <button
+        <Button
             aria-label={t('newWorkoutCta')}
             data-testid="floating-new-workout-btn"
             className={cn(
                 { hidden: !isVisible },
-                'fixed bottom-3 right-3 z-10 rounded-full bg-secondary p-5 text-white drop-shadow-2xl sm:hidden'
+                'fixed bottom-3 right-3 z-10 h-12 rounded-full bg-secondary p-3 text-secondary-foreground drop-shadow-2xl sm:hidden'
             )}
             onClick={onClick}
         >
-            <PlusIcon />
-        </button>
+            <PlusIcon className="h-6 w-6" />
+        </Button>
     );
 };

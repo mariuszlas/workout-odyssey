@@ -1,36 +1,93 @@
-import type { FC } from 'react';
+import { type FC, useState } from 'react';
+import { CheckIcon } from '@radix-ui/react-icons';
 import { useTranslations } from 'next-intl';
 
-import { FormLabel, Select } from '@/components';
+import {
+    Button,
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList,
+    Label,
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+    ScrollArea,
+} from '@/components';
+import { useIsBreakpoint } from '@/hooks';
+import { cn } from '@/utils/helpers';
 
 import { WorkoutForm } from '../intrefaces';
 
 export const TimezoneSelector: FC<WorkoutForm> = ({ workout, setWorkouts }) => {
+    const isMobile = useIsBreakpoint('sm');
     const t = useTranslations('Dashboard.WorkoutUpload.Forms.timezone');
+    const [open, setOpen] = useState(false);
+
+    const timezones = Intl.supportedValuesOf('timeZone').map(tz => ({
+        value: tz,
+        label: tz,
+    }));
+
+    const onTimezoneSelect = (tz: string) => {
+        setWorkouts(prev =>
+            prev.map(wk =>
+                wk.id === workout.id ? { ...wk, timezone: tz } : wk
+            )
+        );
+        setOpen(false);
+    };
 
     return (
-        <div className="w-fit">
-            <FormLabel text={t('label')} htmlFor="timezone" />
-            <Select
-                id="timezone"
-                value={workout.timezone}
-                className="max-w-44"
-                onChange={e => {
-                    setWorkouts(prev =>
-                        prev.map(wk =>
-                            wk.id === workout.id
-                                ? { ...wk, timezone: e.target.value }
-                                : wk
-                        )
-                    );
-                }}
-            >
-                {Intl.supportedValuesOf('timeZone').map((value, idx) => (
-                    <option key={idx} value={value}>
-                        {value}
-                    </option>
-                ))}
-            </Select>
-        </div>
+        <Popover open={open} onOpenChange={setOpen} modal={true}>
+            <div className="flex flex-col gap-1">
+                <Label htmlFor="timezone">{t('label')}</Label>
+                <PopoverTrigger
+                    asChild
+                    className="min-w-64 justify-start text-left font-normal"
+                >
+                    <Button
+                        variant="outline"
+                        role="combobox"
+                        aria-expanded={open}
+                        id="timezone"
+                    >
+                        {workout.timezone}
+                    </Button>
+                </PopoverTrigger>
+            </div>
+
+            <PopoverContent>
+                <Command>
+                    <ScrollArea>
+                        <CommandInput placeholder="Search timezones..." />
+                        <CommandList className={cn(isMobile && 'max-h-32')}>
+                            <CommandEmpty>No timezone found.</CommandEmpty>
+                            <CommandGroup>
+                                {timezones.map(tz => (
+                                    <CommandItem
+                                        key={tz.value}
+                                        value={tz.value}
+                                        onSelect={onTimezoneSelect}
+                                    >
+                                        <CheckIcon
+                                            className={cn(
+                                                'mr-2 h-4 w-4',
+                                                workout.timezone === tz.value
+                                                    ? 'opacity-100'
+                                                    : 'opacity-0'
+                                            )}
+                                        />
+                                        {tz.label}
+                                    </CommandItem>
+                                ))}
+                            </CommandGroup>
+                        </CommandList>
+                    </ScrollArea>
+                </Command>
+            </PopoverContent>
+        </Popover>
     );
 };

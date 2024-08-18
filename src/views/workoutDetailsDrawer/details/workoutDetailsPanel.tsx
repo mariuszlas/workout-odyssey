@@ -13,7 +13,7 @@ export const WorkoutDetailsPanel: FC<{ data: Workout }> = ({ data }) => {
     const t = useTranslations('Dashboard');
 
     return (
-        <ul className="rounded-lg border border-base-content border-opacity-20">
+        <ul className="border-base-content rounded-lg border border-opacity-20">
             <LineItem
                 title={t('WorkoutDetails.activity')}
                 value={t('workoutType', { workoutType: data.type })}

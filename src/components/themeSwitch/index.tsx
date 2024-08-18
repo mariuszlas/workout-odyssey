@@ -5,7 +5,7 @@ import { Theme } from '@/interfaces';
 import { useTheme } from '@/providers';
 
 import { MoonIcon, SunIcon } from '../icon';
-import { IconButton, MenuButton, Text } from '..';
+import { Button, IconButton } from '..';
 
 export const ThemeSwitch: FC<{ isMobile?: boolean }> = ({ isMobile }) => {
     const [theme, setTheme] = useTheme();
@@ -22,26 +22,24 @@ export const ThemeSwitch: FC<{ isMobile?: boolean }> = ({ isMobile }) => {
     if (isMobile) {
         return (
             <li>
-                <MenuButton
+                <Button
+                    variant="menuitem"
+                    role="menuitem"
                     onClick={toggleTheme}
                     aria-label={t('themeSwitchAriaLabel')}
                 >
-                    <Text>
-                        {isDark(theme)
-                            ? t('toggleLightMode')
-                            : t('toggleDarkMode')}
-                    </Text>
+                    {isDark(theme) ? t('toggleLightMode') : t('toggleDarkMode')}
                     {isDark(theme) ? <SunIcon /> : <MoonIcon />}
-                </MenuButton>
+                </Button>
             </li>
         );
     }
 
     return (
         <IconButton
+            className="hidden md:inline-flex"
             aria-label={t('themeSwitchAriaLabel')}
             onClick={toggleTheme}
-            className="hidden md:inline-flex"
         >
             {isDark(theme) ? <SunIcon /> : <MoonIcon />}
         </IconButton>

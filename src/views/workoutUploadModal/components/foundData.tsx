@@ -3,7 +3,15 @@
 import { type FC } from 'react';
 import { useTranslations } from 'next-intl';
 
-import { Alert, DateEntry, Distance, Duration, Text } from '@/components';
+import {
+    Alert,
+    AlertDescription,
+    DateEntry,
+    Distance,
+    Duration,
+    Separator,
+    TextP,
+} from '@/components';
 import type { UploadWorkout, Workout } from '@/interfaces';
 import { useUI } from '@/providers';
 import { getDateTimeTZ } from '@/utils/helpers';
@@ -19,27 +27,31 @@ export const FoundData: FC<Props> = ({ data, foundData }) => {
 
     return (
         <>
-            <hr className="border-t border-t-base-content border-opacity-20" />
-            <Alert
-                status={'warning'}
-                classes="m-0 p-2"
-                content={t('WorkoutUpload.Preview.alertDetails', {
-                    count: foundData.length,
-                    type: t('workoutType', {
-                        workoutType: data.type,
-                    }),
-                    date: getDateTimeTZ(data.timestamp, data.timezone, true),
-                })}
-            />
-            <Text
+            <Separator />
+            <Alert variant="warning">
+                <AlertDescription>
+                    {t('WorkoutUpload.Preview.alertDetails', {
+                        count: foundData.length,
+                        type: t('workoutType', {
+                            workoutType: data.type,
+                        }),
+                        date: getDateTimeTZ(
+                            data.timestamp,
+                            data.timezone,
+                            true
+                        ),
+                    })}
+                </AlertDescription>
+            </Alert>
+            <TextP
                 className="font-medium"
                 value={t('WorkoutUpload.Preview.foundDataHeader')}
             />
-            <ul className="rounded-lg border border-base-content border-opacity-20">
+            <ul className="border-base-content rounded-lg border border-opacity-20">
                 {foundData.map((workout, idx) => (
                     <li
                         key={idx}
-                        className="flex flex-wrap gap-x-4 overflow-hidden overflow-ellipsis border-t border-t-base-content border-opacity-20 px-4 py-2 first:border-t-0 sm:gap-x-6"
+                        className="border-t-base-content flex flex-wrap gap-x-4 overflow-hidden overflow-ellipsis border-t border-opacity-20 px-4 py-2 first:border-t-0 sm:gap-x-6"
                     >
                         <DateEntry
                             timestamp={data.timestamp}

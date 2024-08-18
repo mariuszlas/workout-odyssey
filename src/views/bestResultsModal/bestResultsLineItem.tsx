@@ -1,6 +1,13 @@
 import type { FC } from 'react';
 
-import { DateEntry, Duration, Pace, Speed, Text } from '@/components';
+import {
+    DateEntry,
+    Duration,
+    Pace,
+    Separator,
+    Speed,
+    TextP,
+} from '@/components';
 import { type Units, type Workout, WorkoutTypes } from '@/interfaces';
 
 interface Props {
@@ -11,9 +18,9 @@ interface Props {
 }
 
 export const LineItem: FC<Props> = ({ data, header, units, noDataText }) => (
-    <li className="flex w-full flex-col items-stretch gap-1">
+    <li className="flex w-full flex-col items-stretch gap-2">
         <div className="flex flex-col sm:px-4">
-            <Text as="p" className="font-medium" value={header} />
+            <TextP className="font-medium" value={header} />
             <div className="flex flex-wrap justify-between">
                 {data ? (
                     <>
@@ -35,7 +42,6 @@ export const LineItem: FC<Props> = ({ data, header, units, noDataText }) => (
                 )}
             </div>
         </div>
-
-        <hr className="border-t border-t-primary" />
+        <Separator />
     </li>
 );

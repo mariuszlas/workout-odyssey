@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 
-import { Heading, Text } from '@/components';
+import { H2, TextP } from '@/components';
 import { Theme } from '@/interfaces';
 import { useTheme } from '@/providers';
 import { cn } from '@/utils/helpers';
@@ -54,9 +54,9 @@ export default function HomePageImages({ subheaders }: Props) {
                         idx % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'
                     )}
                 >
-                    <header className="flex flex-col gap-1 lg:max-w-xs lg:gap-3">
-                        <Heading as="h2" value={title} />
-                        <Text className="text-2xl" value={desc} />
+                    <header className="flex flex-col gap-1 lg:max-w-xs">
+                        <H2 value={title} />
+                        <TextP value={desc} />
                     </header>
 
                     <Image

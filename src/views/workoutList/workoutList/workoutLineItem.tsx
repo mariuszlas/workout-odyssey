@@ -1,11 +1,12 @@
 import type { FC } from 'react';
 
 import {
+    Badge,
     DateEntry,
     Distance,
     Duration,
-    Label,
     Pace,
+    Separator,
     Speed,
 } from '@/components';
 import { Units, Workout, WorkoutTypes } from '@/interfaces';
@@ -23,7 +24,7 @@ export const WorkoutLineItem: FC<Props> = ({ data, units }) => (
             <div className="overflow-hidden">
                 <div className="flex flex-wrap gap-x-4 font-medium">
                     <Distance value={data.distance} units={units} />
-                    {data.label && <Label label={data.label} small />}
+                    {data.label && <Badge label={data.label} />}
                 </div>
                 <div className="flex flex-wrap gap-x-4 sm:gap-x-6">
                     <Duration value={data.duration} />
@@ -34,11 +35,11 @@ export const WorkoutLineItem: FC<Props> = ({ data, units }) => (
                     )}
                 </div>
             </div>
-            <div className="flex items-center gap-1 sm:gap-4">
+            <div className="flex items-center gap-1 sm:gap-2">
                 <DateEntry timestamp={data.timestamp} tz={data.timezone} />
                 <WorkoutMenu data={data} />
             </div>
         </div>
-        <hr className="border-t border-t-primary" />
+        <Separator />
     </li>
 );

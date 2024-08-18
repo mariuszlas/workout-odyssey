@@ -1,14 +1,8 @@
 import { Dispatch, FC, SetStateAction } from 'react';
+import { ArrowLeftIcon, Pencil2Icon, TrashIcon } from '@radix-ui/react-icons';
 import { useTranslations } from 'next-intl';
 
-import {
-    BackArrow,
-    Distance,
-    EditIcon,
-    IconButton,
-    Text,
-    TrashIcon,
-} from '@/components';
+import { Distance, IconButton, Separator, TextS } from '@/components';
 import { useUI } from '@/providers';
 
 import { WorkoutForm } from '../intrefaces';
@@ -47,16 +41,16 @@ export const FileLineItem: FC<Props> = ({
     };
 
     return (
-        <li className="flex w-full flex-col gap-2 rounded-lg border border-base-content border-opacity-20 px-4 py-2">
+        <li className="border-base-content flex w-full flex-col gap-2 rounded-lg border border-opacity-20 px-4 py-2">
             <div className="flex w-full justify-between">
                 <div className="overflow-hidden overflow-ellipsis">
-                    <Text className="font-medium">{workout.file?.name}</Text>
+                    <TextS className="font-medium" value={workout.file?.name} />
                     <div className="flex gap-4">
-                        <Text className="capitalize">
+                        <TextS className="capitalize">
                             {tDashboard('workoutType', {
                                 workoutType: workout.type,
                             })}
-                        </Text>
+                        </TextS>
                         <Distance value={workout.distance} units={units} />
                     </div>
                 </div>
@@ -65,20 +59,24 @@ export const FileLineItem: FC<Props> = ({
                         onClick={onEdit}
                         aria-label={t(isFormOpen ? 'aria.back' : 'aria.edit')}
                     >
-                        {isFormOpen ? <BackArrow /> : <EditIcon />}
+                        {isFormOpen ? (
+                            <ArrowLeftIcon className="h-6 w-6" />
+                        ) : (
+                            <Pencil2Icon className="h-6 w-6" />
+                        )}
                     </IconButton>
                     <IconButton
                         aria-label={t('aria.remove')}
                         onClick={onDelete}
                     >
-                        <TrashIcon />
+                        <TrashIcon className="h-6 w-6" />
                     </IconButton>
                 </div>
             </div>
 
             {isFormOpen && (
                 <>
-                    <hr className="border-t border-t-base-content border-opacity-20" />
+                    <Separator />
                     <NotesInput {...props} />
                     <LabelSelector {...props} />
                 </>

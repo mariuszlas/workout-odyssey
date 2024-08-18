@@ -31,7 +31,7 @@ export const StatisticsView: FC<Dashboarad & Loading> = ({
     return (
         <div
             className={clsx(
-                'grid w-full grid-cols-2 gap-6',
+                'grid w-full grid-cols-2 gap-4',
                 isLoading && 'h-80'
             )}
         >

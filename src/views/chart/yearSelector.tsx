@@ -1,9 +1,18 @@
 'use client';
 
-import { type ChangeEvent, FC, useEffect, useMemo } from 'react';
+import { FC, useEffect, useMemo } from 'react';
+import { TriangleLeftIcon, TriangleRightIcon } from '@radix-ui/react-icons';
 import { useTranslations } from 'next-intl';
 
-import { ArrowLeft, ArrowRight, IconButton, Select } from '@/components';
+import {
+    IconButton,
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components';
 import type { BestMonths, WorkoutsDashboard } from '@/interfaces';
 import { usePathname } from '@/navigation';
 import { useUI } from '@/providers';
@@ -57,25 +66,10 @@ export const YearSelector: FC<Props> = ({ dashboard }) => {
 
     if (!availableYears?.length) return null;
 
-    const getOptions = (availableYears: number[]) => {
-        const options = availableYears.map((year, idx) => (
-            <option key={idx + 1} value={year}>
-                {year}
-            </option>
-        ));
-        options.unshift(
-            <option key={0} value={0}>
-                {t('yearTotal')}
-            </option>
-        );
-        return options;
-    };
+    const onSelectYear = (newYear: string) => {
+        const secStat = getSecStats(parseInt(newYear), bestMonths);
 
-    const onSelectYear = (e: ChangeEvent<HTMLSelectElement>) => {
-        const newYear = Number(e.target.value);
-        const secStat = getSecStats(newYear, bestMonths);
-
-        setYear(newYear);
+        setYear(parseInt(newYear));
         setSecondaryStat(secStat);
     };
 
@@ -96,30 +90,45 @@ export const YearSelector: FC<Props> = ({ dashboard }) => {
         setSecondaryStat(secStat);
     };
 
+    const getOptions = (availableYears: number[]) => {
+        const options = availableYears.map((year, idx) => (
+            <SelectItem key={idx + 1} value={year.toString()}>
+                {year}
+            </SelectItem>
+        ));
+        options.unshift(
+            <SelectItem key={0} value={'0'}>
+                {t('yearTotal')}
+            </SelectItem>
+        );
+        return options;
+    };
+
     return (
-        <div className="flex items-center gap-3" data-testid="year-selector">
+        <div className="flex items-center gap-2" data-testid="year-selector">
             <IconButton
                 aria-label={t('aria.nextYear')}
                 onClick={() => onChangeYear(NEXT)}
+                className="text-primary"
             >
-                <ArrowLeft />
+                <TriangleLeftIcon className="h-10 w-10" />
             </IconButton>
 
-            <Select
-                className="w-full max-w-xs"
-                value={year}
-                data-testid="data-year-selector-dropdown"
-                aria-label={t('aria.yearSelector')}
-                onChange={onSelectYear}
-            >
-                {getOptions(availableYears)}
+            <Select onValueChange={onSelectYear} value={year.toString()}>
+                <SelectTrigger className="min-w-20 max-w-xs">
+                    <SelectValue placeholder={year} />
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectGroup>{getOptions(availableYears)}</SelectGroup>
+                </SelectContent>
             </Select>
 
             <IconButton
                 aria-label={t('aria.previousYear')}
                 onClick={() => onChangeYear(PREV)}
+                className="text-primary"
             >
-                <ArrowRight />
+                <TriangleRightIcon className="h-10 w-10" />
             </IconButton>
         </div>
     );

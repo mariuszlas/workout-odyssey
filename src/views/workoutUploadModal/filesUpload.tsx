@@ -43,7 +43,7 @@ export const FilesUpload: FC<Props> = ({
                 <FilePicker setWorkouts={setWorkouts} />
                 <FileList setWorkouts={setWorkouts} workouts={workouts} />
             </div>
-            <Button className="btn-primary btn-block mt-6" type="submit">
+            <Button className="mt-6 w-full" type="submit">
                 {t('cta')}
             </Button>
         </form>

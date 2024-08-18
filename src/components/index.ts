@@ -39,6 +39,7 @@ export {
     Dialog,
     DialogClose,
     DialogContent,
+    DialogDescription,
     DialogFooter,
     DialogHeader,
     DialogTitle,
@@ -61,4 +62,5 @@ export { Separator } from './ui/separator';
 export { Skeleton, SkeletonList } from './ui/skeleton';
 export { Toaster } from './ui/sonner';
 export { TextP, TextS } from './ui/text';
+export { VisuallyHidden } from './ui/visuallyHidden';
 export { DateEntry, Distance, Duration, Pace, Speed } from './workoutLineItem';

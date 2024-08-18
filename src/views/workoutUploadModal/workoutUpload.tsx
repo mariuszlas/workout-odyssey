@@ -1,6 +1,11 @@
 import { FC, useState } from 'react';
 
-import { DialogHeader, DialogTitle } from '@/components';
+import {
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    VisuallyHidden,
+} from '@/components';
 import type { Workout, WorkoutPreview } from '@/interfaces';
 
 import { FormsPanel } from './formsPanel';
@@ -26,6 +31,16 @@ export const WorkoutUpload: FC<Props> = ({ workout, onClose }) => {
                           : 'Workout Upload'}
                 </DialogTitle>
             </DialogHeader>
+
+            <VisuallyHidden>
+                <DialogDescription>
+                    {previewData.length
+                        ? 'Preview of uploaded data'
+                        : workout
+                          ? 'Edit existing workout data'
+                          : 'Upload new workout data'}
+                </DialogDescription>
+            </VisuallyHidden>
 
             {previewData.length ? (
                 <PreviewPanel

@@ -14,37 +14,44 @@ interface Props {
     setPreviewData: Dispatch<SetStateAction<WorkoutPreview>>;
 }
 
+enum TabValue {
+    FILE = 'file',
+    MANUAL = 'manual',
+}
+
 export const FormsPanel: FC<Props> = ({ setPreviewData }) => {
-    const [selectedIndex, setSelectedIndex] = useState(0);
+    const [selectedTab, setSelectedTab] = useState(TabValue.FILE);
     const [isOpen, setIsOpen] = useState(false);
     const [hasFilesSelected, setHasFilesSelected] = useState(false);
 
-    const onTabSelection = () => {
-        if (selectedIndex === 0 && hasFilesSelected) {
+    const onTabSelection = (value: string) => {
+        if (selectedTab === TabValue.FILE && hasFilesSelected) {
             setIsOpen(true);
             return;
         }
-        setSelectedIndex(prev => (prev === 0 ? 1 : 0));
+        setSelectedTab(value as TabValue);
     };
 
     return (
         <>
-            <Tabs defaultValue="file">
+            <Tabs
+                defaultValue={TabValue.FILE}
+                value={selectedTab}
+                onValueChange={onTabSelection}
+            >
                 <TabsList className="grid w-full grid-cols-2">
-                    <TabsTrigger value="file" onClick={onTabSelection}>
-                        Upload File
-                    </TabsTrigger>
-                    <TabsTrigger value="manual" onClick={onTabSelection}>
+                    <TabsTrigger value={TabValue.FILE}>Upload File</TabsTrigger>
+                    <TabsTrigger value={TabValue.MANUAL}>
                         Add Data Manually
                     </TabsTrigger>
                 </TabsList>
-                <TabsContent value="file">
+                <TabsContent value={TabValue.FILE}>
                     <FilesUpload
                         setPreviewData={setPreviewData}
                         setHasFilesSelected={setHasFilesSelected}
                     />
                 </TabsContent>
-                <TabsContent value="manual">
+                <TabsContent value={TabValue.MANUAL}>
                     <ManualUpload setPreviewData={setPreviewData} />
                 </TabsContent>
             </Tabs>
@@ -53,7 +60,7 @@ export const FormsPanel: FC<Props> = ({ setPreviewData }) => {
                 isOpen={isOpen}
                 onClose={() => setIsOpen(false)}
                 confirmAction={() => {
-                    setSelectedIndex(1);
+                    setSelectedTab(TabValue.MANUAL);
                     setIsOpen(false);
                 }}
             />

@@ -7,11 +7,13 @@ import {
     Dialog,
     DialogClose,
     DialogContent,
+    DialogDescription,
     DialogFooter,
     DialogHeader,
     DialogTitle,
     ModalProps,
     Skeleton,
+    VisuallyHidden,
 } from '@/components';
 import { BestResults as TBestResults, WorkoutTypes } from '@/interfaces';
 import { useUI } from '@/providers';
@@ -80,10 +82,12 @@ export const BestResultsModal: FC<ModalProps> = ({ isOpen, onClose }) => {
                 <DialogHeader>
                     <DialogTitle>Best Results for {workoutType}</DialogTitle>
                 </DialogHeader>
-                <ul
-                    id="best-results"
-                    className="mt-6 flex w-full flex-col gap-2"
-                >
+                <VisuallyHidden>
+                    <DialogDescription>
+                        Best Results for {workoutType}
+                    </DialogDescription>
+                </VisuallyHidden>
+                <ul id="best-results" className="flex w-full flex-col gap-2">
                     {isLoading
                         ? keys.map(({ key, value }) => (
                               <Skeleton key={key + value} h={14} />

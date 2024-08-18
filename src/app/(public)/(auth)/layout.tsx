@@ -1,7 +1,8 @@
 'use client';
 
+import { usePathname } from 'next/navigation';
+
 import { Children } from '@/interfaces';
-import { usePathname } from '@/navigation';
 
 export default function PublicAuthLayout({ children }: Children) {
     const pathname = usePathname();

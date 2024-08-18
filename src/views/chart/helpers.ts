@@ -65,8 +65,8 @@ export const formatChartTooltip = (
 
 const getChartOptions = (
     chartTheme: ChartTheme,
-    locale: string,
-    units: Units
+    units: Units,
+    locale = 'en-GB'
 ): ChartConfiguration<ChartType, BarChartData, string[]>['options'] => ({
     locale,
     plugins: {
@@ -108,21 +108,21 @@ const getChartOptions = (
 export const getChartConfig = (
     chartData: BarChartData,
     chartTheme: ChartTheme,
-    locale: string,
-    units: Units
+    units: Units,
+    locale?: string
 ): ChartConfiguration<ChartType, BarChartData, string[]> => ({
     type: c.BAR_TYPE,
     data: getDataset(chartData),
-    options: getChartOptions(chartTheme, locale, units),
+    options: getChartOptions(chartTheme, units, locale),
 });
 
 export const updateChartTheme = (
     chart: BarChartT | undefined,
     chartTheme: ChartTheme,
-    locale: string,
-    units: Units
+    units: Units,
+    locale?: string
 ) => {
-    const options = getChartOptions(chartTheme, locale, units);
+    const options = getChartOptions(chartTheme, units, locale);
     if (chart && options) {
         chart.options = options;
         chart.update();
@@ -181,8 +181,7 @@ export const getAvailableYears = (dashboard: WorkoutsDashboard) =>
 
 export const selectChartData = (
     dashboard: WorkoutsDashboard | undefined,
-    yearSelected: number,
-    locale: string
+    yearSelected: number
 ) => {
     if (!dashboard?.years || !dashboard.months) return [];
 
@@ -196,7 +195,7 @@ export const selectChartData = (
     return dashboard.months
         .filter(monthObj => monthObj.year === yearSelected)
         .map(monthObj => ({
-            x: getMonthForLocale(monthObj.month - 1, locale, 'short'),
+            x: getMonthForLocale(monthObj.month - 1, { isShortMonth: true }),
             y: monthObj.distance,
             value: monthObj.month,
         }));

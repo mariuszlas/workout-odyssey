@@ -124,14 +124,12 @@ describe('getFormattedMonthAndYear', () => {
 
     test.each(cases)(
         'should return correctly formatted month and year',
-        (expected, year, month, locale, isShort) => {
+        (expected, year, month, locale, isShortMonth) => {
             expect(
-                getFormattedMonthAndYear(
-                    year as number,
-                    month as number,
-                    locale as string,
-                    isShort as boolean
-                )
+                getFormattedMonthAndYear(year as number, month as number, {
+                    locale: locale as string,
+                    isShortMonth: isShortMonth as boolean,
+                })
             ).toBe(expected);
         }
     );

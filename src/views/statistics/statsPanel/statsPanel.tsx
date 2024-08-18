@@ -1,5 +1,4 @@
 import type { FC } from 'react';
-import { useLocale, useTranslations } from 'next-intl';
 
 import { H2, Skeleton } from '@/components';
 import {
@@ -46,8 +45,6 @@ export const StatsPanel: FC<Props> = ({
     isLoading,
 }) => {
     const { units } = useUI();
-    const t = useTranslations('Dashboard.Workout');
-    const locale = useLocale();
 
     const statType = isPrimary ? 'primary' : 'secondary';
     const testId = `${statType}-stats-section`;
@@ -63,25 +60,19 @@ export const StatsPanel: FC<Props> = ({
         <StatsPanelWrapper testId={testId}>
             <header>
                 <H2 className="text-lg">
-                    {getStatsPanelHeading(
-                        isPrimary,
-                        headerData,
-                        locale,
-                        { yearT: t('year'), totalT: t('total') },
-                        isMobile
-                    )}
+                    {getStatsPanelHeading(isPrimary, headerData, isMobile)}
                 </H2>
             </header>
             <div className="flex w-full flex-col gap-2">
                 <StatsPanelEntry
                     data={data?.distance?.toFixed(1) ?? 0}
-                    field={t('distance')}
+                    field="Distance"
                     units={units.km}
                     icon="road"
                 />
                 <StatsPanelEntry
                     data={formatDurationAsDecimal(data?.duration)}
-                    field={t('duration')}
+                    field="Duration"
                     units={
                         dayjs.duration(data?.duration ?? 0, 's').hours() >= 1
                             ? units.h
@@ -92,21 +83,21 @@ export const StatsPanel: FC<Props> = ({
                 {workoutType === WorkoutTypes.CYCLING ? (
                     <StatsPanelEntry
                         data={data?.speed?.toFixed(1) ?? 0}
-                        field={t('avgSpeed')}
+                        field="Average Speed"
                         units={units.kmh}
                         icon="speedometer"
                     />
                 ) : (
                     <StatsPanelEntry
                         data={formatPace(data?.pace ?? 0)}
-                        field={t('avgPace')}
+                        field="Average Pace"
                         units={`/${units.km}`}
                         icon="speedometer"
                     />
                 )}
                 <StatsPanelEntry
                     data={data?.counts ?? 0}
-                    field={t('counts')}
+                    field="Exercise Times"
                     units={''}
                     icon="counter"
                 />

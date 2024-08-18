@@ -1,6 +1,5 @@
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';
-import { useTranslations } from 'next-intl';
 
 import {
     Button,
@@ -19,9 +18,7 @@ import { cn, formatDuration } from '@/utils/helpers';
 import { WorkoutForm } from '../intrefaces';
 
 export const DurationPicker: FC<WorkoutForm> = ({ workout, setWorkouts }) => {
-    const t = useTranslations('Dashboard.WorkoutUpload.Forms.duration');
     const { duration } = workout;
-
     const [isOpen, setIsOpen] = useState(false);
     const [s, setS] = useState(dayjs.duration(duration, 's').seconds());
     const [m, setM] = useState(dayjs.duration(duration, 's').minutes());
@@ -39,31 +36,16 @@ export const DurationPicker: FC<WorkoutForm> = ({ workout, setWorkouts }) => {
     }, [s, m, h, setWorkouts]);
 
     const durationFields = [
-        {
-            label: t('labelHours'),
-            plcd: t('plcdHours'),
-            formatter: 'HH',
-            setD: setH,
-        },
-        {
-            label: t('labelMinutes'),
-            plcd: t('plcdMinutes'),
-            formatter: 'mm',
-            setD: setM,
-        },
-        {
-            label: t('labelSeconds'),
-            plcd: t('plcdSeconds'),
-            formatter: 'ss',
-            setD: setS,
-        },
+        { label: 'Hours', formatter: 'HH', setD: setH },
+        { label: 'Minutes', formatter: 'mm', setD: setM },
+        { label: 'Seconds', formatter: 'ss', setD: setS },
     ];
 
     return (
         <Popover open={isOpen} onOpenChange={setIsOpen}>
             <div className="flex flex-col justify-center gap-1 pt-1">
                 <Label htmlFor="duration" isRequired>
-                    {t('label')}
+                    Duration
                 </Label>
                 <PopoverTrigger asChild>
                     <Button
@@ -78,30 +60,27 @@ export const DurationPicker: FC<WorkoutForm> = ({ workout, setWorkouts }) => {
 
             <PopoverContent className="w-auto">
                 <div className="flex items-center justify-between">
-                    <H3>{t('header')}</H3>
+                    <H3>Enter Duration</H3>
                     <CloseButton onClick={() => setIsOpen(false)} />
                 </div>
                 <Separator className="my-2" />
                 <div className="flex gap-4">
-                    {durationFields.map(
-                        ({ label, plcd, formatter, setD }, idx) => (
-                            <div className="w-fit" key={idx}>
-                                <Label>{label}</Label>
-                                <Input
-                                    placeholder={plcd}
-                                    value={formatDuration(duration, formatter)}
-                                    onChange={e => setD(Number(e.target.value))}
-                                    className="w-16"
-                                    onKeyDown={e => {
-                                        if (e.key === 'Enter') {
-                                            setIsOpen(false);
-                                            e.preventDefault();
-                                        }
-                                    }}
-                                />
-                            </div>
-                        )
-                    )}
+                    {durationFields.map(({ label, formatter, setD }, idx) => (
+                        <div className="w-fit" key={idx}>
+                            <Label>{label}</Label>
+                            <Input
+                                value={formatDuration(duration, formatter)}
+                                onChange={e => setD(Number(e.target.value))}
+                                className="w-16"
+                                onKeyDown={e => {
+                                    if (e.key === 'Enter') {
+                                        setIsOpen(false);
+                                        e.preventDefault();
+                                    }
+                                }}
+                            />
+                        </div>
+                    ))}
                 </div>
             </PopoverContent>
         </Popover>

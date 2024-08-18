@@ -8,7 +8,6 @@ import {
     Pencil2Icon,
     TrashIcon,
 } from '@radix-ui/react-icons';
-import { useTranslations } from 'next-intl';
 
 import { IconButton } from '@/components';
 import {
@@ -26,8 +25,6 @@ import { WorkoutDetailsDrawer } from '../../workoutDetailsDrawer';
 import { WorkoutUploadModal } from '../../workoutUploadModal';
 
 export const WorkoutMenu: FC<{ data: Workout }> = ({ data }) => {
-    const t = useTranslations('Dashboard.WorkoutList.WorkoutMenu');
-
     const [isWorkoutUploadModalOpen, setIsWorkoutUploadModalOpen] =
         useState(false);
     const [isDeleteWorkoutModalOpen, setDeleteWorkoutModalOpen] =
@@ -38,17 +35,17 @@ export const WorkoutMenu: FC<{ data: Workout }> = ({ data }) => {
     const items = [
         {
             onClick: () => setWorkoutDetailsDrawerOpen(true),
-            text: t('details'),
+            text: 'Workout Details',
             icon: <InfoCircledIcon className="h-5 w-5" />,
         },
         {
             onClick: () => setIsWorkoutUploadModalOpen(true),
-            text: t('edit'),
+            text: 'Edit',
             icon: <Pencil2Icon className="h-5 w-5" />,
         },
         {
             onClick: () => setDeleteWorkoutModalOpen(true),
-            text: t('delete'),
+            text: 'Delete',
             icon: <TrashIcon className="h-5 w-5" />,
             hoverRed: true,
         },
@@ -58,7 +55,7 @@ export const WorkoutMenu: FC<{ data: Workout }> = ({ data }) => {
         <>
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                    <IconButton aria-label={t('ariaLabel', { id: data.id })}>
+                    <IconButton aria-label={`Workout ${data.id} properties`}>
                         <DotsVerticalIcon className="h-5 w-5" />
                     </IconButton>
                 </DropdownMenuTrigger>

@@ -3,7 +3,6 @@
 import type { Dispatch, FC, SetStateAction } from 'react';
 import { useState } from 'react';
 import { useFormState } from 'react-dom';
-import { useTranslations } from 'next-intl';
 
 import { Button } from '@/components';
 import type { NewWorkout, Workout, WorkoutPreview } from '@/interfaces';
@@ -30,7 +29,6 @@ export const ManualUpload: FC<Props> = ({
     setPreviewData,
 }) => {
     const [workouts, setWorkouts] = useState<NewWorkout[]>([workout]);
-    const t = useTranslations('Dashboard.WorkoutUpload');
     const props = { workout: workouts[0], setWorkouts };
 
     const [formState, action] = useFormState(() => {
@@ -56,7 +54,7 @@ export const ManualUpload: FC<Props> = ({
                 <NotesInput {...props} />
             </div>
             <Button className="mt-6 w-full" type="submit">
-                {t('Forms.cta')}
+                Upload
             </Button>
         </form>
     );

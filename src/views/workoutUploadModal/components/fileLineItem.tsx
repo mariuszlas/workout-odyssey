@@ -1,6 +1,5 @@
 import { Dispatch, FC, SetStateAction } from 'react';
 import { ArrowLeftIcon, Pencil2Icon, TrashIcon } from '@radix-ui/react-icons';
-import { useTranslations } from 'next-intl';
 
 import { Distance, IconButton, Separator, TextS } from '@/components';
 import { useUI } from '@/providers';
@@ -23,8 +22,6 @@ export const FileLineItem: FC<Props> = ({
     setIsFormOpen,
     setSelectedWorkoutId,
 }) => {
-    const tDashboard = useTranslations('Dashboard');
-    const t = useTranslations('Dashboard.WorkoutUpload.Forms.files');
     const { units } = useUI();
 
     const props = { workout, setWorkouts };
@@ -46,18 +43,18 @@ export const FileLineItem: FC<Props> = ({
                 <div className="overflow-hidden overflow-ellipsis">
                     <TextS className="font-medium" value={workout.file?.name} />
                     <div className="flex gap-4">
-                        <TextS className="capitalize">
-                            {tDashboard('workoutType', {
-                                workoutType: workout.type,
-                            })}
-                        </TextS>
+                        <TextS className="capitalize">{workout.type}</TextS>
                         <Distance value={workout.distance} units={units} />
                     </div>
                 </div>
                 <div className="flex gap-2">
                     <IconButton
                         onClick={onEdit}
-                        aria-label={t(isFormOpen ? 'aria.back' : 'aria.edit')}
+                        aria-label={
+                            isFormOpen
+                                ? 'Edit data for this file'
+                                : 'Back to files flist'
+                        }
                     >
                         {isFormOpen ? (
                             <ArrowLeftIcon className="h-6 w-6" />
@@ -66,7 +63,7 @@ export const FileLineItem: FC<Props> = ({
                         )}
                     </IconButton>
                     <IconButton
-                        aria-label={t('aria.remove')}
+                        aria-label="Remove this file from the list"
                         onClick={onDelete}
                     >
                         <TrashIcon className="h-6 w-6" />

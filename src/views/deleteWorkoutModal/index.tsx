@@ -1,6 +1,5 @@
 import { FC, useEffect } from 'react';
 import { useFormState } from 'react-dom';
-import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
 import {
@@ -22,8 +21,6 @@ interface Props extends ModalProps {
 }
 
 const ModalCta: FC<Props> = ({ id, onClose }) => {
-    const t = useTranslations('Dashboard.WorkoutDeletion');
-
     const [formState, action] = useFormState(
         () => deleteWorkoutById(id),
         undefined
@@ -31,7 +28,7 @@ const ModalCta: FC<Props> = ({ id, onClose }) => {
 
     useEffect(() => {
         if (formState?.ok) {
-            toast.success(t('notify.success'));
+            toast.success('Workout was successfully deleted');
             onClose();
         }
 
@@ -43,29 +40,25 @@ const ModalCta: FC<Props> = ({ id, onClose }) => {
     return (
         <form action={action}>
             <Button type="submit" variant="destructive">
-                {t('cta')}
+                Delete{' '}
             </Button>
         </form>
     );
 };
 
-export const DeleteWorkoutModal: FC<Props> = ({ id, onClose, isOpen }) => {
-    const t = useTranslations('Dashboard.WorkoutDeletion');
-
-    return (
-        <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent>
-                <DialogHeader>
-                    <DialogTitle>{t('header')}</DialogTitle>
-                </DialogHeader>
-                <TextP value={t('description')} />
-                <DialogFooter>
-                    <DialogClose asChild>
-                        <Button variant="ghost">{t('ctaSecondary')}</Button>
-                    </DialogClose>
-                    <ModalCta id={id} onClose={onClose} isOpen={isOpen} />
-                </DialogFooter>
-            </DialogContent>
-        </Dialog>
-    );
-};
+export const DeleteWorkoutModal: FC<Props> = ({ id, onClose, isOpen }) => (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+        <DialogContent>
+            <DialogHeader>
+                <DialogTitle>Workout Deletion</DialogTitle>
+            </DialogHeader>
+            <TextP>Are you sure you want to delete this workout?</TextP>
+            <DialogFooter>
+                <DialogClose asChild>
+                    <Button variant="ghost">Cancel</Button>
+                </DialogClose>
+                <ModalCta id={id} onClose={onClose} isOpen={isOpen} />
+            </DialogFooter>
+        </DialogContent>
+    </Dialog>
+);

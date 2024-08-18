@@ -2,7 +2,6 @@
 
 import type { Dispatch, FC, SetStateAction } from 'react';
 import { useState } from 'react';
-import { useTranslations } from 'next-intl';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import type { WorkoutPreview } from '@/interfaces';
@@ -19,7 +18,6 @@ export const FormsPanel: FC<Props> = ({ setPreviewData }) => {
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [isOpen, setIsOpen] = useState(false);
     const [hasFilesSelected, setHasFilesSelected] = useState(false);
-    const t = useTranslations('Dashboard.WorkoutUpload.Forms');
 
     const onTabSelection = () => {
         if (selectedIndex === 0 && hasFilesSelected) {
@@ -34,10 +32,10 @@ export const FormsPanel: FC<Props> = ({ setPreviewData }) => {
             <Tabs defaultValue="file">
                 <TabsList className="grid w-full grid-cols-2">
                     <TabsTrigger value="file" onClick={onTabSelection}>
-                        {t('tabUploadFile')}
+                        Upload File
                     </TabsTrigger>
                     <TabsTrigger value="manual" onClick={onTabSelection}>
-                        {t('tabAddData')}
+                        Add Data Manually
                     </TabsTrigger>
                 </TabsList>
                 <TabsContent value="file">

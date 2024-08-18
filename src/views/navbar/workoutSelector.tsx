@@ -1,7 +1,8 @@
 'use client';
 
 import { FC } from 'react';
-import { useTranslations } from 'next-intl';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 import { Button } from '@/components';
 import {
@@ -12,7 +13,6 @@ import {
     navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu';
 import { WorkoutTypes } from '@/interfaces';
-import { Link, usePathname } from '@/navigation';
 import { cn, getWorkoutTypeFromPathname } from '@/utils/helpers';
 
 interface Props {
@@ -23,7 +23,6 @@ interface Props {
 export const WorkoutSelector: FC<Props> = ({ onClose, isMobile }) => {
     const pathname = usePathname();
     const currentWorkoutType = getWorkoutTypeFromPathname(pathname);
-    const t = useTranslations('Dashboard');
     const workoutOptions = Object.values(WorkoutTypes);
 
     if (isMobile) {
@@ -41,7 +40,7 @@ export const WorkoutSelector: FC<Props> = ({ onClose, isMobile }) => {
                                 href={workoutType}
                                 onClick={() => onClose && onClose()}
                             >
-                                {t('workoutType', { workoutType })}
+                                {workoutType}
                             </Link>
                         </Button>
                     </li>
@@ -66,7 +65,7 @@ export const WorkoutSelector: FC<Props> = ({ onClose, isMobile }) => {
                                     }
                                 )}
                             >
-                                {t('workoutType', { workoutType })}
+                                {workoutType}
                             </NavigationMenuLink>
                         </Link>
                     </NavigationMenuItem>

@@ -2,7 +2,6 @@ import type { FC } from 'react';
 import { useState } from 'react';
 import { CollapsibleContent } from '@radix-ui/react-collapsible';
 import { ChevronDownIcon } from '@radix-ui/react-icons';
-import { useLocale, useTranslations } from 'next-intl';
 
 import { Button, Collapsible, H2 } from '@/components';
 import { useIsBreakpoint } from '@/hooks';
@@ -35,14 +34,6 @@ export const WorkoutListHeader: FC<Props> = ({
 }) => {
     const [isOpen, setIsOpen] = useState(false);
     const isMobileOrTabled = useIsBreakpoint('md');
-    const t = useTranslations('Dashboard.WorkoutList.Header');
-    const locale = useLocale();
-
-    const headers = {
-        allWorkouts: t('allWorkouts'),
-        currentMonthWorkouts: t('currentMonthWorkouts'),
-        generic: t('generic'),
-    };
 
     const toggleProps = { isAll, setIsAll, setPageNo };
     const filterProps = { filterBy, setFilterBy };
@@ -51,19 +42,13 @@ export const WorkoutListHeader: FC<Props> = ({
         <header className="w-full">
             <div className="flex justify-between">
                 <H2 className="text-lg">
-                    {getWorkoutListHeading(
-                        headerData,
-                        isAll,
-                        headers,
-                        locale,
-                        isMobileOrTabled
-                    )}
+                    {getWorkoutListHeading(headerData, isAll, isMobileOrTabled)}
                 </H2>
                 <Button
                     onClick={() => setIsOpen(prev => !prev)}
                     className="sm:hidden"
                 >
-                    {t('filtering.cta')}
+                    Filter
                     <ChevronDownIcon
                         className={cn(
                             'ml-2 h-6 w-6 transform duration-300 ease-in-out',

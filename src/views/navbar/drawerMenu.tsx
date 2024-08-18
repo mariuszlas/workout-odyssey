@@ -1,14 +1,13 @@
 import type { FC } from 'react';
 import { SignInButton, SignUpButton } from '@clerk/nextjs';
 import { PlusIcon } from '@radix-ui/react-icons';
-import { useTranslations } from 'next-intl';
 
 import {
     Button,
     CloseButton,
     Drawer,
+    H2,
     Separator,
-    TextP,
     ThemeSwitch,
 } from '@/components';
 import { DrawerProps } from '@/components';
@@ -29,71 +28,62 @@ export const DrawerMenu: FC<Props> = ({
     onClose,
     showLoginBtn,
     showSignupBtn,
-}) => {
-    const t = useTranslations('Navbar');
+}) => (
+    <Drawer isOpen={isOpen} onClose={onClose} size="sm">
+        <div className="flex w-full items-center justify-between p-4 pl-8">
+            <H2 className="text-xl">Main Menu</H2>
+            <CloseButton onClick={onClose} />
+        </div>
+        <Separator />
+        <ul className="w-full p-4" role="menu">
+            <ThemeSwitch isMobile />
 
-    return (
-        <Drawer isOpen={isOpen} onClose={onClose} size="sm">
-            <div className="flex w-full items-center justify-between p-4 pl-8">
-                <TextP
-                    className="text-xl font-semibold"
-                    value={t('mainMenu')}
-                />
-                <CloseButton onClick={onClose} />
-            </div>
-            <Separator />
-            <ul className="w-full p-4" role="menu">
-                <ThemeSwitch isMobile />
+            {isProtected && (
+                <>
+                    <li>
+                        <Button
+                            variant="menuitem"
+                            role="menuitem"
+                            onClick={() => {
+                                onClose();
+                                openWorkoutUploadModal();
+                            }}
+                        >
+                            Add Workout
+                            <PlusIcon className="h-6 w-6" />
+                        </Button>
+                    </li>
+                    <Separator />
+                    <WorkoutSelector isMobile onClose={onClose} />
+                </>
+            )}
 
-                {isProtected && (
-                    <>
-                        <li>
+            {!isProtected && (
+                <>
+                    {showLoginBtn && (
+                        <SignInButton forceRedirectUrl="/dashboard/running">
                             <Button
                                 variant="menuitem"
                                 role="menuitem"
-                                onClick={() => {
-                                    onClose();
-                                    openWorkoutUploadModal();
-                                }}
+                                onClick={onClose}
                             >
-                                {t('newWorkoutCta')}
-                                <PlusIcon className="h-6 w-6" />
+                                <a>Sign In</a>
                             </Button>
-                        </li>
-                        <Separator />
-                        <WorkoutSelector isMobile onClose={onClose} />
-                    </>
-                )}
-
-                {!isProtected && (
-                    <>
-                        {showLoginBtn && (
-                            <SignInButton
-                                forceRedirectUrl={'/dashboard/running'}
+                        </SignInButton>
+                    )}
+                    {showSignupBtn && (
+                        <SignUpButton>
+                            <Button
+                                variant="menuitem"
+                                role="menuitem"
+                                onClick={onClose}
                             >
-                                <Button
-                                    variant="menuitem"
-                                    role="menuitem"
-                                    onClick={onClose}
-                                >
-                                    <a>{t('loginCta')}</a>
-                                </Button>
-                            </SignInButton>
-                        )}
-                        {showSignupBtn && (
-                            <SignUpButton>
-                                <Button
-                                    variant="menuitem"
-                                    role="menuitem"
-                                    onClick={onClose}
-                                >
-                                    <a>{t('signupCta')}</a>
-                                </Button>
-                            </SignUpButton>
-                        )}
-                    </>
-                )}
-            </ul>
-        </Drawer>
-    );
-};
+                                <a>Create Account</a>
+                            </Button>
+                        </SignUpButton>
+                    )}
+                </>
+            )}
+        </ul>
+    </Drawer>
+);

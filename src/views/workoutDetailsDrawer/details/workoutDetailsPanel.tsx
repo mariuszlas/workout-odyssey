@@ -1,5 +1,4 @@
 import type { FC } from 'react';
-import { useTranslations } from 'next-intl';
 
 import type { Workout } from '@/interfaces';
 import { WorkoutTypes } from '@/interfaces';
@@ -10,21 +9,16 @@ import { LineItem } from './workoutDetailsLineItem';
 
 export const WorkoutDetailsPanel: FC<{ data: Workout }> = ({ data }) => {
     const { units } = useUI();
-    const t = useTranslations('Dashboard');
 
     return (
         <ul className="border-base-content rounded-lg border border-opacity-20">
+            <LineItem title="Activity" value={data.type} label={data.label} />
             <LineItem
-                title={t('WorkoutDetails.activity')}
-                value={t('workoutType', { workoutType: data.type })}
-                label={data.label}
-            />
-            <LineItem
-                title={t('WorkoutDetails.distance')}
+                title="Distance"
                 value={`${data.distance.toFixed(1)} ${units.km}`}
             />
             <LineItem
-                title={t('WorkoutDetails.date')}
+                title="Start Time"
                 value={getDateTimeTZ(
                     data.timestamp,
                     data.timezone,
@@ -32,27 +26,21 @@ export const WorkoutDetailsPanel: FC<{ data: Workout }> = ({ data }) => {
                 )}
             />
             <LineItem
-                title={t('WorkoutDetails.duration')}
+                title="Total Duration"
                 value={formatDuration(data.duration)}
             />
             {data.type === WorkoutTypes.CYCLING ? (
                 <LineItem
-                    title={t('WorkoutDetails.speed')}
+                    title="Average Speed"
                     value={`${data.speed.toFixed(1)} ${units.kmh}`}
                 />
             ) : (
                 <LineItem
-                    title={t('WorkoutDetails.pace')}
+                    title="Average Pace"
                     value={`${formatPace(data.pace)} /${units.km}`}
                 />
             )}
-            {data.notes && (
-                <LineItem
-                    title={t('WorkoutDetails.notes')}
-                    value={data.notes}
-                    notes
-                />
-            )}
+            {data.notes && <LineItem title="Notes" value={data.notes} notes />}
         </ul>
     );
 };

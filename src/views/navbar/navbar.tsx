@@ -4,11 +4,10 @@ import type { FC } from 'react';
 import { useState } from 'react';
 import { SignInButton, SignUpButton, UserButton } from '@clerk/nextjs';
 import { HamburgerMenuIcon, PlusIcon, StarIcon } from '@radix-ui/react-icons';
-import { useTranslations } from 'next-intl';
+import { usePathname } from 'next/navigation';
 
 import { Button, IconButton, Logo, ThemeSwitch } from '@/components';
 import { useIsBreakpoint } from '@/hooks';
-import { usePathname } from '@/navigation';
 
 import { BestResultsModal } from '../bestResultsModal';
 import { WorkoutUploadModal } from '../workoutUploadModal';
@@ -24,7 +23,6 @@ export const NavBar: FC<{ isProtected?: boolean }> = ({
     const [isWorkoutUploadModalOpen, setIsWorkoutUploadModalOpen] =
         useState(false);
     const [isBestResultsModalOpen, setIsBestResultsModalOpen] = useState(false);
-    const t = useTranslations('Navbar');
     const isMobile = useIsBreakpoint('md');
 
     const pathname = usePathname();
@@ -45,7 +43,7 @@ export const NavBar: FC<{ isProtected?: boolean }> = ({
                         <div className="md:hidden">
                             <IconButton
                                 onClick={() => setIsDrawerMenuOpen(true)}
-                                aria-label={t('mainMenu')}
+                                aria-label="Main Menu"
                             >
                                 <HamburgerMenuIcon className="h-6 w-6" />
                             </IconButton>
@@ -72,7 +70,7 @@ export const NavBar: FC<{ isProtected?: boolean }> = ({
                         {isProtected ? (
                             <>
                                 <IconButton
-                                    aria-label={t('bestResults')}
+                                    aria-label="Best Results"
                                     onClick={() =>
                                         setIsBestResultsModalOpen(true)
                                     }
@@ -91,7 +89,7 @@ export const NavBar: FC<{ isProtected?: boolean }> = ({
                                             asChild
                                             className="hidden cursor-pointer md:inline-flex"
                                         >
-                                            <a>{t('loginCta')}</a>
+                                            <a>Sign In</a>
                                         </Button>
                                     </SignInButton>
                                 )}
@@ -101,7 +99,7 @@ export const NavBar: FC<{ isProtected?: boolean }> = ({
                                             asChild
                                             className="hidden cursor-pointer md:inline-flex"
                                         >
-                                            <a>{t('signupCta')}</a>
+                                            <a>Sign Out</a>
                                         </Button>
                                     </SignUpButton>
                                 )}

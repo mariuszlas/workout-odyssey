@@ -1,5 +1,4 @@
 import type { FC } from 'react';
-import { useTranslations } from 'next-intl';
 
 import {
     Select,
@@ -34,17 +33,21 @@ export const enum SortOptions {
 }
 
 export const Sorting: FC<SortingProps> = ({ setSortBy, sortBy }) => {
-    const t = useTranslations('Dashboard.WorkoutList.Header.sorting');
-
     const SortOptionsMap = [
-        { val: SortOptions.DATE, text: t('dateDesc') },
-        { val: SortOptions.DATE_REVERSE, text: t('dateAsc') },
-        { val: SortOptions.DISTANCE, text: t('distanceDesc') },
-        { val: SortOptions.DISTANCE_REVERSE, text: t('distanceAsc') },
-        { val: SortOptions.DURATION, text: t('durationDesc') },
-        { val: SortOptions.DURATION_REVERSE, text: t('durationAsc') },
-        { val: SortOptions.PACE, text: t('paceDesc') },
-        { val: SortOptions.PACE_REVERSE, text: t('paceAsc') },
+        { val: SortOptions.DATE, text: 'Date - earliest first' },
+        { val: SortOptions.DATE_REVERSE, text: 'Date - oldest first' },
+        { val: SortOptions.DISTANCE, text: 'Distance - longest first' },
+        {
+            val: SortOptions.DISTANCE_REVERSE,
+            text: 'Distance - shortest first',
+        },
+        { val: SortOptions.DURATION, text: 'Duration - longest first' },
+        {
+            val: SortOptions.DURATION_REVERSE,
+            text: 'Duration - shortest first',
+        },
+        { val: SortOptions.PACE, text: 'Pace - slowest first' },
+        { val: SortOptions.PACE_REVERSE, text: 'Pace - fastest first' },
     ];
 
     return (

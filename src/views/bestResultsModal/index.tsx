@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { useTranslations } from 'next-intl';
+import { usePathname } from 'next/navigation';
 import useSWR from 'swr';
 
 import {
@@ -14,7 +14,6 @@ import {
     Skeleton,
 } from '@/components';
 import { BestResults as TBestResults, WorkoutTypes } from '@/interfaces';
-import { usePathname } from '@/navigation';
 import { useUI } from '@/providers';
 import { getWorkoutTypeFromPathname } from '@/utils/helpers';
 
@@ -63,7 +62,6 @@ const getAllKeys = (workoutType: WorkoutTypes, translations: Translations) => {
 export const BestResultsModal: FC<ModalProps> = ({ isOpen, onClose }) => {
     const pathname = usePathname();
     const { userId, units } = useUI();
-    const t = useTranslations('Dashboard');
     const workoutType = getWorkoutTypeFromPathname(pathname);
 
     const { data, isLoading } = useSWR<TBestResults>(
@@ -71,8 +69,8 @@ export const BestResultsModal: FC<ModalProps> = ({ isOpen, onClose }) => {
     );
 
     const translations = {
-        halfMarathon: t('BestResults.halfMarathon'),
-        marathon: t('BestResults.marathon'),
+        halfMarathon: 'Half Marathon',
+        marathon: 'Marathon',
     };
     const keys = getAllKeys(workoutType, translations);
 
@@ -80,9 +78,7 @@ export const BestResultsModal: FC<ModalProps> = ({ isOpen, onClose }) => {
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>
-                        {`${t('BestResults.header')} ${t('workoutType', { workoutType })}`}
-                    </DialogTitle>
+                    <DialogTitle>Best Results for {workoutType}</DialogTitle>
                 </DialogHeader>
                 <ul
                     id="best-results"
@@ -98,13 +94,13 @@ export const BestResultsModal: FC<ModalProps> = ({ isOpen, onClose }) => {
                                   data={data?.[key]}
                                   header={value}
                                   units={units}
-                                  noDataText={t('BestResults.noData')}
+                                  noDataText="No data"
                               />
                           ))}
                 </ul>
                 <DialogFooter>
                     <DialogClose asChild>
-                        <Button>{t('BestResults.cta')}</Button>
+                        <Button>Close</Button>
                     </DialogClose>
                 </DialogFooter>
             </DialogContent>

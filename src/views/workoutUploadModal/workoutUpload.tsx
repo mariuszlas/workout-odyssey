@@ -1,5 +1,4 @@
 import { FC, useState } from 'react';
-import { useTranslations } from 'next-intl';
 
 import { DialogHeader, DialogTitle } from '@/components';
 import type { Workout, WorkoutPreview } from '@/interfaces';
@@ -15,17 +14,16 @@ interface Props {
 
 export const WorkoutUpload: FC<Props> = ({ workout, onClose }) => {
     const [previewData, setPreviewData] = useState<WorkoutPreview>([]);
-    const t = useTranslations('Dashboard.WorkoutUpload');
 
     return (
         <>
             <DialogHeader>
                 <DialogTitle>
                     {previewData.length
-                        ? t('Preview.header')
+                        ? 'Data Preview'
                         : workout
-                          ? t('Forms.editHeader')
-                          : t('Forms.uploadHeader')}
+                          ? 'Edit Workout Data'
+                          : 'Workout Upload'}
                 </DialogTitle>
             </DialogHeader>
 

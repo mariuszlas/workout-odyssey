@@ -1,7 +1,6 @@
 'use client';
 
 import { type FC } from 'react';
-import { useTranslations } from 'next-intl';
 
 import {
     Alert,
@@ -23,30 +22,25 @@ interface Props {
 
 export const FoundData: FC<Props> = ({ data, foundData }) => {
     const { units } = useUI();
-    const t = useTranslations('Dashboard');
 
     return (
         <>
             <Separator />
             <Alert variant="warning">
                 <AlertDescription>
-                    {t('WorkoutUpload.Preview.alertDetails', {
-                        count: foundData.length,
-                        type: t('workoutType', {
-                            workoutType: data.type,
-                        }),
-                        date: getDateTimeTZ(
-                            data.timestamp,
-                            data.timezone,
-                            true
-                        ),
-                    })}
+                    There{' '}
+                    {foundData.length === 0
+                        ? 'are no'
+                        : foundData.length > 1
+                          ? 'are'
+                          : 'is'}{' '}
+                    {foundData.length === 0 ? '' : foundData.length}{' '}
+                    {foundData.length > 1 ? 'records' : 'record'} for{' '}
+                    {data.type} on{' '}
+                    {getDateTimeTZ(data.timestamp, data.timezone, true)}
                 </AlertDescription>
             </Alert>
-            <TextP
-                className="font-medium"
-                value={t('WorkoutUpload.Preview.foundDataHeader')}
-            />
+            <TextP className="font-medium">Existing Data</TextP>
             <ul className="border-base-content rounded-lg border border-opacity-20">
                 {foundData.map((workout, idx) => (
                     <li

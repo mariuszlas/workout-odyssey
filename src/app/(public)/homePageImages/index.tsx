@@ -16,30 +16,36 @@ import listLight from './img/list-light.webp';
 import statsDark from './img/stats-dark.webp';
 import statsLight from './img/stats-light.webp';
 
-type Props = { subheaders: { title: string; desc: string; alt: string }[] };
-
-export default function HomePageImages({ subheaders }: Props) {
+export default function HomePageImages() {
     const [theme] = useTheme();
 
     const images = [
         {
             img: theme === Theme.DARK ? chartDark : chartLight,
-            ...subheaders[0],
+            title: 'Visualize',
+            desc: 'Track your workouts and view the graphical summary',
+            alt: 'Chart section screenshot',
             w: 750,
         },
         {
             img: theme === Theme.DARK ? statsDark : statsLight,
-            ...subheaders[1],
+            title: 'Statistics',
+            desc: 'Monitor various statistics on monthly or year basis or view all of them',
+            alt: 'Statistics section screenshot',
             w: 750,
         },
         {
             img: theme === Theme.DARK ? listDark : listLight,
-            ...subheaders[2],
+            title: 'View All',
+            desc: 'Get more insight about your workouts in a detailed view',
+            alt: 'Workout list screenshot',
             w: 600,
         },
         {
             img: theme === Theme.DARK ? bestResultsDark : bestResultsLight,
-            ...subheaders[3],
+            title: 'Best Results',
+            desc: 'View the your best workouts',
+            alt: 'Best results screenshot',
             w: 450,
         },
     ];
@@ -55,10 +61,9 @@ export default function HomePageImages({ subheaders }: Props) {
                     )}
                 >
                     <header className="flex flex-col gap-1 lg:max-w-xs">
-                        <H2 value={title} />
-                        <TextP value={desc} />
+                        <H2>{title}</H2>
+                        <TextP>{desc}</TextP>
                     </header>
-
                     <Image
                         src={img}
                         width={w}

@@ -1,6 +1,5 @@
 import type { Dispatch, DragEvent, FC, SetStateAction } from 'react';
 import { useRef, useState } from 'react';
-import { useTranslations } from 'next-intl';
 
 import {
     Alert,
@@ -25,7 +24,6 @@ interface Props {
 const ACCEPTED_FILE_TYPE = '.tcx';
 
 export const FilePicker: FC<Props> = ({ setWorkouts }) => {
-    const t = useTranslations('Dashboard.WorkoutUpload.Forms.files');
     const [error, setError] = useState<string | null>(null);
     const ref = useRef<HTMLInputElement>(null);
 
@@ -49,9 +47,9 @@ export const FilePicker: FC<Props> = ({ setWorkouts }) => {
             setWorkouts(state);
         } catch (e) {
             if (e instanceof FileSizeError) {
-                setError(t('errors.demoFileSize'));
+                setError('Maximum file size for demo users is 1 MB');
             } else {
-                setError(t('errors.generic'));
+                setError('Could not parse the file');
             }
             console.error(getMsgFromError(e));
         }
@@ -87,8 +85,11 @@ export const FilePicker: FC<Props> = ({ setWorkouts }) => {
                 </Alert>
             )}
             <Alert variant="info">
-                <AlertTitle>{t('fileTypeTitle')}</AlertTitle>
-                <AlertDescription>{t('fileTypeInfo')}</AlertDescription>
+                <AlertTitle>Supported file types</AlertTitle>
+                <AlertDescription>
+                    Only tsx files exported from the Coros Pace app are
+                    currently supported
+                </AlertDescription>
             </Alert>
             <div
                 className="flex flex-col items-center gap-4 rounded-lg border border-primary bg-teal-50 p-4"
@@ -98,8 +99,8 @@ export const FilePicker: FC<Props> = ({ setWorkouts }) => {
                 }}
             >
                 <FileUpladIcon className="h-8 w-8 text-primary" />
-                <TextS>{t('description')}</TextS>
-                <Button onClick={handleBrowseFilesBtn}>{t('cta')}</Button>
+                <TextS>Drag and drop your files here or</TextS>
+                <Button onClick={handleBrowseFilesBtn}>Browse Files</Button>
                 <input
                     type="file"
                     ref={ref}

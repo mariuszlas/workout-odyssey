@@ -2,7 +2,6 @@
 
 import type { Dispatch, FC, SetStateAction } from 'react';
 import { useState } from 'react';
-import { useTranslations } from 'next-intl';
 
 import { TextP } from '@/components';
 import type { NewWorkout } from '@/interfaces';
@@ -17,10 +16,9 @@ interface Props {
 export const FileList: FC<Props> = ({ setWorkouts, workouts }) => {
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [selectedWorkoutId, setSelectedWorkoutId] = useState<string>();
-    const t = useTranslations('Dashboard.WorkoutUpload.Forms.files');
 
     if (!workouts.length) {
-        return <TextP className="italic" value={t('noFileSelected')} />;
+        return <TextP className="italic">No files selected</TextP>;
     }
 
     const selectedWorkout =

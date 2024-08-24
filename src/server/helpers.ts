@@ -2,7 +2,7 @@ import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { ZodError } from 'zod';
 
-import { Cookie, ToggleState } from '@/interfaces';
+import { ToggleState } from '@/interfaces';
 import { getMsgFromError } from '@/utils/helpers';
 
 import { formatOtherError, formatZodError } from './validation';
@@ -22,7 +22,7 @@ export const getAppConfig = async () => {
 };
 
 export const setCookie = async (
-    name: Cookie,
+    name: string,
     value: string,
     exp: number,
     httpOnly = true

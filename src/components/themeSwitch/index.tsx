@@ -1,44 +1,77 @@
 import type { FC } from 'react';
+import { useTheme } from 'next-themes';
 
 import { Theme } from '@/interfaces';
-import { useTheme } from '@/providers';
 
-import { MoonIcon, SunIcon } from '../icon';
-import { Button, IconButton } from '..';
+import {
+    Button,
+    Collapsible,
+    CollapsibleContent,
+    CollapsibleTrigger,
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+    MoonIcon,
+    SunIcon,
+} from '..';
 
 export const ThemeSwitch: FC<{ isMobile?: boolean }> = ({ isMobile }) => {
-    const [theme, setTheme] = useTheme();
-    const isDark = (theme: Theme | null) => theme === Theme.DARK;
+    const { setTheme } = useTheme();
 
-    const toggleTheme = () => {
-        setTheme(prevTheme =>
-            prevTheme === Theme.LIGHT ? Theme.DARK : Theme.LIGHT
-        );
-    };
+    const themes = [
+        { name: 'Light', func: () => setTheme(Theme.LIGHT) },
+        { name: 'Dark', func: () => setTheme(Theme.DARK) },
+        { name: 'System', func: () => setTheme(Theme.SYSTEM) },
+    ];
+
+    const btnContent = (
+        <>
+            <SunIcon className="rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+            <MoonIcon className="absolute rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+            <span className="sr-only">Toggle theme</span>
+        </>
+    );
 
     if (isMobile) {
         return (
-            <li>
-                <Button
-                    variant="menuitem"
-                    role="menuitem"
-                    onClick={toggleTheme}
-                    aria-label="Theme switch"
-                >
-                    {isDark(theme) ? 'Toggle Light Mode' : 'Toggle Dark Mode'}
-                    {isDark(theme) ? <SunIcon /> : <MoonIcon />}
-                </Button>
-            </li>
+            <Collapsible>
+                <CollapsibleTrigger asChild>
+                    <Button variant="menuitem" role="menuitem">
+                        Select theme
+                        {btnContent}
+                    </Button>
+                </CollapsibleTrigger>
+                <CollapsibleContent className="pl-6">
+                    {themes.map(({ name, func }) => (
+                        <Button
+                            variant="menuitem"
+                            role="menuitem"
+                            onClick={func}
+                            key={name}
+                        >
+                            {name}
+                        </Button>
+                    ))}
+                </CollapsibleContent>
+            </Collapsible>
         );
     }
 
     return (
-        <IconButton
-            className="hidden md:inline-flex"
-            aria-label="Theme switch"
-            onClick={toggleTheme}
-        >
-            {isDark(theme) ? <SunIcon /> : <MoonIcon />}
-        </IconButton>
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild className="hidden md:inline-flex">
+                <Button variant="ghost" size="icon">
+                    {btnContent}
+                </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+                {themes.map(({ name, func }) => (
+                    <DropdownMenuItem key={name} onClick={func}>
+                        {name}
+                    </DropdownMenuItem>
+                ))}
+            </DropdownMenuContent>
+        </DropdownMenu>
     );
 };

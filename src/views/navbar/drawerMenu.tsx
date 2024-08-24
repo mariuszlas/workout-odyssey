@@ -1,6 +1,5 @@
 import type { FC } from 'react';
 import { SignInButton, SignUpButton } from '@clerk/nextjs';
-import { PlusIcon } from '@radix-ui/react-icons';
 
 import {
     Button,
@@ -17,6 +16,7 @@ import { WorkoutSelector } from './workoutSelector';
 interface Props extends DrawerProps {
     isProtected: boolean;
     openWorkoutUploadModal: () => void;
+    openBestResultsModalOpen: () => void;
     showLoginBtn: boolean;
     showSignupBtn: boolean;
 }
@@ -25,6 +25,7 @@ export const DrawerMenu: FC<Props> = ({
     isProtected,
     isOpen,
     openWorkoutUploadModal,
+    openBestResultsModalOpen,
     onClose,
     showLoginBtn,
     showSignupBtn,
@@ -50,7 +51,18 @@ export const DrawerMenu: FC<Props> = ({
                             }}
                         >
                             Add Workout
-                            <PlusIcon className="h-6 w-6" />
+                        </Button>
+                    </li>
+                    <li>
+                        <Button
+                            variant="menuitem"
+                            role="menuitem"
+                            onClick={() => {
+                                onClose();
+                                openBestResultsModalOpen();
+                            }}
+                        >
+                            Best Results
                         </Button>
                     </li>
                     <Separator />

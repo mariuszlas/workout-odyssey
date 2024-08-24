@@ -1,16 +1,16 @@
 import type { FC } from 'react';
 import Link from 'next/link';
+import { useTheme } from 'next-themes';
 
 import { Theme } from '@/interfaces';
-import { useTheme } from '@/providers';
 import { cn } from '@/utils/helpers';
 
 const LOGO_TEXT_1 = 'Workout';
 const LOGO_TEXT_2 = 'Odyssey';
 
 export const Logo: FC<{ isProtected: boolean }> = ({ isProtected }) => {
-    const [theme] = useTheme();
-    const isDark = theme === Theme.DARK;
+    const { resolvedTheme } = useTheme();
+    const isDark = resolvedTheme === Theme.DARK;
 
     const content = (
         <div className="inline" data-testid="logo">

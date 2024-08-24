@@ -87,7 +87,10 @@ export const BestResultsModal: FC<ModalProps> = ({ isOpen, onClose }) => {
                         Best Results for {workoutType}
                     </DialogDescription>
                 </VisuallyHidden>
-                <ul id="best-results" className="flex w-full flex-col gap-2">
+                <ul
+                    id="best-results"
+                    className="flex w-full flex-col gap-2 pt-4"
+                >
                     {isLoading
                         ? keys.map(({ key, value }) => (
                               <Skeleton key={key + value} h={14} />

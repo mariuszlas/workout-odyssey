@@ -3,7 +3,7 @@ import { clsx } from 'clsx';
 import { notFound } from 'next/navigation';
 import { twMerge } from 'tailwind-merge';
 
-import { Cookie, Theme, WorkoutTypes } from '@/interfaces';
+import { WorkoutTypes } from '@/interfaces';
 import dayjs from '@/utils/extended-dayjs';
 
 export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
@@ -12,9 +12,6 @@ export const isValidWorkoutType = (
     type: string | null | undefined
 ): type is WorkoutTypes =>
     Boolean(type) && Object.values(WorkoutTypes).includes(type as WorkoutTypes);
-
-export const isValidTheme = (type: string | null | undefined): type is Theme =>
-    Boolean(type) && Object.values(Theme).includes(type as Theme);
 
 export const getWorkoutTypeFromPathname = (pathname: string) => {
     const workoutType = pathname.split('/').at(-1);
@@ -38,7 +35,7 @@ const isErrorWithMessage = (e: unknown): e is ErrorWithMessage =>
 export const getMsgFromError = (e: unknown) =>
     isErrorWithMessage(e) ? e.message : 'Could not get error details';
 
-export const getClientCookie = (key: Cookie) =>
+export const getClientCookie = (key: string) =>
     document
         ? document.cookie
               .split('; ')

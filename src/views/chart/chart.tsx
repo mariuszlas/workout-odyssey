@@ -3,10 +3,11 @@
 import type { FC, MouseEvent } from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Chart from 'chart.js/auto';
+import { useTheme } from 'next-themes';
 
 import { TextP } from '@/components';
 import { WorkoutsDashboard } from '@/interfaces';
-import { useTheme, useUI } from '@/providers';
+import { useUI } from '@/providers';
 
 import {
     destroyChart,
@@ -26,8 +27,7 @@ export const BarChart: FC<{ dashboard: WorkoutsDashboard }> = ({
     dashboard,
 }) => {
     const { setSecondaryStat, units, year } = useUI();
-    const [theme] = useTheme();
-
+    const { resolvedTheme } = useTheme();
     const ref = useRef<HTMLCanvasElement>(null);
     const [chart, setChart] = useState<BarChartT>();
 
@@ -55,7 +55,7 @@ export const BarChart: FC<{ dashboard: WorkoutsDashboard }> = ({
 
         const chartConfig = getChartConfig(
             chartData,
-            getChartThemeTokens(theme),
+            getChartThemeTokens(resolvedTheme),
             units
         );
         const newChart = new Chart(ref.current, chartConfig);
@@ -65,8 +65,8 @@ export const BarChart: FC<{ dashboard: WorkoutsDashboard }> = ({
     }, []);
 
     useEffect(() => {
-        updateChartTheme(chart, getChartThemeTokens(theme), units);
-    }, [theme]);
+        updateChartTheme(chart, getChartThemeTokens(resolvedTheme), units);
+    }, [resolvedTheme]);
 
     const fallbackContent = <TextP>Workouts chart</TextP>;
 

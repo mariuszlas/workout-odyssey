@@ -42,7 +42,7 @@ export default async function Dashboard({ params }: Params) {
     const { userId } = auth();
 
     return (
-        <div className="max-w-8xl mx-auto grid w-full grid-cols-12 gap-4 p-4">
+        <div className="mx-auto grid w-full max-w-8xl grid-cols-12 gap-4 p-4">
             <div className="col-span-12 flex flex-col gap-4 lg:col-span-6 xl:col-span-7">
                 <Suspense
                     fallback={

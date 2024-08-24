@@ -7,7 +7,7 @@ export const Footer = () => (
         data-testid="footer"
         className="border-t-base-content border-t border-opacity-20 py-3"
     >
-        <div className="max-w-8xl mx-auto flex w-full items-center justify-between px-4 sm:px-6">
+        <div className="mx-auto flex w-full max-w-8xl items-center justify-between px-4 sm:px-6">
             <TextP data-testid="copyright-note">© 2024 Mariusz Las</TextP>
             <IconButton asChild>
                 <a

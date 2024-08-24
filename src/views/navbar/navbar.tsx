@@ -37,7 +37,7 @@ export const NavBar: FC<{ isProtected?: boolean }> = ({
     return (
         <>
             <header className="border-b-base-content bg-base-100 sticky top-0 z-50 w-full border-b border-opacity-20 bg-opacity-30 py-2 shadow-sm backdrop-blur-lg">
-                <nav className="max-w-8xl mx-auto flex w-full items-center justify-between px-4 sm:px-6">
+                <nav className="mx-auto flex w-full max-w-8xl items-center justify-between px-4 sm:px-6">
                     <div className="flex items-center gap-2">
                         {!isMobile && <Logo isProtected={isProtected} />}
                         <div className="md:hidden">
@@ -70,6 +70,7 @@ export const NavBar: FC<{ isProtected?: boolean }> = ({
                         {isProtected ? (
                             <>
                                 <IconButton
+                                    className="hidden md:flex"
                                     aria-label="Best Results"
                                     onClick={() =>
                                         setIsBestResultsModalOpen(true)
@@ -116,6 +117,7 @@ export const NavBar: FC<{ isProtected?: boolean }> = ({
                 showLoginBtn={showLoginBtn}
                 showSignupBtn={showSignupBtn}
                 openWorkoutUploadModal={() => setIsWorkoutUploadModalOpen(true)}
+                openBestResultsModalOpen={() => setIsBestResultsModalOpen(true)}
             />
 
             {isProtected && (

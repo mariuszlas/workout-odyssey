@@ -44,6 +44,12 @@ export {
     DialogHeader,
     DialogTitle,
 } from './ui/dialog';
+export {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from './ui/dropdown-menu';
 export { H1, H2, H3 } from './ui/heading';
 export { IconButton } from './ui/iconButton';
 export { Input } from './ui/input';

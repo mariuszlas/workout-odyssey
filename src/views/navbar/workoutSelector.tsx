@@ -26,31 +26,27 @@ export const WorkoutSelector: FC<Props> = ({ onClose, isMobile }) => {
     const workoutOptions = Object.values(WorkoutTypes);
 
     if (isMobile) {
-        return (
-            <>
-                {workoutOptions.map(workoutType => (
-                    <li key={workoutType.toString()}>
-                        <Button
-                            asChild
-                            variant="ghost"
-                            className="w-full justify-start"
-                        >
-                            <Link
-                                className="capitalize"
-                                href={workoutType}
-                                onClick={() => onClose && onClose()}
-                            >
-                                {workoutType}
-                            </Link>
-                        </Button>
-                    </li>
-                ))}
-            </>
-        );
+        return workoutOptions.map(workoutType => (
+            <li key={workoutType.toString()}>
+                <Button
+                    asChild
+                    variant="ghost"
+                    className="w-full justify-start"
+                >
+                    <Link
+                        className="capitalize"
+                        href={workoutType}
+                        onClick={() => onClose && onClose()}
+                    >
+                        {workoutType}
+                    </Link>
+                </Button>
+            </li>
+        ));
     }
 
     return (
-        <NavigationMenu className="hidden gap-4 md:flex">
+        <NavigationMenu className="hidden md:flex">
             <NavigationMenuList>
                 {workoutOptions.map((workoutType, idx) => (
                     <NavigationMenuItem key={idx}>

@@ -2,13 +2,14 @@ import { ClerkProvider } from '@clerk/nextjs';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Metadata } from 'next';
-import { cookies } from 'next/headers';
+import { Inter } from 'next/font/google';
+import { ThemeProvider } from 'next-themes';
 
 import { GA4Script, Toaster } from '@/components';
-import { Children, Cookie, Theme } from '@/interfaces';
-import { ConfigProvider, ThemeProvider } from '@/providers';
+import { Children } from '@/interfaces';
+import { ConfigProvider } from '@/providers';
 import { getAppConfig } from '@/server/helpers';
-import { isValidTheme } from '@/utils/helpers';
+import { cn } from '@/utils/helpers';
 
 import './globals.css';
 
@@ -16,21 +17,28 @@ export const metadata: Metadata = {
     metadataBase: new URL('https://workoutodyssey.com'),
 };
 
+const inter = Inter({ subsets: ['latin'], display: 'swap' });
+
 export default async function RootLayout({ children }: Children) {
     const config = await getAppConfig();
-    const themeCookie = cookies().get(Cookie.THEME)?.value;
-    const theme = isValidTheme(themeCookie) ? themeCookie : Theme.LIGHT;
 
     return (
         <ClerkProvider>
-            <ThemeProvider specifiedTheme={theme}>
-                <ConfigProvider appConfig={config}>
-                    <html
-                        lang="en-GB"
-                        data-theme={theme}
-                        className="transition-colors duration-150"
-                    >
-                        <body>
+            <ConfigProvider appConfig={config}>
+                <html
+                    lang="en"
+                    className={cn(
+                        'transition-colors duration-150',
+                        inter.className
+                    )}
+                    suppressHydrationWarning
+                >
+                    <body>
+                        <ThemeProvider
+                            attribute="class"
+                            defaultTheme="system"
+                            enableSystem
+                        >
                             <div
                                 id="page-content"
                                 className="flex min-h-screen flex-col"
@@ -47,13 +55,13 @@ export default async function RootLayout({ children }: Children) {
                                     },
                                 }}
                             />
-                            <GA4Script />
-                            <SpeedInsights />
-                            <Analytics />
-                        </body>
-                    </html>
-                </ConfigProvider>
-            </ThemeProvider>
+                        </ThemeProvider>
+                        <GA4Script />
+                        <SpeedInsights />
+                        <Analytics />
+                    </body>
+                </html>
+            </ConfigProvider>
         </ClerkProvider>
     );
 }

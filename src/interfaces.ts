@@ -101,10 +101,7 @@ export interface Children {
 export enum Theme {
     LIGHT = 'light',
     DARK = 'dark',
-}
-
-export enum Cookie {
-    THEME = 'theme',
+    SYSTEM = 'system',
 }
 
 export interface ToggleState {

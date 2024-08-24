@@ -201,7 +201,7 @@ export const selectChartData = (
         }));
 };
 
-export const getChartThemeTokens = (theme: Theme | null): ChartTheme => ({
+export const getChartThemeTokens = (theme: string | undefined): ChartTheme => ({
     barColor: theme === Theme.DARK ? c.BAR_COLOR_DARK : c.BAR_COLOR_LIGHT,
     hoverBarColor:
         theme === Theme.DARK ? c.BAR_HOVER_COLOR_DARK : c.BAR_HOVER_COLOR_LIGHT,

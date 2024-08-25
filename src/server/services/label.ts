@@ -15,7 +15,12 @@ export const findOrCreateLabel = async (
     userId: string | undefined,
     labelDto: TLabel | null
 ) => {
-    if (!labelDto || !labelDto?.value || !labelDto?.color) {
+    if (
+        !labelDto ||
+        !labelDto?.value ||
+        !labelDto?.foreground ||
+        !labelDto?.background
+    ) {
         return;
     }
 
@@ -23,7 +28,8 @@ export const findOrCreateLabel = async (
         where: {
             userId: userId,
             value: labelDto.value,
-            color: labelDto.color,
+            foreground: labelDto.foreground,
+            background: labelDto.background,
         },
     });
 

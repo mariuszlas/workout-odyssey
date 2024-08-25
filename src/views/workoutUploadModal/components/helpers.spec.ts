@@ -2,12 +2,8 @@ import { describe, expect, it } from 'vitest';
 
 import { TLabel } from '@/interfaces';
 
-import {
-    formatNewLabelValue,
-    getNewLabel,
-    labelColors,
-    zeroPad,
-} from './helpers';
+import { LABEL_COLORS } from './constants';
+import { formatNewLabelValue, getNewLabel, zeroPad } from './helpers';
 
 describe('zeroPad', () => {
     it('should return the number padded with a 0 if it is less than 10', () => {
@@ -64,26 +60,25 @@ describe('getNewLabel', () => {
         const actual = getNewLabel(allLabels, newLabels, newLabelValue);
 
         expect(actual.value).toBe(newLabelValue);
-        expect(actual.color).not.toHaveLength(0);
+        expect(actual.background).not.toHaveLength(0);
     });
 
     it('should reuse a color if all available colors are taken', () => {
-        const allLabels = [
-            { value: 'Label 1', color: labelColors[0] },
-            { value: 'Label 2', color: labelColors[1] },
-            { value: 'Label 3', color: labelColors[2] },
-            { value: 'Label 4', color: labelColors[3] },
-            { value: 'Label 5', color: labelColors[4] },
-            { value: 'Label 6', color: labelColors[5] },
-            { value: 'Label 7', color: labelColors[6] },
-            { value: 'Label 8', color: labelColors[7] },
-        ];
+        const allLabels = LABEL_COLORS.map(
+            ({ background, foreground }, idx) => ({
+                value: `label ${idx}`,
+                foreground,
+                background,
+            })
+        );
 
         const newLabels: TLabel[] = [];
         const newLabelValue = 'New Label';
 
         const newLabel = getNewLabel(allLabels, newLabels, newLabelValue);
 
-        expect(labelColors).toContain(newLabel.color);
+        expect(LABEL_COLORS.map(({ background }) => background)).toContain(
+            newLabel.background
+        );
     });
 });

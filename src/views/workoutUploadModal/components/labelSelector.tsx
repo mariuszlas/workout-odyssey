@@ -62,7 +62,7 @@ export const LabelSelector: FC<WorkoutForm> = ({ setWorkouts, workout }) => {
     const renderLabelsList = (labels: TLabel[]) =>
         labels?.map(label => (
             <DropdownMenuItem
-                key={label.color + label.value}
+                key={label.background + label.value}
                 onClick={() => {
                     setWorkouts(prev =>
                         prev.map(wk =>
@@ -74,7 +74,7 @@ export const LabelSelector: FC<WorkoutForm> = ({ setWorkouts, workout }) => {
             >
                 <div
                     className="mr-2 h-4 w-6 rounded-full"
-                    style={{ background: `${label.color}` }}
+                    style={{ background: `${label.background}` }}
                 />
                 {label.value}
             </DropdownMenuItem>

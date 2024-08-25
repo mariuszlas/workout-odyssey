@@ -2,18 +2,7 @@ import type { TLabel } from '@/interfaces';
 
 import { FileSizeError } from '../xmlParser';
 
-const MAX_FILE_SIZE = 100000000; // 100 MB
-
-export const labelColors = [
-    '#b40813',
-    '#d6411d',
-    '#fac82f',
-    '#198921',
-    '#0c6b74',
-    '#2579d8',
-    '#0c56c9',
-    '#542be3',
-];
+import { LABEL_COLORS, MAX_FILE_SIZE } from './constants';
 
 export const zeroPad = (n: number | string) =>
     Number(n) < 10 ? `0${n}` : n.toString();
@@ -46,14 +35,24 @@ export const getNewLabel = (
     newLabelValue: string
 ): TLabel => {
     const formatedNewLabelValue = formatNewLabelValue(newLabelValue);
-    const takenColors = allLabels.concat(newLabels).map(label => label.color);
-    const avilableColors = labelColors.filter(
-        label => !takenColors.includes(label)
+    const takenColors = allLabels
+        .concat(newLabels)
+        .map(label => label.background);
+    const avilableColors = LABEL_COLORS.filter(
+        ({ background }) => !takenColors.includes(background)
     );
-    const colors = avilableColors.length === 0 ? takenColors : avilableColors;
+    const colors =
+        avilableColors.length === 0
+            ? allLabels.concat(newLabels)
+            : avilableColors;
     const randomNum = Math.floor(Math.random() * colors.length);
+    const randomLabel = colors[randomNum];
 
-    return { value: formatedNewLabelValue, color: colors[randomNum] };
+    return {
+        value: formatedNewLabelValue,
+        foreground: randomLabel.foreground,
+        background: randomLabel.background,
+    };
 };
 
 export const getWeekdayListForLocale = (locale: string) => {

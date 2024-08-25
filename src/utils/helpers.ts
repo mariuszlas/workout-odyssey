@@ -84,3 +84,6 @@ export const getMonthForLocale = (month: number, options?: Options) =>
     new Intl.DateTimeFormat(options?.locale ?? 'en-GB', {
         month: options?.isShortMonth ? 'short' : 'long',
     }).format(new Date(2000, month));
+
+export const formatDurationAsHour = (seconds = 0) =>
+    dayjs.duration(seconds, 's').asHours();

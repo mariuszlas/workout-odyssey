@@ -13,7 +13,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components';
-import type { BestMonths, WorkoutsDashboard } from '@/interfaces';
+import { type WorkoutsDashboard } from '@/interfaces';
 import { useUI } from '@/providers';
 import { getWorkoutTypeFromPathname } from '@/utils/helpers';
 
@@ -26,8 +26,6 @@ import {
 } from './helpers';
 
 interface Props {
-    availableYears?: number[];
-    bestMonths?: BestMonths | undefined;
     dashboard: WorkoutsDashboard;
 }
 
@@ -95,14 +93,14 @@ export const YearSelector: FC<Props> = ({ dashboard }) => {
         ));
         options.unshift(
             <SelectItem key={0} value="0">
-                Total
+                All Years
             </SelectItem>
         );
         return options;
     };
 
     return (
-        <div className="flex items-center gap-2" data-testid="year-selector">
+        <div className="flex items-center gap-1" data-testid="year-selector">
             <IconButton
                 aria-label="Select next year"
                 onClick={() => onChangeYear(NEXT)}
@@ -110,16 +108,14 @@ export const YearSelector: FC<Props> = ({ dashboard }) => {
             >
                 <TriangleLeftIcon className="h-10 w-10" />
             </IconButton>
-
             <Select onValueChange={onSelectYear} value={year.toString()}>
-                <SelectTrigger className="min-w-20 max-w-xs">
-                    <SelectValue placeholder={year} />
+                <SelectTrigger className="w-28">
+                    <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
                     <SelectGroup>{getOptions(availableYears)}</SelectGroup>
                 </SelectContent>
             </Select>
-
             <IconButton
                 aria-label="Select previous year"
                 onClick={() => onChangeYear(PREV)}

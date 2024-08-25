@@ -12,12 +12,11 @@ import { useUI } from '@/providers';
 import {
     destroyChart,
     getChartConfig,
-    getChartThemeTokens,
     getInteractionIndex,
-    selectChartData,
     updateChart,
     updateChartTheme,
-} from './helpers';
+} from './chartConfig';
+import { selectChartData } from './helpers';
 
 export type ChartType = 'bar';
 export type BarChartData = { x: string; y: number; value: number }[];
@@ -26,14 +25,15 @@ export type BarChartT = Chart<ChartType, BarChartData, string[]>;
 export const BarChart: FC<{ dashboard: WorkoutsDashboard }> = ({
     dashboard,
 }) => {
-    const { setSecondaryStat, units, year } = useUI();
+    const { setSecondaryStat, units, year, dataType } = useUI();
     const { resolvedTheme } = useTheme();
     const ref = useRef<HTMLCanvasElement>(null);
     const [chart, setChart] = useState<BarChartT>();
+    const options = { resolvedTheme, units, dataType };
 
     const chartData = useMemo(
-        () => selectChartData(dashboard, year),
-        [dashboard, year]
+        () => selectChartData(dashboard, year, dataType),
+        [dashboard, year, dataType]
     );
 
     const handleBarClick = (event: MouseEvent<HTMLCanvasElement>) => {
@@ -47,17 +47,13 @@ export const BarChart: FC<{ dashboard: WorkoutsDashboard }> = ({
     };
 
     useEffect(() => {
-        updateChart(chart, chartData);
-    }, [chartData]);
+        updateChart(chart, chartData, options);
+    }, [chartData, dataType]);
 
     useEffect(() => {
         if (!ref.current) return;
 
-        const chartConfig = getChartConfig(
-            chartData,
-            getChartThemeTokens(resolvedTheme),
-            units
-        );
+        const chartConfig = getChartConfig(chartData, options);
         const newChart = new Chart(ref.current, chartConfig);
         setChart(newChart);
 
@@ -65,7 +61,7 @@ export const BarChart: FC<{ dashboard: WorkoutsDashboard }> = ({
     }, []);
 
     useEffect(() => {
-        updateChartTheme(chart, getChartThemeTokens(resolvedTheme), units);
+        updateChartTheme(chart, options);
     }, [resolvedTheme]);
 
     const fallbackContent = <TextP>Workouts chart</TextP>;

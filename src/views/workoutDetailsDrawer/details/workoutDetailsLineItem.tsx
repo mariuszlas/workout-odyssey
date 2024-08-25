@@ -1,8 +1,8 @@
 import type { FC } from 'react';
-import clsx from 'clsx';
 
 import { Badge, TextS } from '@/components';
 import type { TLabel } from '@/interfaces';
+import { cn } from '@/utils/helpers';
 
 interface Props {
     title?: string;
@@ -13,7 +13,7 @@ interface Props {
 
 export const LineItem: FC<Props> = ({ title, value, label, notes }) => (
     <li
-        className={clsx(
+        className={cn(
             'border-t-base-content flex flex-wrap justify-between border-t border-opacity-20 px-4 py-1.5 first:border-t-0',
             notes ? 'gap-x-12' : 'gap-x-4'
         )}

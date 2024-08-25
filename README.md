@@ -4,6 +4,8 @@ Check it out [here](https://www.workoutodyssey.com)!
 
 Workout Odyssey helps people stay organized and motivated with their workouts. The app makes it easy to track your progress and see how you're improving over time.
 
+![200_1x_shots_so](https://github.com/user-attachments/assets/d8ce22b2-71d9-4ad7-b1fc-fa2ccc42ff24)
+
 ## Features
 
 -   create, edit, and track workouts for 3 different activities: running, walking, cycling

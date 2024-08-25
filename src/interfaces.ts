@@ -7,6 +7,14 @@ export enum WorkoutTypes {
     CYCLING = 'cycling',
 }
 
+export enum ChartDataTypes {
+    DISTANCE = 'distance',
+    DURATION = 'duration',
+    PACE = 'pace',
+    SPEED = 'speed',
+    COUNTS = 'counts',
+}
+
 interface BaseWorkout {
     timestamp: string;
     timezone: string;

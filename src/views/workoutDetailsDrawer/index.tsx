@@ -25,7 +25,7 @@ export const WorkoutDetailsDrawer: FC<Props> = ({
                 <CloseButton onClick={onClose} />
             </header>
             <Separator />
-            <div className="flex-grow p-4">
+            <div className="flex-grow overflow-y-scroll p-4">
                 <div className="flex h-full flex-col gap-4">
                     <WorkoutDetailsPanel data={workout} />
                     <MapPanel id={workout.id} />

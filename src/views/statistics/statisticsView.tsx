@@ -1,13 +1,12 @@
 'use client';
 
 import type { FC } from 'react';
-import clsx from 'clsx';
 import { usePathname } from 'next/navigation';
 
 import { useIsBreakpoint } from '@/hooks';
 import type { Dashboarad, Loading } from '@/interfaces';
 import { useUI } from '@/providers';
-import { getWorkoutTypeFromPathname } from '@/utils/helpers';
+import { cn, getWorkoutTypeFromPathname } from '@/utils/helpers';
 
 import { StatsPanel } from './statsPanel/statsPanel';
 import { selectPmStatsData, selectSecStatsData } from './helpers';
@@ -30,10 +29,7 @@ export const StatisticsView: FC<Dashboarad & Loading> = ({
 
     return (
         <div
-            className={clsx(
-                'grid w-full grid-cols-2 gap-4',
-                isLoading && 'h-80'
-            )}
+            className={cn('grid w-full grid-cols-2 gap-4', isLoading && 'h-80')}
         >
             <StatsPanel data={pmStatsData} isPrimary {...props} />
             <StatsPanel data={secStatsData} isMobile={isMobile} {...props} />

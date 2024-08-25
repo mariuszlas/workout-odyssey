@@ -1,93 +1,14 @@
-import type { TooltipItem } from 'chart.js/auto';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
-import { BestMonths, Units, WorkoutsDashboard } from '@/interfaces';
+import { BestMonths, WorkoutsDashboard } from '@/interfaces';
 
-import type { BarChartData, BarChartT } from './chart';
-import * as c from './constants';
 import {
-    destroyChart,
     findBestMonths,
-    formatChartTooltip,
     getAvailableYears,
-    getDataset,
     getNextYearIdx,
     getPreviousYearIdx,
     getSecStats,
-    updateChart,
 } from './helpers';
-
-describe('getDataset', () => {
-    it('returns correctly formated data object', () => {
-        const mockData = [{ x: '2', y: 6 }] as BarChartData;
-        const dataset = {
-            datasets: [
-                { maxBarThickness: c.MAX_BAR_THICKNESS, data: mockData },
-            ],
-        };
-        expect(getDataset(mockData)).toStrictEqual(dataset);
-    });
-});
-
-describe('updateChart', () => {
-    const data = [{ x: 'Jun', y: 2, value: 6 }];
-
-    it('should update the chart if the chart exists', () => {
-        const updateChartFn = vi.fn();
-        const chart = {
-            config: {
-                data: {
-                    datasets: [{ maxBarThickness: 10, data: [] }],
-                },
-            },
-            update: updateChartFn,
-        } as unknown as BarChartT;
-
-        updateChart(chart, data);
-
-        expect(updateChartFn).toHaveBeenCalledTimes(1);
-        expect(chart.config.data.datasets[0].data).toEqual(data);
-    });
-
-    it('should not update the chart if the chart does not exist', () => {
-        const updateChartFn = vi.fn();
-        const chart = undefined;
-
-        updateChart(chart, data);
-
-        expect(updateChartFn).not.toHaveBeenCalled();
-        expect(chart).toBeUndefined();
-    });
-});
-
-describe('destroyChart', () => {
-    it("should call the 'destroy' function on the chart", () => {
-        const destroyChartFn = vi.fn();
-        const chart = {
-            config: {
-                data: {
-                    datasets: [{ maxBarThickness: 10, data: [] }],
-                },
-            },
-            destroy: destroyChartFn,
-        } as unknown as BarChartT;
-
-        destroyChart(chart);
-        expect(destroyChartFn).toHaveBeenCalledTimes(1);
-    });
-});
-
-describe('formatChartTooltip', () => {
-    it('should return a formatted tooltip string for a valid value', () => {
-        const context = {
-            parsed: { y: 12.345 },
-        } as unknown as TooltipItem<'bar'>;
-
-        const actual = formatChartTooltip(context, { km: 'km' } as Units);
-
-        expect(actual).toEqual('12.3 km');
-    });
-});
 
 describe('getSecStats', () => {
     const bestMonths = {

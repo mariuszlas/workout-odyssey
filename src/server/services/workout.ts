@@ -20,7 +20,7 @@ import { sqlMonths, sqlTotalBest, sqlYears } from './sql';
 const labelOpts = {
     model: Label,
     as: 'label',
-    attributes: ['value', 'color'],
+    attributes: ['value', 'background', 'foreground'],
     required: false,
 };
 
@@ -51,7 +51,8 @@ export const updateWorkout = async (
     if (
         workoutDto?.label &&
         workoutDto?.label.value &&
-        workoutDto.label.color
+        workoutDto.label.background &&
+        workoutDto.label.foreground
     ) {
         labelId = await findOrCreateLabel(userId, workoutDto.label);
     }

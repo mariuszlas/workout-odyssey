@@ -49,7 +49,8 @@ export type Trajectory = Feature<LineString, null>;
 
 export interface TLabel {
     value: string;
-    color: string;
+    foreground: string;
+    background: string;
 }
 
 export interface TotalStats {

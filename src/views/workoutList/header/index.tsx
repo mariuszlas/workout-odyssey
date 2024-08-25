@@ -40,7 +40,7 @@ export const WorkoutListHeader: FC<Props> = ({
 
     return (
         <header className="w-full">
-            <div className="flex justify-between">
+            <div className="flex items-center justify-between">
                 <H2 className="text-lg">
                     {getWorkoutListHeading(headerData, isAll, isMobileOrTabled)}
                 </H2>
@@ -61,22 +61,22 @@ export const WorkoutListHeader: FC<Props> = ({
                     className="hidden sm:flex"
                 />
             </div>
-
             <div className="mt-4 hidden justify-between gap-6 sm:flex">
                 <Filtering {...filterProps} />
                 <Sorting setSortBy={setSortBy} sortBy={sortBy} />
             </div>
-
             <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-                <CollapsibleContent className="mt-3 flex flex-col items-start gap-3 sm:hidden">
-                    <div className="flex w-full justify-between gap-6">
-                        <Filtering {...filterProps} />
-                        <AllWorkoutsToggle
-                            {...toggleProps}
-                            className="sm:hidden"
-                        />
+                <CollapsibleContent>
+                    <div className="mt-2 flex flex-col items-start gap-3">
+                        <div className="flex w-full justify-between gap-6">
+                            <Filtering {...filterProps} />
+                            <AllWorkoutsToggle
+                                {...toggleProps}
+                                className="sm:hidden"
+                            />
+                        </div>
+                        <Sorting setSortBy={setSortBy} sortBy={sortBy} />
                     </div>
-                    <Sorting setSortBy={setSortBy} sortBy={sortBy} />
                 </CollapsibleContent>
             </Collapsible>
         </header>

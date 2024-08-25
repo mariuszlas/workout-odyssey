@@ -69,7 +69,7 @@ export const Map: FC<{ trajectory: Trajectory }> = ({ trajectory }) => {
     }, [isMapLoaded, trajectory]);
 
     return (
-        <div className="h-full" data-testid="workout-map">
+        <div className="h-full min-h-80" data-testid="workout-map">
             <GoogleMapReact
                 bootstrapURLKeys={{ key: `${googleMapsApiKey}` }}
                 defaultCenter={defaultCenter}

@@ -1,133 +1,10 @@
-import { MouseEvent } from 'react';
-import type { ChartConfiguration, TooltipItem } from 'chart.js/auto';
-
 import {
     type BestMonths,
+    ChartDataTypes,
     type MonthStats,
-    Theme,
-    Units,
     type WorkoutsDashboard,
 } from '@/interfaces';
-import { getMonthForLocale } from '@/utils/helpers';
-
-import type { BarChartData, BarChartT, ChartType } from './chart';
-import * as c from './constants';
-
-interface ChartTheme {
-    barColor: string;
-    hoverBarColor: string;
-    textColor: string;
-    gridDashColor: string;
-}
-
-export const getDataset = (data: BarChartData) => ({
-    datasets: [{ maxBarThickness: c.MAX_BAR_THICKNESS, data: data }],
-});
-
-export const updateChart = (
-    chart: BarChartT | undefined,
-    data: BarChartData
-) => {
-    if (chart) {
-        chart.config.data = getDataset(data);
-        chart.update();
-    }
-};
-
-export const destroyChart = (chart: BarChartT) => {
-    chart.destroy();
-};
-
-export const getInteractionIndex = (
-    event: MouseEvent<HTMLCanvasElement>,
-    chart: BarChartT | undefined,
-    chartData: BarChartData | undefined
-) => {
-    if (!chart || !chartData) return;
-
-    return chart
-        .getElementsAtEventForMode(
-            event.nativeEvent,
-            'index',
-            { intersect: true },
-            false
-        )
-        .at(0)?.index;
-};
-
-export const formatChartTooltip = (
-    context: TooltipItem<'bar'>,
-    units: Units
-) => {
-    const parsed = context.parsed.y;
-    return `${parsed.toFixed(1)} ${units.km}`;
-};
-
-const getChartOptions = (
-    chartTheme: ChartTheme,
-    units: Units,
-    locale = 'en-GB'
-): ChartConfiguration<ChartType, BarChartData, string[]>['options'] => ({
-    locale,
-    plugins: {
-        legend: { display: false },
-        tooltip: {
-            callbacks: { label: context => formatChartTooltip(context, units) },
-        },
-    },
-    elements: {
-        bar: {
-            backgroundColor: chartTheme.barColor,
-            hoverBackgroundColor: chartTheme.hoverBarColor,
-        },
-    },
-    scales: {
-        x: {
-            ticks: {
-                font: { size: c.TICK_FONT_SIZE, family: c.TICK_FONT },
-                color: chartTheme.textColor,
-            },
-            grid: { display: false },
-            border: { color: chartTheme.textColor },
-        },
-        y: {
-            ticks: {
-                maxTicksLimit: c.MAX_TICK_LIMIT,
-                font: { size: c.TICK_FONT_SIZE, family: c.TICK_FONT },
-                color: chartTheme.textColor,
-            },
-            grid: {
-                tickColor: chartTheme.textColor,
-                color: chartTheme.gridDashColor,
-            },
-            border: { color: chartTheme.textColor, dash: c.Y_BORDER_DASH },
-        },
-    },
-});
-
-export const getChartConfig = (
-    chartData: BarChartData,
-    chartTheme: ChartTheme,
-    units: Units,
-    locale?: string
-): ChartConfiguration<ChartType, BarChartData, string[]> => ({
-    type: c.BAR_TYPE,
-    data: getDataset(chartData),
-    options: getChartOptions(chartTheme, units, locale),
-});
-
-export const updateChartTheme = (
-    chart: BarChartT | undefined,
-    chartTheme: ChartTheme,
-    units: Units,
-    locale?: string
-) => {
-    const options = getChartOptions(chartTheme, units, locale);
-    if (chart && options) {
-        chart.options = options;
-        chart.update();
-    }
-};
+import { formatDurationAsHour, getMonthForLocale } from '@/utils/helpers';
 
 export const getSecStats = (
     year: number,
@@ -179,16 +56,24 @@ export const findBestMonths = (dashboard: WorkoutsDashboard) => {
 export const getAvailableYears = (dashboard: WorkoutsDashboard) =>
     dashboard?.years?.map(yearObj => yearObj.year).reverse() ?? [];
 
+const getChartDataValue = (data: number, dataType: ChartDataTypes) => {
+    if (dataType === ChartDataTypes.DURATION) {
+        return formatDurationAsHour(data);
+    }
+    return data;
+};
+
 export const selectChartData = (
     dashboard: WorkoutsDashboard | undefined,
-    yearSelected: number
+    yearSelected: number,
+    dataType: ChartDataTypes
 ) => {
     if (!dashboard?.years || !dashboard.months) return [];
 
     if (yearSelected === 0)
         return dashboard.years.map(yearObj => ({
             x: yearObj.year.toString(),
-            y: yearObj.distance,
+            y: getChartDataValue(yearObj[dataType], dataType),
             value: yearObj.year,
         }));
 
@@ -196,15 +81,7 @@ export const selectChartData = (
         .filter(monthObj => monthObj.year === yearSelected)
         .map(monthObj => ({
             x: getMonthForLocale(monthObj.month - 1, { isShortMonth: true }),
-            y: monthObj.distance,
+            y: getChartDataValue(monthObj[dataType], dataType),
             value: monthObj.month,
         }));
 };
-
-export const getChartThemeTokens = (theme: string | undefined): ChartTheme => ({
-    barColor: theme === Theme.DARK ? c.BAR_COLOR_DARK : c.BAR_COLOR_LIGHT,
-    hoverBarColor:
-        theme === Theme.DARK ? c.BAR_HOVER_COLOR_DARK : c.BAR_HOVER_COLOR_LIGHT,
-    textColor: theme === Theme.DARK ? c.TEXT_COLOR_DARK : c.TEXT_COLOR_LIGHT,
-    gridDashColor: c.GRID_DASH_COLOR,
-});

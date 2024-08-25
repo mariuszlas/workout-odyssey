@@ -2,7 +2,6 @@
 
 import { type FC } from 'react';
 import { TrashIcon } from '@radix-ui/react-icons';
-import clsx from 'clsx';
 
 import {
     Badge,
@@ -14,6 +13,7 @@ import {
 } from '@/components';
 import type { UploadWorkout, Workout } from '@/interfaces';
 import { useUI } from '@/providers';
+import { cn } from '@/utils/helpers';
 
 import { FoundData } from './foundData';
 
@@ -38,7 +38,7 @@ export const PreviewListItem: FC<Props> = ({
 
     return (
         <li
-            className={clsx(
+            className={cn(
                 'flex w-full flex-col gap-4 rounded-lg border border-opacity-20 px-4 py-2',
                 existingData.length > 0
                     ? 'border-warning border-2'

@@ -5,7 +5,10 @@ import { SWRConfig } from 'swr';
 
 export const SWRProvider = ({ children }: { children: ReactNode }) => (
     <SWRConfig
-        value={{ fetcher: (url: string) => fetch(url).then(res => res.json()) }}
+        value={{
+            fetcher: (url: string) => fetch(url).then(res => res.json()),
+            revalidateOnFocus: false,
+        }}
     >
         {children}
     </SWRConfig>

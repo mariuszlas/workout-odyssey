@@ -14,7 +14,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components';
-import { cn, getDateTimeTZ } from '@/utils/helpers';
+import { getDateTimeTZ } from '@/utils/helpers';
 
 import { WorkoutForm } from '../intrefaces';
 
@@ -70,9 +70,7 @@ export const DatetimePicker: FC<WorkoutForm> = ({ workout, setWorkouts }) => {
                 <PopoverTrigger asChild>
                     <Button
                         variant="outline"
-                        className={cn(
-                            'w-40 justify-start text-left font-normal'
-                        )}
+                        className="w-40 justify-start bg-inherit text-left font-normal"
                         id="dateTimeTrigger"
                     >
                         {getDateTimeTZ(date, workout?.timezone, false)}

@@ -1,4 +1,5 @@
 import type { FC } from 'react';
+import { DesktopIcon, MoonIcon, SunIcon } from '@radix-ui/react-icons';
 import { useTheme } from 'next-themes';
 
 import { Theme } from '@/interfaces';
@@ -12,26 +13,28 @@ import {
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
-    MoonIcon,
-    SunIcon,
 } from '..';
 
 export const ThemeSwitch: FC<{ isMobile?: boolean }> = ({ isMobile }) => {
     const { setTheme } = useTheme();
 
     const themes = [
-        { name: 'Light', func: () => setTheme(Theme.LIGHT) },
-        { name: 'Dark', func: () => setTheme(Theme.DARK) },
-        { name: 'System', func: () => setTheme(Theme.SYSTEM) },
+        {
+            name: 'Light',
+            func: () => setTheme(Theme.LIGHT),
+            icon: <SunIcon className="h-4 w-4" />,
+        },
+        {
+            name: 'Dark',
+            func: () => setTheme(Theme.DARK),
+            icon: <MoonIcon className="h-4 w-4" />,
+        },
+        {
+            name: 'System',
+            func: () => setTheme(Theme.SYSTEM),
+            icon: <DesktopIcon className="h-4 w-4" />,
+        },
     ];
-
-    const btnContent = (
-        <>
-            <SunIcon className="rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-            <MoonIcon className="absolute rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-            <span className="sr-only">Toggle theme</span>
-        </>
-    );
 
     if (isMobile) {
         return (
@@ -39,7 +42,8 @@ export const ThemeSwitch: FC<{ isMobile?: boolean }> = ({ isMobile }) => {
                 <CollapsibleTrigger asChild>
                     <Button variant="menuitem" role="menuitem">
                         Select theme
-                        {btnContent}
+                        <SunIcon className="h-5 w-5 dark:hidden" />
+                        <MoonIcon className="hidden h-5 w-5 dark:flex" />
                     </Button>
                 </CollapsibleTrigger>
                 <CollapsibleContent className="pl-6">
@@ -62,12 +66,18 @@ export const ThemeSwitch: FC<{ isMobile?: boolean }> = ({ isMobile }) => {
         <DropdownMenu>
             <DropdownMenuTrigger asChild className="hidden md:inline-flex">
                 <Button variant="ghost" size="icon">
-                    {btnContent}
+                    <SunIcon className="h-5 w-5 dark:hidden" />
+                    <MoonIcon className="hidden h-5 w-5 dark:flex" />
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-                {themes.map(({ name, func }) => (
-                    <DropdownMenuItem key={name} onClick={func}>
+                {themes.map(({ name, func, icon }) => (
+                    <DropdownMenuItem
+                        key={name}
+                        onClick={func}
+                        className="flex items-center gap-2"
+                    >
+                        {icon}
                         {name}
                     </DropdownMenuItem>
                 ))}

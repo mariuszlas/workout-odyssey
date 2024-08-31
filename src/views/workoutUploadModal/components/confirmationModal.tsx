@@ -34,7 +34,7 @@ export const ConfirmationModal: FC<Props> = ({
             </DialogDescription>
             <DialogFooter>
                 <DialogClose asChild>
-                    <Button variant="ghost">Cancel</Button>
+                    <Button variant="outline">Cancel</Button>
                 </DialogClose>
                 <Button onClick={confirmAction} variant="destructive">
                     Discard

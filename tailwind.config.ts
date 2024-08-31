@@ -13,15 +13,14 @@ const config = {
         container: {
             center: true,
             padding: '2rem',
-            screens: {
-                '2xl': '1400px',
-            },
+            screens: { '2xl': '1400px' },
         },
         extend: {
             colors: {
-                border: 'hsl(var(--border))',
+                border: 'hsla(var(--border))',
                 input: 'hsl(var(--input))',
                 ring: 'hsl(var(--ring))',
+                inputHover: 'hsl(var(--input-hover))',
                 background: 'hsl(var(--background))',
                 foreground: 'hsl(var(--foreground))',
                 primary: {
@@ -52,6 +51,22 @@ const config = {
                     DEFAULT: 'hsl(var(--card))',
                     foreground: 'hsl(var(--card-foreground))',
                 },
+                info: {
+                    DEFAULT: 'hsl(var(--alert-info))',
+                    foreground: 'hsl(var(--alert-info-fg))',
+                },
+                error: {
+                    DEFAULT: 'hsl(var(--alert-error))',
+                    foreground: 'hsl(var(--alert-error-fg))',
+                },
+                warning: {
+                    DEFAULT: 'hsl(var(--alert-warning))',
+                    foreground: 'hsl(var(--alert-warning-fg))',
+                },
+                success: {
+                    DEFAULT: 'hsl(var(--alert-success))',
+                    foreground: 'hsl(var(--alert-success-fg))',
+                },
             },
             borderRadius: {
                 lg: 'var(--radius)',
@@ -72,9 +87,7 @@ const config = {
                 'accordion-down': 'accordion-down 0.2s ease-out',
                 'accordion-up': 'accordion-up 0.2s ease-out',
             },
-            maxWidth: {
-                '8xl': '90rem',
-            },
+            maxWidth: { '8xl': '90rem' },
         },
     },
     plugins: [require('tailwindcss-animate')],

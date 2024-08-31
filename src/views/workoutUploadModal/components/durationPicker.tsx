@@ -13,7 +13,7 @@ import {
     Separator,
 } from '@/components';
 import dayjs from '@/utils/extended-dayjs';
-import { cn, formatDuration } from '@/utils/helpers';
+import { formatDuration } from '@/utils/helpers';
 
 import { WorkoutForm } from '../intrefaces';
 
@@ -43,14 +43,14 @@ export const DurationPicker: FC<WorkoutForm> = ({ workout, setWorkouts }) => {
 
     return (
         <Popover open={isOpen} onOpenChange={setIsOpen}>
-            <div className="flex flex-col justify-center gap-1 pt-1">
+            <div className="w-28">
                 <Label htmlFor="duration" isRequired>
                     Duration
                 </Label>
                 <PopoverTrigger asChild>
                     <Button
                         variant="outline"
-                        className={cn('justify-start text-left font-normal')}
+                        className="w-full bg-inherit font-normal"
                         id="duration"
                     >
                         {formatDuration(duration)}

@@ -5,19 +5,21 @@
 @layer base {
     :root {
         --background: 0 0% 100%;
-        --foreground: 222.2 84% 4.9%;
+        /* gray-800 ChakraUI */
+        --foreground: 220 26% 14%;
 
         --card: 0 0% 100%;
-        --card-foreground: 222.2 84% 4.9%;
+        --card-foreground: 220 26% 14%;
 
         --popover: 0 0% 100%;
-        --popover-foreground: 222.2 84% 4.9%;
+        --popover-foreground: 220 26% 14%;
 
-        /* teal-500 */
-        --primary: 174.4 100% 29.41%;
-        --primary-foreground: 210 40% 98%;
+        /* teal-500 ChakraUI*/
+        --primary: 179 51% 39%;
+        --primary-foreground: 0 0% 100%;
 
-        --secondary: 293.05 80% 40%;
+        /* purple-500 ChakraUI*/
+        --secondary: 259 59% 59%;
         --secondary-foreground: 0 0% 100%;
 
         --muted: 210 40% 96.1%;
@@ -29,28 +31,54 @@
         --destructive: 0 84.2% 60.2%;
         --destructive-foreground: 210 40% 98%;
 
-        --border: 214.3 31.8% 91.4%;
-        --input: 214.3 31.8% 91.4%;
-        --ring: 222.2 84% 4.9%;
+        /* red-100 ChakraUI */
+        --alert-error: 0 95% 92%;
+        /* red-600 ChakraUI */
+        --alert-error-fg: 0 61% 48%;
 
+        /* blue-50 ChakraUI */
+        --alert-info: 201 100% 96%;
+        /* blue-300 ChakraUI */
+        --alert-info-fg: 205 79% 66%;
+
+        /* orange-100 ChakraUI */
+        --alert-warning: 39 96% 89%;
+        /* orange-600 ChakraUI */
+        --alert-warning-fg: 20 71% 44%;
+
+        /* green-100 ChakraUI */
+        --alert-success: 139 73% 87%;
+        /* green-600 ChakraUI */
+        --alert-success-fg: 150 48% 35%;
+
+        /* gray-200 ChakraUI */
+        --border: 214 32% 91%;
+        --input: 214 32% 91%;
+        /* white-alpha-300 ChakraUI */
+        --input-hover: 211 25% 84%;
+
+        --ring: var(--primary);
         --radius: 0.5rem;
     }
 
     .dark {
-        --background: 222.2 84% 4.9%;
-        --foreground: 210 40% 98%;
+        --background: 220 26% 14%;
+        /* white-alpha-900 */
+        --foreground: 0, 0%, 100%, 0.92;
 
-        --card: 222.2 84% 4.9%;
-        --card-foreground: 210 40% 98%;
+        --card: 218 23% 23%;
+        --card-foreground: 0, 0%, 100%, 0.92;
 
-        --popover: 222.2 84% 4.9%;
-        --popover-foreground: 210 40% 98%;
+        --popover: 218 23% 23%;
+        --popover-foreground: 0, 0%, 100%, 0.92;
 
-        --primary: 210 40% 98%;
-        --primary-foreground: 222.2 47.4% 11.2%;
+        /* teal-200 ChakraUI */
+        --primary: 172 67% 70%;
+        --primary-foreground: 220 26% 14%;
 
-        --secondary: 217.2 32.6% 17.5%;
-        --secondary-foreground: 210 40% 98%;
+        /* purple-200 ChakraUI */
+        --secondary: 265 86% 86%;
+        --secondary-foreground: 220 26% 14%;
 
         --muted: 217.2 32.6% 17.5%;
         --muted-foreground: 215 20.2% 65.1%;
@@ -61,9 +89,29 @@
         --destructive: 0 62.8% 30.6%;
         --destructive-foreground: 210 40% 98%;
 
-        --border: 217.2 32.6% 17.5%;
-        --input: 217.2 32.6% 17.5%;
-        --ring: 212.7 26.8% 83.9%;
+        --alert-error: 0, 97%, 85%, 0.16;
+        /* red-200 ChakraUI */
+        --alert-error-fg: 0 97% 85%;
+
+        --alert-info: 203, 82%, 76%, 0.24;
+        /* blue-200 ChakraUI */
+        --alert-info-fg: 203 82% 76%;
+
+        --alert-warning: 38, 93%, 77%, 0.16;
+        /* orange-200 ChakraUI */
+        --alert-warning-fg: 38 93% 77%;
+
+        --alert-success: 141, 60%, 75%, 0.16;
+        /* green-200 ChakraUI */
+        --alert-success-fg: 141 60% 75%;
+
+        /* white-alpha-300 ChakraUI */
+        --border: 0, 0%, 100%, 0.16;
+        --input: 0, 0%, 100%, 0.16;
+        /* white-alpha-400 ChakraUI */
+        --input-hover: 0, 0%, 100%, 0.24;
+
+        --ring: var(--primary);
     }
 }
 

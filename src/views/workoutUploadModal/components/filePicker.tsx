@@ -92,14 +92,16 @@ export const FilePicker: FC<Props> = ({ setWorkouts }) => {
                 </AlertDescription>
             </Alert>
             <div
-                className="flex flex-col items-center gap-4 rounded-lg border border-primary bg-teal-50 p-4"
+                className="flex flex-col items-center gap-4 rounded-lg border border-primary bg-primary/10 p-4"
                 onDrop={handleFileDrop}
                 onDragOver={e => {
                     e.preventDefault();
                 }}
             >
                 <FileUpladIcon className="h-8 w-8 text-primary" />
-                <TextS>Drag and drop your files here or</TextS>
+                <TextS className="text-sm">
+                    Drag and drop your files here or
+                </TextS>
                 <Button onClick={handleBrowseFilesBtn}>Browse Files</Button>
                 <input
                     type="file"

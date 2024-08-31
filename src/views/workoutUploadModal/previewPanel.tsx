@@ -3,8 +3,16 @@
 import { Dispatch, type FC, SetStateAction, useEffect } from 'react';
 import { useFormState } from 'react-dom';
 import { toast } from 'sonner';
+import { useSWRConfig } from 'swr';
 
-import { Alert, AlertDescription, AlertTitle, Button } from '@/components';
+import {
+    Alert,
+    AlertDescription,
+    AlertTitle,
+    Button,
+    DialogFooter,
+} from '@/components';
+import { useBestResultsKey } from '@/hooks';
 import type { WorkoutPreview } from '@/interfaces';
 
 import { addNewWorkouts } from './action';
@@ -23,6 +31,9 @@ export const PreviewPanel: FC<Props> = ({
     isEdit,
     onClose,
 }) => {
+    const { mutate } = useSWRConfig();
+    const bestResultsKey = useBestResultsKey();
+
     const [formState, action] = useFormState(
         () =>
             addNewWorkouts(
@@ -52,6 +63,7 @@ export const PreviewPanel: FC<Props> = ({
                     ? 'Workout was successfully updated'
                     : 'Workout was successfully uploaded'
             );
+            mutate(bestResultsKey);
             onClose();
         }
 
@@ -66,12 +78,12 @@ export const PreviewPanel: FC<Props> = ({
             <div className="flex flex-1 flex-col gap-4">
                 {isExistingData && (
                     <Alert variant="warning">
-                        <AlertTitle>Similar existing data found</AlertTitle>
+                        <AlertTitle>Existing Workouts Found</AlertTitle>
                         <AlertDescription>
-                            For some of the workouts there are already records
-                            for the same date and activity type. Check the
-                            details below. You may remove those workouts or
-                            ignore this warning and proceed with upload.
+                            Existing workouts with the same date and activity
+                            type were found. You can remove those workouts from
+                            the list or ignore this warning and proceed with
+                            upload.
                         </AlertDescription>
                     </Alert>
                 )}
@@ -93,14 +105,14 @@ export const PreviewPanel: FC<Props> = ({
                     ))}
                 </ul>
             </div>
-            <div className="mt-6 flex justify-end gap-4">
-                <Button variant="ghost" onClick={() => setPreviewData([])}>
+            <DialogFooter>
+                <Button variant="outline" onClick={() => setPreviewData([])}>
                     Cancel
                 </Button>
                 <form action={action}>
                     <Button type="submit">Upload</Button>
                 </form>
-            </div>
+            </DialogFooter>
         </>
     );
 };

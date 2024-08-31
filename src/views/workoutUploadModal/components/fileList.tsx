@@ -18,7 +18,7 @@ export const FileList: FC<Props> = ({ setWorkouts, workouts }) => {
     const [selectedWorkoutId, setSelectedWorkoutId] = useState<string>();
 
     if (!workouts.length) {
-        return <TextP className="italic">No files selected</TextP>;
+        return <TextP className="text-sm italic">No files selected</TextP>;
     }
 
     const selectedWorkout =

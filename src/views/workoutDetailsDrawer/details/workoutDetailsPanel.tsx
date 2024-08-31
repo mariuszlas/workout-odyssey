@@ -11,7 +11,7 @@ export const WorkoutDetailsPanel: FC<{ data: Workout }> = ({ data }) => {
     const { units } = useUI();
 
     return (
-        <ul className="border-base-content rounded-lg border border-opacity-20">
+        <ul className="rounded-lg border">
             <LineItem title="Activity" value={data.type} label={data.label} />
             <LineItem
                 title="Distance"

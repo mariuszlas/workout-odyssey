@@ -4,15 +4,11 @@ export { Footer } from './footer';
 export {
     ClockIcon,
     CounterIcon,
-    EyeIcon,
-    EyeSlashIcon,
     FileUpladIcon,
     getStatIcon,
     MapPinIcon,
-    MoonIcon,
     RoadIcon,
     SpeedeometerIcon,
-    SunIcon,
 } from './icon';
 export { Logo } from './logo';
 export { GA4Script } from './scripts/ga4Script';

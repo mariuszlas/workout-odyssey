@@ -29,7 +29,7 @@ const StatsPanelWrapper: FC<Children & { testId: string }> = ({
     testId,
 }) => (
     <section
-        className="border-base-content flex flex-col items-start gap-2 border-opacity-20 sm:rounded-xl sm:border sm:p-6 sm:shadow-lg"
+        className="flex flex-col items-start gap-2 text-card-foreground sm:rounded-lg sm:border sm:bg-card sm:p-6 sm:shadow-sm"
         data-testid={testId}
     >
         {children}

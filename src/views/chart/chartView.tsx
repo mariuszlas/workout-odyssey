@@ -25,7 +25,7 @@ import { YearSelector } from './yearSelector';
 const ChartViewWrapper: FC<Children & Loading> = ({ children, isLoading }) => (
     <section
         className={cn(
-            'border-base-content flex flex-col items-center gap-2 border-opacity-20 sm:rounded-xl sm:border sm:p-6 sm:shadow-lg',
+            'flex flex-col items-center gap-2 text-card-foreground sm:rounded-lg sm:border sm:bg-card sm:p-6 sm:shadow-sm',
             isLoading && 'aspect-[3/2]'
         )}
         data-testid="chart-section"

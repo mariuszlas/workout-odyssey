@@ -86,7 +86,7 @@ export const LabelSelector: FC<WorkoutForm> = ({ setWorkouts, workout }) => {
                 <DropdownMenuTrigger asChild>
                     <Button
                         variant="outline"
-                        className={cn('justify-start text-left font-normal')}
+                        className="justify-start bg-inherit text-left font-normal"
                         id="dateTimeTrigger"
                     >
                         Select Label
@@ -113,7 +113,7 @@ export const LabelSelector: FC<WorkoutForm> = ({ setWorkouts, workout }) => {
                         </div>
                         {error && (
                             <label>
-                                <span className="text-xs font-medium leading-3 text-red-600">
+                                <span className="text-xs font-medium leading-3 text-error-foreground">
                                     {error}
                                 </span>
                             </label>

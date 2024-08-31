@@ -1,12 +1,11 @@
 'use client';
 
 import type { FC } from 'react';
-import { usePathname } from 'next/navigation';
 
-import { useIsBreakpoint } from '@/hooks';
+import { useIsBreakpoint, useWorkoutType } from '@/hooks';
 import type { Dashboarad, Loading } from '@/interfaces';
 import { useUI } from '@/providers';
-import { cn, getWorkoutTypeFromPathname } from '@/utils/helpers';
+import { cn } from '@/utils/helpers';
 
 import { StatsPanel } from './statsPanel/statsPanel';
 import { selectPmStatsData, selectSecStatsData } from './helpers';
@@ -17,9 +16,7 @@ export const StatisticsView: FC<Dashboarad & Loading> = ({
 }) => {
     const isMobile = useIsBreakpoint('md');
     const { year, secondaryStat } = useUI();
-
-    const pathname = usePathname();
-    const workoutType = getWorkoutTypeFromPathname(pathname);
+    const workoutType = useWorkoutType();
 
     const headerData = { year, secStats: secondaryStat };
     const pmStatsData = selectPmStatsData(dashboard, year);

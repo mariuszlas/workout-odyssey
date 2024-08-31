@@ -1,5 +1,4 @@
 import type { FC } from 'react';
-import { usePathname } from 'next/navigation';
 import useSWR from 'swr';
 
 import {
@@ -15,9 +14,9 @@ import {
     Skeleton,
     VisuallyHidden,
 } from '@/components';
+import { useBestResultsKey, useWorkoutType } from '@/hooks';
 import { BestResults as TBestResults, WorkoutTypes } from '@/interfaces';
 import { useUI } from '@/providers';
-import { getWorkoutTypeFromPathname } from '@/utils/helpers';
 
 import { LineItem } from './bestResultsLineItem';
 
@@ -62,13 +61,10 @@ const getAllKeys = (workoutType: WorkoutTypes, translations: Translations) => {
 };
 
 export const BestResultsModal: FC<ModalProps> = ({ isOpen, onClose }) => {
-    const pathname = usePathname();
-    const { userId, units } = useUI();
-    const workoutType = getWorkoutTypeFromPathname(pathname);
-
-    const { data, isLoading } = useSWR<TBestResults>(
-        `/api/best-results?user=${userId}&workoutType=${workoutType}`
-    );
+    const { units } = useUI();
+    const workoutType = useWorkoutType();
+    const bestResultsKey = useBestResultsKey();
+    const { data, isLoading } = useSWR<TBestResults>(bestResultsKey);
 
     const translations = {
         halfMarathon: 'Half Marathon',
@@ -89,7 +85,7 @@ export const BestResultsModal: FC<ModalProps> = ({ isOpen, onClose }) => {
                 </VisuallyHidden>
                 <ul
                     id="best-results"
-                    className="flex w-full flex-col gap-2 pt-4"
+                    className="flex w-full flex-col gap-2 overflow-y-scroll pt-4"
                 >
                     {isLoading
                         ? keys.map(({ key, value }) => (

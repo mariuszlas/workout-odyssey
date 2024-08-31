@@ -34,20 +34,20 @@ export const enum SortOptions {
 
 export const Sorting: FC<SortingProps> = ({ setSortBy, sortBy }) => {
     const SortOptionsMap = [
-        { val: SortOptions.DATE, text: 'Date - earliest first' },
-        { val: SortOptions.DATE_REVERSE, text: 'Date - oldest first' },
-        { val: SortOptions.DISTANCE, text: 'Distance - longest first' },
+        { value: SortOptions.DATE, text: 'Date - earliest first' },
+        { value: SortOptions.DATE_REVERSE, text: 'Date - oldest first' },
+        { value: SortOptions.DISTANCE, text: 'Distance - longest first' },
         {
-            val: SortOptions.DISTANCE_REVERSE,
+            value: SortOptions.DISTANCE_REVERSE,
             text: 'Distance - shortest first',
         },
-        { val: SortOptions.DURATION, text: 'Duration - longest first' },
+        { value: SortOptions.DURATION, text: 'Duration - longest first' },
         {
-            val: SortOptions.DURATION_REVERSE,
+            value: SortOptions.DURATION_REVERSE,
             text: 'Duration - shortest first',
         },
-        { val: SortOptions.PACE, text: 'Pace - slowest first' },
-        { val: SortOptions.PACE_REVERSE, text: 'Pace - fastest first' },
+        { value: SortOptions.PACE, text: 'Pace - slowest first' },
+        { value: SortOptions.PACE_REVERSE, text: 'Pace - fastest first' },
     ];
 
     return (
@@ -61,7 +61,7 @@ export const Sorting: FC<SortingProps> = ({ setSortBy, sortBy }) => {
             <SelectContent>
                 <SelectGroup>
                     {SortOptionsMap.map((option, idx) => (
-                        <SelectItem key={idx} value={option.val}>
+                        <SelectItem key={idx} value={option.value}>
                             {option.text}
                         </SelectItem>
                     ))}

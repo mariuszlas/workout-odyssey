@@ -13,7 +13,6 @@ import {
 } from '@/components';
 import type { UploadWorkout, Workout } from '@/interfaces';
 import { useUI } from '@/providers';
-import { cn } from '@/utils/helpers';
 
 import { FoundData } from './foundData';
 
@@ -37,24 +36,16 @@ export const PreviewListItem: FC<Props> = ({
         : foundData;
 
     return (
-        <li
-            className={cn(
-                'flex w-full flex-col gap-4 rounded-lg border border-opacity-20 px-4 py-2',
-                existingData.length > 0
-                    ? 'border-warning border-2'
-                    : 'border-base-content'
-            )}
-        >
-            <div className="flex justify-between gap-4">
-                <div className="overflow-hidden overflow-ellipsis">
+        <li className="flex w-full flex-col gap-4 rounded-lg border border-border p-4">
+            <div className="flex items-center justify-between gap-4">
+                <div>
                     <div className="flex items-center gap-4">
                         <TextS className="font-medium capitalize">
                             {data.type}
                         </TextS>
                         {data?.label && <Badge label={data.label} />}
                     </div>
-
-                    <div className="flex flex-wrap gap-x-4 sm:gap-x-6">
+                    <div className="flex flex-wrap gap-x-4 pt-1 sm:gap-x-6">
                         <DateEntry
                             timestamp={data.timestamp}
                             tz={data.timezone}
@@ -64,9 +55,8 @@ export const PreviewListItem: FC<Props> = ({
                         <Duration value={data.duration} />
                     </div>
                 </div>
-
                 <IconButton
-                    aria-label="Remove this workout from the list"
+                    aria-label="Remove this workout from the upload list"
                     onClick={removeItem}
                 >
                     <TrashIcon className="h-6 w-6" />

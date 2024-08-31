@@ -9,7 +9,7 @@ export interface FilteringProps {
 }
 
 export const Filtering: FC<FilteringProps> = ({ setFilterBy, filterBy }) => (
-    <div className="relative flex max-w-xs">
+    <div className="relative flex max-w-52">
         <Input
             type="text"
             value={filterBy}

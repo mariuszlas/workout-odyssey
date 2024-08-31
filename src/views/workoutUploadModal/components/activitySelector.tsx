@@ -14,7 +14,7 @@ import { WorkoutTypes } from '@/interfaces';
 import { WorkoutForm } from '../intrefaces';
 
 export const ActivitySelector: FC<WorkoutForm> = ({ workout, setWorkouts }) => (
-    <div className="w-fit">
+    <div className="w-28">
         <Label htmlFor="activitySelector">Workout Type</Label>
         <Select
             value={workout?.type}
@@ -28,7 +28,7 @@ export const ActivitySelector: FC<WorkoutForm> = ({ workout, setWorkouts }) => (
                 )
             }
         >
-            <SelectTrigger className="w-full capitalize" id="activitySelector">
+            <SelectTrigger className="capitalize" id="activitySelector">
                 <SelectValue />
             </SelectTrigger>
             <SelectContent>

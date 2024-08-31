@@ -3,12 +3,11 @@ import { GitHubLogoIcon } from '@radix-ui/react-icons';
 import { IconButton, TextP } from '@/components';
 
 export const Footer = () => (
-    <footer
-        data-testid="footer"
-        className="border-t-base-content border-t border-opacity-20 py-3"
-    >
+    <footer data-testid="footer" className="border-t py-3">
         <div className="mx-auto flex w-full max-w-8xl items-center justify-between px-4 sm:px-6">
-            <TextP data-testid="copyright-note">© 2024 Mariusz Las</TextP>
+            <TextP data-testid="copyright-note" className="text-sm">
+                © 2024 Mariusz Las
+            </TextP>
             <IconButton asChild>
                 <a
                     href="https://github.com/mariuszlas/workout-odyssey"

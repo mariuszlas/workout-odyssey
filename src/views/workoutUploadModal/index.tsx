@@ -12,9 +12,7 @@ interface Props extends ModalProps {
 export const WorkoutUploadModal: FC<Props> = ({ workout, isOpen, onClose }) => (
     <Dialog open={isOpen} onOpenChange={onClose}>
         <DialogContent>
-            <div className="relative flex min-h-72 flex-col gap-4">
-                <WorkoutUpload workout={workout} onClose={onClose} />
-            </div>
+            <WorkoutUpload workout={workout} onClose={onClose} />
         </DialogContent>
     </Dialog>
 );

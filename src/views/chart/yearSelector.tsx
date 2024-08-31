@@ -2,7 +2,6 @@
 
 import { FC, useEffect, useMemo } from 'react';
 import { TriangleLeftIcon, TriangleRightIcon } from '@radix-ui/react-icons';
-import { usePathname } from 'next/navigation';
 
 import {
     IconButton,
@@ -13,9 +12,9 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components';
+import { useWorkoutType } from '@/hooks';
 import { type WorkoutsDashboard } from '@/interfaces';
 import { useUI } from '@/providers';
-import { getWorkoutTypeFromPathname } from '@/utils/helpers';
 
 import {
     findBestMonths,
@@ -34,8 +33,7 @@ const PREV = 'PREVIOUS';
 
 export const YearSelector: FC<Props> = ({ dashboard }) => {
     const { year, setYear, setSecondaryStat } = useUI();
-    const pathname = usePathname();
-    const workoutType = getWorkoutTypeFromPathname(pathname);
+    const workoutType = useWorkoutType();
 
     const availableYears = useMemo(
         () => getAvailableYears(dashboard),
@@ -51,7 +49,7 @@ export const YearSelector: FC<Props> = ({ dashboard }) => {
         const nextYear =
             availableYears.includes(year) || year === 0
                 ? year
-                : availableYears.at(0) ?? year;
+                : (availableYears.at(0) ?? year);
 
         const secStat = getSecStats(nextYear, bestMonths);
 
@@ -104,9 +102,8 @@ export const YearSelector: FC<Props> = ({ dashboard }) => {
             <IconButton
                 aria-label="Select next year"
                 onClick={() => onChangeYear(NEXT)}
-                className="text-primary"
             >
-                <TriangleLeftIcon className="h-10 w-10" />
+                <TriangleLeftIcon className="h-8 w-8" />
             </IconButton>
             <Select onValueChange={onSelectYear} value={year.toString()}>
                 <SelectTrigger className="w-28">
@@ -119,9 +116,8 @@ export const YearSelector: FC<Props> = ({ dashboard }) => {
             <IconButton
                 aria-label="Select previous year"
                 onClick={() => onChangeYear(PREV)}
-                className="text-primary"
             >
-                <TriangleRightIcon className="h-10 w-10" />
+                <TriangleRightIcon className="h-8 w-8" />
             </IconButton>
         </div>
     );

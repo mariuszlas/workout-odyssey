@@ -3,6 +3,7 @@ import { ArrowLeftIcon, Pencil2Icon, TrashIcon } from '@radix-ui/react-icons';
 
 import { Distance, IconButton, Separator, TextS } from '@/components';
 import { useUI } from '@/providers';
+import { getDateTimeTZ } from '@/utils/helpers';
 
 import { WorkoutForm } from '../intrefaces';
 
@@ -38,10 +39,17 @@ export const FileLineItem: FC<Props> = ({
     };
 
     return (
-        <li className="border-base-content flex w-full flex-col gap-2 rounded-lg border border-opacity-20 px-4 py-2">
+        <li className="flex w-full flex-col gap-2 rounded-lg border px-4 py-2">
             <div className="flex w-full justify-between">
-                <div className="overflow-hidden overflow-ellipsis">
-                    <TextS className="font-medium" value={workout.file?.name} />
+                <div>
+                    <TextS
+                        className="font-medium"
+                        value={getDateTimeTZ(
+                            workout.timestamp,
+                            workout.timezone,
+                            false
+                        )}
+                    />
                     <div className="flex gap-4">
                         <TextS className="capitalize">{workout.type}</TextS>
                         <Distance value={workout.distance} units={units} />

@@ -5,7 +5,7 @@ import { Input, Label } from '@/components';
 import { WorkoutForm } from '../intrefaces';
 
 export const DistanceInput: FC<WorkoutForm> = ({ workout, setWorkouts }) => (
-    <div className="max-w-28">
+    <div className="w-28">
         <Label htmlFor="distance" isRequired>
             Distance (km)
         </Label>

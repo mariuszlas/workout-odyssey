@@ -2,7 +2,6 @@
 
 import { FC } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 
 import { Button } from '@/components';
 import {
@@ -12,8 +11,9 @@ import {
     NavigationMenuList,
     navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu';
+import { useWorkoutType } from '@/hooks';
 import { WorkoutTypes } from '@/interfaces';
-import { cn, getWorkoutTypeFromPathname } from '@/utils/helpers';
+import { cn } from '@/utils/helpers';
 
 interface Props {
     onClose?: () => void;
@@ -21,8 +21,7 @@ interface Props {
 }
 
 export const WorkoutSelector: FC<Props> = ({ onClose, isMobile }) => {
-    const pathname = usePathname();
-    const currentWorkoutType = getWorkoutTypeFromPathname(pathname);
+    const currentWorkoutType = useWorkoutType();
     const workoutOptions = Object.values(WorkoutTypes);
 
     if (isMobile) {
@@ -34,7 +33,9 @@ export const WorkoutSelector: FC<Props> = ({ onClose, isMobile }) => {
                     className="w-full justify-start"
                 >
                     <Link
-                        className="capitalize"
+                        className={cn('capitalize', {
+                            'text-primary': workoutType === currentWorkoutType,
+                        })}
                         href={workoutType}
                         onClick={() => onClose && onClose()}
                     >

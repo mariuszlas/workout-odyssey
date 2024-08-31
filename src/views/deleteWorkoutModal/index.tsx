@@ -1,6 +1,7 @@
 import { FC, useEffect } from 'react';
 import { useFormState } from 'react-dom';
 import { toast } from 'sonner';
+import { useSWRConfig } from 'swr';
 
 import {
     Button,
@@ -13,6 +14,7 @@ import {
     DialogTitle,
     ModalProps,
 } from '@/components';
+import { useBestResultsKey } from '@/hooks';
 
 import { deleteWorkoutById } from './action';
 
@@ -25,10 +27,13 @@ const ModalCta: FC<Props> = ({ id, onClose }) => {
         () => deleteWorkoutById(id),
         undefined
     );
+    const { mutate } = useSWRConfig();
+    const bestResultsKey = useBestResultsKey();
 
     useEffect(() => {
         if (formState?.ok) {
             toast.success('Workout was successfully deleted');
+            mutate(bestResultsKey);
             onClose();
         }
 
@@ -57,7 +62,7 @@ export const DeleteWorkoutModal: FC<Props> = ({ id, onClose, isOpen }) => (
             </DialogDescription>
             <DialogFooter>
                 <DialogClose asChild>
-                    <Button variant="ghost">Cancel</Button>
+                    <Button variant="outline">Cancel</Button>
                 </DialogClose>
                 <ModalCta id={id} onClose={onClose} isOpen={isOpen} />
             </DialogFooter>

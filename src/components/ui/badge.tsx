@@ -6,7 +6,7 @@ import { TLabel } from '@/interfaces';
 import { cn } from '@/utils/helpers';
 
 const badgeVariants = cva(
-    'inline-flex items-center rounded-full border px-2.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
+    'inline-flex items-center rounded-full border px-2.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring',
     {
         variants: {
             variant: {
@@ -54,7 +54,7 @@ const Badge: FC<BadgeProps> = ({
         {label && label.value}
         {onRemoveLabel && (
             <button
-                className="ml-1 p-0.5 opacity-70 hover:opacity-100"
+                className="ml-1 rounded-sm p-0.5 opacity-70 hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 onClick={onRemoveLabel}
                 aria-label="remove badge"
             >

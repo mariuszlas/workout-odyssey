@@ -22,30 +22,26 @@ interface Props {
 
 export const FoundData: FC<Props> = ({ data, foundData }) => {
     const { units } = useUI();
+    const isNotPlural = foundData.length === 1;
 
     return (
         <>
             <Separator />
             <Alert variant="warning">
                 <AlertDescription>
-                    There{' '}
-                    {foundData.length === 0
-                        ? 'are no'
-                        : foundData.length > 1
-                          ? 'are'
-                          : 'is'}{' '}
-                    {foundData.length === 0 ? '' : foundData.length}{' '}
-                    {foundData.length > 1 ? 'records' : 'record'} for{' '}
-                    {data.type} on{' '}
+                    There {isNotPlural ? 'is' : 'are'} {foundData.length}{' '}
+                    {isNotPlural ? 'record' : 'records'} for {data.type} on{' '}
                     {getDateTimeTZ(data.timestamp, data.timezone, true)}
                 </AlertDescription>
             </Alert>
-            <TextP className="font-medium">Existing Data</TextP>
-            <ul className="border-base-content rounded-lg border border-opacity-20">
+            <TextP className="font-medium">
+                Existing Workout{isNotPlural ? '' : 's'}
+            </TextP>
+            <ul className="rounded-lg border">
                 {foundData.map((workout, idx) => (
                     <li
                         key={idx}
-                        className="border-t-base-content flex flex-wrap gap-x-4 overflow-hidden overflow-ellipsis border-t border-opacity-20 px-4 py-2 first:border-t-0 sm:gap-x-6"
+                        className="flex flex-wrap gap-x-4 border-t px-4 py-2 first:border-t-0 sm:gap-x-6"
                     >
                         <DateEntry
                             timestamp={data.timestamp}

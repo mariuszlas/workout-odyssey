@@ -83,7 +83,8 @@ export const getChartThemeTokens = (theme: string | undefined): ChartTheme => ({
     hoverBarColor:
         theme === Theme.DARK ? c.BAR_HOVER_COLOR_DARK : c.BAR_HOVER_COLOR_LIGHT,
     textColor: theme === Theme.DARK ? c.TEXT_COLOR_DARK : c.TEXT_COLOR_LIGHT,
-    gridDashColor: c.GRID_DASH_COLOR,
+    gridDashColor:
+        theme === Theme.DARK ? c.GRID_DASH_COLOR_DARK : c.GRID_DASH_COLOR_LIGHT,
 });
 
 const getTooltipUnits = (units: Units, dataType: ChartDataTypes) => {

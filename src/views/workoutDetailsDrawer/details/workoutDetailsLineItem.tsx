@@ -14,7 +14,7 @@ interface Props {
 export const LineItem: FC<Props> = ({ title, value, label, notes }) => (
     <li
         className={cn(
-            'border-t-base-content flex flex-wrap justify-between border-t border-opacity-20 px-4 py-1.5 first:border-t-0',
+            'flex flex-wrap justify-between border-t px-4 py-1.5 first:border-t-0',
             notes ? 'gap-x-12' : 'gap-x-4'
         )}
     >

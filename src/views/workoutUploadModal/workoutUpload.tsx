@@ -31,7 +31,6 @@ export const WorkoutUpload: FC<Props> = ({ workout, onClose }) => {
                           : 'Workout Upload'}
                 </DialogTitle>
             </DialogHeader>
-
             <VisuallyHidden>
                 <DialogDescription>
                     {previewData.length
@@ -41,26 +40,27 @@ export const WorkoutUpload: FC<Props> = ({ workout, onClose }) => {
                           : 'Upload new workout data'}
                 </DialogDescription>
             </VisuallyHidden>
-
-            {previewData.length ? (
-                <PreviewPanel
-                    setPreviewData={setPreviewData}
-                    workoutPreview={previewData}
-                    isEdit={!!workout}
-                    onClose={onClose}
-                />
-            ) : (
-                <>
-                    {workout ? (
-                        <ManualUpload
-                            setPreviewData={setPreviewData}
-                            workout={workout}
-                        />
-                    ) : (
-                        <FormsPanel setPreviewData={setPreviewData} />
-                    )}
-                </>
-            )}
+            <div className="-m-1 flex min-h-52 flex-col gap-4 overflow-y-scroll p-1">
+                {previewData.length ? (
+                    <PreviewPanel
+                        setPreviewData={setPreviewData}
+                        workoutPreview={previewData}
+                        isEdit={!!workout}
+                        onClose={onClose}
+                    />
+                ) : (
+                    <>
+                        {workout ? (
+                            <ManualUpload
+                                setPreviewData={setPreviewData}
+                                workout={workout}
+                            />
+                        ) : (
+                            <FormsPanel setPreviewData={setPreviewData} />
+                        )}
+                    </>
+                )}
+            </div>
         </>
     );
 };

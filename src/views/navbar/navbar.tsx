@@ -26,17 +26,16 @@ export const NavBar: FC<{ isProtected?: boolean }> = ({
     const isMobile = useIsBreakpoint('md');
 
     const pathname = usePathname();
-    const isLoginPage = pathname.startsWith('/login');
-    const isSignupPage = pathname.startsWith('/signup');
-    const isEmailVerificationPage = pathname.startsWith('/verify');
+    const isLoginPage = pathname.startsWith('/sign-in');
+    const isSignupPage = pathname.startsWith('/sign-up');
     const isDashboardPage = pathname.startsWith('/dashboard');
 
-    const showLoginBtn = !(isLoginPage || isEmailVerificationPage);
+    const showLoginBtn = !isLoginPage;
     const showSignupBtn = !isSignupPage;
 
     return (
         <>
-            <header className="border-b-base-content bg-base-100 sticky top-0 z-50 w-full border-b border-opacity-20 bg-opacity-30 py-2 shadow-sm backdrop-blur-lg">
+            <header className="sticky top-0 z-50 w-full border-b bg-opacity-30 py-2 shadow-sm backdrop-blur-lg">
                 <nav className="mx-auto flex w-full max-w-8xl items-center justify-between px-4 sm:px-6">
                     <div className="flex items-center gap-2">
                         {!isMobile && <Logo isProtected={isProtected} />}
@@ -50,45 +49,41 @@ export const NavBar: FC<{ isProtected?: boolean }> = ({
                         </div>
                         {isProtected && isDashboardPage && <WorkoutSelector />}
                     </div>
-
                     <div>{isMobile && <Logo isProtected={isProtected} />}</div>
-
-                    <div className="flex items-center gap-3">
-                        {isProtected && (
-                            <IconButton
-                                className="hidden md:flex"
-                                onClick={() =>
-                                    setIsWorkoutUploadModalOpen(true)
-                                }
-                            >
-                                <PlusIcon className="h-6 w-6" />
-                            </IconButton>
-                        )}
-
-                        <ThemeSwitch />
-
+                    <div className="flex items-center gap-4">
                         {isProtected ? (
                             <>
-                                <IconButton
-                                    className="hidden md:flex"
-                                    aria-label="Best Results"
-                                    onClick={() =>
-                                        setIsBestResultsModalOpen(true)
-                                    }
-                                >
-                                    <StarIcon className="h-6 w-6" />
-                                </IconButton>
+                                <div className="flex items-center gap-2">
+                                    <IconButton
+                                        className="hidden md:flex"
+                                        onClick={() =>
+                                            setIsWorkoutUploadModalOpen(true)
+                                        }
+                                    >
+                                        <PlusIcon className="h-6 w-6" />
+                                    </IconButton>
+                                    <IconButton
+                                        className="hidden md:flex"
+                                        aria-label="Best Results"
+                                        onClick={() =>
+                                            setIsBestResultsModalOpen(true)
+                                        }
+                                    >
+                                        <StarIcon className="h-6 w-6" />
+                                    </IconButton>
+                                    <ThemeSwitch />
+                                </div>
                                 <UserButton />
                             </>
                         ) : (
                             <>
+                                <ThemeSwitch />
                                 {showLoginBtn && (
-                                    <SignInButton
-                                        forceRedirectUrl={'/dashboard/running'}
-                                    >
+                                    <SignInButton forceRedirectUrl="/dashboard/running">
                                         <Button
                                             asChild
-                                            className="hidden cursor-pointer md:inline-flex"
+                                            className="hidden cursor-pointer border-primary text-primary hover:text-primary md:inline-flex"
+                                            variant="outline"
                                         >
                                             <a>Sign In</a>
                                         </Button>

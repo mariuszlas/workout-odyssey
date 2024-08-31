@@ -47,9 +47,10 @@ export const FloatingNewWorkoutBtn: FC<Props> = ({ onClick }) => {
             data-testid="floating-new-workout-btn"
             className={cn(
                 { hidden: !isVisible },
-                'fixed bottom-3 right-3 z-10 h-12 rounded-full bg-secondary p-3 text-secondary-foreground drop-shadow-2xl sm:hidden'
+                'fixed bottom-3 right-3 z-10 h-12 rounded-full p-3 drop-shadow-2xl sm:hidden'
             )}
             onClick={onClick}
+            variant="secondary"
         >
             <PlusIcon className="h-6 w-6" />
         </Button>

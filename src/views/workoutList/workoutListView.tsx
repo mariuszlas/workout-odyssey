@@ -2,12 +2,11 @@
 
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';
-import { usePathname } from 'next/navigation';
 
 import { SkeletonList } from '@/components';
+import { useWorkoutType } from '@/hooks';
 import { Children, Workout } from '@/interfaces';
 import { useUI } from '@/providers';
-import { getWorkoutTypeFromPathname } from '@/utils/helpers';
 
 import { WorkoutListHeader } from './header';
 import { filterWorkouts, selectMonthWorkouts } from './helpers';
@@ -15,7 +14,7 @@ import { WorkoutList } from './workoutList';
 
 const WorkoutListWrapper: FC<Children> = ({ children }) => (
     <section
-        className="border-base-content flex flex-col gap-2 border-opacity-20 sm:rounded-xl sm:border sm:p-6 sm:shadow-lg lg:min-h-full"
+        className="flex flex-col gap-2 text-card-foreground sm:rounded-lg sm:border sm:bg-card sm:p-6 sm:shadow-sm lg:min-h-full"
         data-testid="workout-list-section"
     >
         {children}
@@ -26,11 +25,9 @@ export const WorkoutListView: FC<{ data?: Workout[]; isLoading?: boolean }> = ({
     data = [],
     isLoading,
 }) => {
+    const workoutType = useWorkoutType();
     const { year, secondaryStat } = useUI();
     const headerData = { year, secStats: secondaryStat };
-
-    const pathname = usePathname();
-    const workoutType = getWorkoutTypeFromPathname(pathname);
 
     const [sortBy, setSortBy] = useState({ sort: 'date', reverse: false });
     const [filterBy, setFilterBy] = useState('');

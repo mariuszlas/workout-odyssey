@@ -1,6 +1,6 @@
 version: '3.9'
 
-name: workout-odyssey-e2e-mocks
+name: workout-odyssey-test-mocks
 
 services:
     wiremock:

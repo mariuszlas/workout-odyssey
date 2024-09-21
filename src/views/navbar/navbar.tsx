@@ -95,7 +95,7 @@ export const NavBar: FC<{ isProtected?: boolean }> = ({
                                             asChild
                                             className="hidden cursor-pointer md:inline-flex"
                                         >
-                                            <a>Sign Out</a>
+                                            <a>Sign Up</a>
                                         </Button>
                                     </SignUpButton>
                                 )}

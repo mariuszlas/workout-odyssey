@@ -11,7 +11,7 @@
         "test": "vitest run",
         "test:watch": "vitest watch",
         "test:coverage": "vitest run --coverage",
-        "test:e2e": "APP_ENV=test pnpm exec playwright test",
+        "test:automation": "APP_ENV=test pnpm exec playwright test",
         "ts:check": "tsc",
         "lint:check": "next lint",
         "lint:fix": "next lint --fix",
